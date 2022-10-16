@@ -1,6 +1,6 @@
 import requests
 from datetime import datetime, timezone
-from osh_data_rep.datamodels import DataRecordComponent, AbstractDataComponent
+from osh_data_core.datamodels import DataRecordComponent, AbstractDataComponent
 
 
 def create_result_dict(root_output: DataRecordComponent):
