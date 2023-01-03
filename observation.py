@@ -36,3 +36,7 @@ def map_record_fields_to_dict(data_record: DataRecordComponent):
 def send_result(url, root_record):
     result_json = create_result_dict(root_record)
     r = requests.post(url, json=result_json, headers={'Content-Type': 'application/json'})
+
+
+def send_result_batch(url, result_list):
+    r = requests.post(url, json=result_list, headers={'Content-Type': 'application/json'})
