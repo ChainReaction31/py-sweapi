@@ -1,6 +1,9 @@
-import requests
 from datetime import datetime, timezone
-from osh_data_core.datamodels import DataRecordComponent, AbstractDataComponent
+
+import requests
+# from osh_data_core.datamodels import DataRecordComponent, DataComponentImpl
+from oshdatacore.component_implementations import DataRecordComponent
+from oshdatacore.datamodels_core import DataComponentImpl
 
 
 def create_result_dict(root_output: DataRecordComponent):
@@ -11,7 +14,7 @@ def create_result_dict(root_output: DataRecordComponent):
             # create a dictionary of name->value for each field
             result_dict[field.name] = map_record_fields_to_dict(field)
             pass
-        elif isinstance(field, AbstractDataComponent):
+        elif isinstance(field, DataComponentImpl):
             result_dict[field.name] = field.value
 
     observation = dict([
@@ -27,7 +30,7 @@ def map_record_fields_to_dict(data_record: DataRecordComponent):
     for field in data_record.fields:
         if isinstance(field, DataRecordComponent):
             result_dict[field.name] = map_record_fields_to_dict(field)
-        elif isinstance(field, AbstractDataComponent):
+        elif isinstance(field, DataComponentImpl):
             result_dict[field.name] = field.value
 
     return result_dict
