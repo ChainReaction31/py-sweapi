@@ -15,7 +15,7 @@ class System:
     __sys_id: str
     """Should only be assigned by the OSH Node, changing this value manually will break things"""
 
-    def __init__(self, name, uid, definition, description, node_url):
+    def __init__(self):
         """
 
         :param name: Human-readable name of the system
@@ -24,14 +24,14 @@ class System:
         :param description: a description of the system. Brevity is preferred, but the field can be of any length.
         :param node_url: The root url of the node
         """
+        self.name = None
+        self.uid = None
+        self.definition = None
+        self.def_type = None
+        self.description = None
+        self.node_url = None
         self.node_port = None
         self.node_endpoint = None
-        self.name = name
-        self.uid = uid
-        self.definition = definition
-        self.def_type = definition
-        self.description = description
-        self.node_url = node_url
 
     def build_system_dict(self):
         properties = dict([
@@ -95,3 +95,38 @@ class System:
     def get_observation_url(self, datastream_id):
         url = f"{self.get_node_url()}{APITerms.API.value}{APITerms.DATASTREAMS.value}/{datastream_id}{APITerms.OBSERVATIONS.value}"
         return url
+
+    def add_datastream(self, datastream):
+        self.datastreams.append(datastream)
+
+
+class SystemBuilder:
+
+    def __init__(self):
+        self.system = System()
+
+    def with_name(self, name):
+        self.system.name = name
+        return self
+
+    def with_uid(self, uid):
+        self.system.uid = uid
+        return self
+
+    def with_definition(self, definition):
+        self.system.definition = definition
+        self.system.def_type = definition
+        return self
+
+    def with_description(self, description):
+        self.system.description = description
+        return self
+
+    def with_node(self, node_url, node_port, node_endpoint):
+        self.system.node_url = node_url
+        self.system.node_port = node_port
+        self.system.node_endpoint = node_endpoint
+        return self
+
+    def build(self):
+        return self.system
