@@ -1,11 +1,4 @@
 class SystemPropertiesCore:
-    """
-    """
-    definition: str
-    uid: str
-    name: str
-    description: str
-    type: str
 
     def __init__(self, definition, uid, name, description):
         """

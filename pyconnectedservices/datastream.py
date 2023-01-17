@@ -11,19 +11,22 @@ class Datastream:
     """
     The base output is simply a DataRecord with a timestamp component.
     """
-    name: str
-    description: str
-    output_name: str
-    encoding: AbstractEncoding
-    root_component: DataRecordComponent
-    obs_format: ObservationFormat
-    schema: dict
-    parent_system: System
 
-    def __init__(self, name, label, definition, description=None):
-        self.ds_id = None
-        self.root_component = DataRecordComponent(name, label, definition, description)
-        self.schema = None
+    def __init__(self):
+        """
+        Datastreams are intended to be build using DatastreamBuilder
+        """
+
+        self.name: str
+        self.description: str
+        self.output_name: str
+        self.encoding: AbstractEncoding
+        self.root_component: DataRecordComponent
+        self.obs_format: ObservationFormat
+        self.schema: dict = None
+        self.parent_system: System
+        self.__ds_id = None
+        self.root_component : DataRecordComponent = None
 
     def get_fields(self):
         return self.root_component.get_fields()
