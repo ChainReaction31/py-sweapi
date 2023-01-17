@@ -1,33 +1,96 @@
+"""Outputs are a collection of datamodel types"""
 import requests
+from oshdatacore.component_implementations import DataRecordComponent
+from oshdatacore.encoding import AbstractEncoding
 
-from osh_connected_services.constants import APITerms
-
-
-def create_datastream_schema(obs_format, result_schema, result_encoding):
-    schema = dict([
-        ('obsFormat', obs_format),
-        ('resultSchema', result_schema),
-        ('resultEncoding', result_encoding)
-    ])
-    return schema
+from pyconnectedservices.constants import APITerms, ObservationFormat
+from pyconnectedservices.system import System
 
 
-def insert_datastream(systems_url, system_id, ds_output_name, ds_name, ds_description, result_schema, result_encoding):
-    datastream_dict = dict([
-        ('outputName', ds_output_name),
-        ('name', ds_name),
-        ('description', ds_description),
-        ('schema', create_datastream_schema('application/om+json', result_schema, result_encoding)),
-    ])
+class Datastream:
+    """
+    The base output is simply a DataRecord with a timestamp component.
+    """
+    name: str
+    description: str
+    output_name: str
+    encoding: AbstractEncoding
+    root_component: DataRecordComponent
+    obs_format: ObservationFormat
+    schema: dict
+    parent_system: System
 
-    full_url = systems_url + f'/{system_id}' + APITerms.DATASTREAMS.value
-    r = requests.post(full_url, json=datastream_dict, headers={'Content-Type': 'application/json'})
-    location = r.headers.get('Location')
-    ds_id = location.removeprefix('/datastreams/')
-    return ds_id
+    def __init__(self, name, label, definition, description=None):
+        self.ds_id = None
+        self.root_component = DataRecordComponent(name, label, definition, description)
+        self.schema = None
+
+    def get_fields(self):
+        return self.root_component.get_fields()
+
+    def create_datastream_schema(self):
+        """
+        create the schema for the datastream, returns the schema if it already exists
+        :return:
+        """
+        if self.schema is None:
+            schema = dict([
+                ('obsFormat', self.obs_format),
+                ('resultSchema', self.root_component.datastructure_to_dict()),
+                ('resultEncoding', self.encoding)
+            ])
+            self.schema = schema
+            return schema
+        else:
+            return self.schema
+
+    def insert_datastream(self):
+        """
+        Insert the datastream into the parent system. Throws an error if the parent system is not set.
+        """
+
+        if self.parent_system is not None:
+            datastream_dict = dict([
+                ('outputName', self.output_name),
+                ('name', self.name),
+                ('description', self.description),
+                ('schema', self.create_datastream_schema()),
+            ])
+
+            full_url = f'{self.parent_system.get_system_url()}/{APITerms.DATASTREAMS.value}'
+            r = requests.post(full_url, json=datastream_dict, headers={'Content-Type': 'application/json'})
+            location = r.headers.get('Location')
+            self.ds_id = location.removeprefix('/datastreams/')
+            return self.ds_id
+        else:
+            raise ParentSystemNotFound()
+
+    def get_datastream_url(self):
+        return f'{self.parent_system.get_system_url()}{APITerms.DATASTREAMS.value}/{self.ds_id}'
 
 
-data_types_dict = dict([
-    ('f4', 'float'),
-    ('u1', 'uchar')
-])
+class DatastreamBuilder:
+    def __init__(self):
+        self.datastream = Datastream()
+
+    def with_name(self, name):
+        self.datastream.name = name
+
+    def with_description(self, description):
+        self.datastream.description = description
+
+    def with_encoding(self, encoding: AbstractEncoding):
+        self.datastream.encoding = encoding
+
+    def with_observation_format(self, obs_format: ObservationFormat):
+        self.datastream.obs_format = obs_format
+
+    def with_root_component(self, component: DataRecordComponent):
+        self.datastream.root_component = component
+
+
+class ParentSystemNotFound(Exception):
+
+    def __init__(self, message="Cannot insert datastream without a parent system"):
+        self.message = message
+        super().__init__(self.message)

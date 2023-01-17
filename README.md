@@ -1,4 +1,4 @@
-# osh_connected_services_api_for_python
+# OSH Connected Systems API For Python
 Serves as a bridge between datasources created in Python and an OSH Node with the SWEAPI enabled
 
 This package depends on the osh_data_core package as well 
@@ -21,7 +21,7 @@ To use this package, you must know a few things about the hub that you are inten
 # A system requires a name, a UID, a definition, and a description.
 sys_builder = SystemBuilder()
 sys_builder.with_name("My System")
-sys_builder.with_uid("my_system_uid")
+sys_builder.with_uid("urn:my_project:my_system_uid")
 sys_builder.with_definition("http://my_system_definition")
 sys_builder.with_description("My system description")
 sys_builder.with_node("http://my_node_url", 8080, "api_endpoint")

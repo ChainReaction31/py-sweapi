@@ -89,7 +89,7 @@ class System:
         return f"{self.node_url}:{str(self.node_port)}{self.node_endpoint}"
 
     def get_system_url(self):
-        return f"{self.get_node_url()}{APITerms.API.value}{APITerms.SYSTEMS.value}"
+        return f"{self.get_node_url()}{APITerms.API.value}{APITerms.SYSTEMS.value}/{self.__sys_id}"
 
     # TODO: add this method to datastream
     def get_observation_url(self, datastream_id):
