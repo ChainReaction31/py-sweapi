@@ -11,6 +11,6 @@ class Output:
     def __init__(self, name, label, definition, description=None):
         self.root_component = DataRecordComponent(name, label, definition, description)
 
-    def add_field(self, component):
-        self.root_component.add_field(component)
+    def get_fields(self):
+        return self.root_component.get_fields()
 
