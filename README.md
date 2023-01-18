@@ -24,12 +24,34 @@ sys_builder.with_name("My System")
 sys_builder.with_uid("urn:my_project:my_system_uid")
 sys_builder.with_definition("http://my_system_definition")
 sys_builder.with_description("My system description")
-sys_builder.with_node("http://my_node_url", 8080, "api_endpoint")
+sys_builder.with_node("http://my_node_url", 8282, "api_endpoint")
 
 system = sys_builder.build()
 ```
 
-2. Add Outputs to System
+2. Add Datastream to System
 ```python
+ds_builder = DatastreamBuilder()
+my_datastream = ds_builder \
+    .with_name("My Datastream") \
+    .with_uid("urn:my_project:my_datastream_uid") \
+    .with_description("My datastream description") \
+    # Create a text encoding either inline or beforehand
+    .with_encoding(txt_encoding) \
+    # Choose from ObservationFormat enum in constants.py
+    .with_observation_format(ObservationFormat.JSON) \
+    .with_parent_system(system) \
+    .build()
+```
+
+3. Add Root Component to Datastream
+```python
+root_component = DataRecordComponent("my_record", "My Record", "http://my_record_definition", "My record description")
+my_datastream.set_root_component(root_component)
+```
+
+4. Add Components to Root Component
+```python
+# Create a component
 
 ```

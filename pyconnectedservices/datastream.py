@@ -82,6 +82,9 @@ class Datastream:
     def get_datastream_url(self):
         return f'{self.parent_system.get_system_url()}{APITerms.DATASTREAMS.value}/{self.__ds_id}'
 
+    def add_root_component(self, component: DataRecordComponent):
+        self.root_component = component
+
 
 class DatastreamBuilder:
     def __init__(self):
