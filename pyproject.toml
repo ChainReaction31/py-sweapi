@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "py-connected-systems"
+version = "0.0.1-alpha"
+authors = [
+    { name = "Ian Patterson", email = "ian@botts-inc.com" }
+]
+description = """
+    A Python library for interacting with the Connected Systems API.
+    """
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
+    "Operating System :: OS Independent"
+]
+
+[project.urls]
+"Homepage" = "https://opensensorhub.org/"
