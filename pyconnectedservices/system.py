@@ -1,7 +1,7 @@
 import json
 import requests
 
-from constants import SystemTypes, APITerms
+from pyconnectedservices.constants import SystemTypes, APITerms
 
 
 class System:
@@ -24,11 +24,12 @@ class System:
 
     def build_system_dict(self):
         properties = dict([
-            ('definition', self.definition),
+
             ('name', self.name),
             ('uid', self.uid),
-            ('type', self.def_type),
-            ('description', self.description)
+            ('definition', self.definition),
+            ('description', self.description),
+            ('type', self.def_type)
         ])
 
         self.system_dict = dict([
@@ -37,7 +38,8 @@ class System:
         ])
 
     def generate_json(self) -> str:
-        return json.dumps(self.build_system_dict())
+        self.build_system_dict()
+        return json.dumps(self.system_dict)
 
     def insert_system(self) -> str:
         """
