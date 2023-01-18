@@ -1,4 +1,3 @@
-"""Outputs are a collection of datamodel types"""
 import requests
 from oshdatacore.component_implementations import DataRecordComponent
 from oshdatacore.encoding import AbstractEncoding
@@ -9,7 +8,10 @@ from pyconnectedservices.system import System
 
 class Datastream:
     """
-    The base output is simply a DataRecord with a timestamp component.
+    Datastreams define the structure of data sent to an OSH Node. They provide a means of defining what and how
+    data must be packaged.
+
+    A builder is provided to make the creation of datastreams less complex
     """
 
     def __init__(self):
@@ -103,9 +105,21 @@ class DatastreamBuilder:
     def with_parent_system(self, system: System):
         self.datastream.parent_system = system
 
+    def build(self):
+        for (k, v) in self.__dict__.items():
+            if v is None:
+                raise InvalidDatastream(f'The Datastream cannot be built because {k} is not set')
+        return self.datastream
+
 
 class ParentSystemNotFound(Exception):
 
     def __init__(self, message="Cannot insert datastream without a parent system"):
+        self.message = message
+        super().__init__(self.message)
+
+
+class InvalidDatastream(Exception):
+    def __init__(self, message=f'The Datastream cannot be built. Please check that all required fields are set'):
         self.message = message
         super().__init__(self.message)
