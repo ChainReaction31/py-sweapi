@@ -67,7 +67,8 @@ class System:
 
             # This means the result told us we already had a matching sensor inserted
             elif r.status_code == 400:
-                r = requests.get(self.get_system_url(), params={'validTime': '../..', 'q': 'ply'})
+                # Additional parameters are possible, but not needed at this time
+                r = requests.get(self.get_system_url(), params={'validTime': '../..'})
                 decoded_content = r.json()['items'][0]
                 temp_id = decoded_content['id']
 
@@ -84,11 +85,11 @@ class System:
         return f"{self.node_url}:{str(self.node_port)}/{self.node_endpoint}"
 
     def get_system_url(self):
-        return f"{self.get_full_node_url()}{APITerms.API.value}{APITerms.SYSTEMS.value}"
+        return f"{self.get_full_node_url()}/{APITerms.API.value}/{APITerms.SYSTEMS.value}"
 
     # TODO: add this method to datastream
     def get_observation_url(self, datastream_id):
-        url = f"{self.get_full_node_url()}{APITerms.API.value}{APITerms.DATASTREAMS.value}/{datastream_id}{APITerms.OBSERVATIONS.value}"
+        url = f"{self.get_full_node_url()}/{APITerms.API.value}/{APITerms.DATASTREAMS.value}/{datastream_id}/{APITerms.OBSERVATIONS.value}"
         return url
 
     def add_datastream(self, datastream):
