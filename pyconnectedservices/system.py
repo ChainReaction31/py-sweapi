@@ -54,37 +54,41 @@ class System:
                 """
 
         temp_id = self.__sys_id
+        if self.system_dict is None:
+            self.build_system_dict()
 
         if temp_id is None or temp_id == '':
-            r = requests.post(self.url, json=self.system_dict, headers={'Content-Type': 'application/json'})
+            r = requests.post(self.get_system_url(), json=self.system_dict,
+                              headers={'Content-Type': 'application/json'})
 
             # This is what we hope to get, but cases arise where the sensor is already inserted
             if r.status_code == 201:
                 temp_id = r.headers.get('Location').removeprefix('/systems/')
-                print(r.headers.get('Location'))
 
             # This means the result told us we already had a matching sensor inserted
             elif r.status_code == 400:
-                r = requests.get(self.url, params={'validTime': '../..', 'q': 'ply'})
+                r = requests.get(self.get_system_url(), params={'validTime': '../..', 'q': 'ply'})
                 decoded_content = r.json()['items'][0]
                 temp_id = decoded_content['id']
 
             else:
                 # TODO: add error handling
                 print('Error inserting system')
+                return None
 
-            return temp_id
+            self.__sys_id = temp_id
+            return self.__sys_id
         return temp_id
 
-    def get_node_url(self):
-        return f"{self.node_url}:{str(self.node_port)}{self.node_endpoint}"
+    def get_full_node_url(self):
+        return f"{self.node_url}:{str(self.node_port)}/{self.node_endpoint}"
 
     def get_system_url(self):
-        return f"{self.get_node_url()}{APITerms.API.value}{APITerms.SYSTEMS.value}/{self.__sys_id}"
+        return f"{self.get_full_node_url()}{APITerms.API.value}{APITerms.SYSTEMS.value}"
 
     # TODO: add this method to datastream
     def get_observation_url(self, datastream_id):
-        url = f"{self.get_node_url()}{APITerms.API.value}{APITerms.DATASTREAMS.value}/{datastream_id}{APITerms.OBSERVATIONS.value}"
+        url = f"{self.get_full_node_url()}{APITerms.API.value}{APITerms.DATASTREAMS.value}/{datastream_id}{APITerms.OBSERVATIONS.value}"
         return url
 
     def add_datastream(self, datastream):

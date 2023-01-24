@@ -122,3 +122,8 @@ def test_generate_json(t_sys_system):
     assert json == '{"type": "Feature", "properties": {"name": "Test System", "uid": "urn:test:testsystem", ' \
                    '"definition": "www.test.org/test/testsystem", "description": "A Test System", ' \
                    '"type": "www.test.org/test/testsystem"}}'
+
+
+def test_insert_system(t_sys_system):
+    sys_id = t_sys_system.insert_system()
+    assert sys_id is not None
