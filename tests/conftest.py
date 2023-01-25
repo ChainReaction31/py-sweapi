@@ -1,5 +1,9 @@
 import pytest
+from oshdatacore.component_implementations import BooleanComponent, TextComponent, CountComponent, CategoryComponent, \
+    QuantityComponent, TimeComponent, DataRecordComponent
 
+from pyconnectedservices.constants import ObservationFormat
+from pyconnectedservices.datastream import DatastreamBuilder
 from pyconnectedservices.system import SystemBuilder
 
 
@@ -53,3 +57,93 @@ def t_sys_system(t_sys_name, t_sys_uid, t_sys_definition, t_sys_description, t_s
         .build()
 
     return system
+
+
+# Datastream.py test fixtures
+@pytest.fixture
+def t_ds_name():
+    return 'Test Datastream'
+
+
+@pytest.fixture
+def t_ds_description():
+    return 'A Test Datastream'
+
+
+@pytest.fixture
+def t_ds_encoding():
+    return 'application/json'
+
+
+@pytest.fixture
+def t_ds_observation_format():
+    return ObservationFormat.JSON.value
+
+
+@pytest.fixture
+def t_ds_result_parent(t_sys_system):
+    return t_sys_system
+
+
+@pytest.fixture
+def t_ds_datastream(t_ds_name, t_ds_description, t_ds_encoding, t_ds_observation_format, t_ds_result_parent,
+                    t_root_component):
+    ds_builder = DatastreamBuilder()
+    ds_builder.with_name(t_ds_name)
+    ds_builder.with_description(t_ds_description)
+    ds_builder.with_encoding(t_ds_encoding)
+    # ds_builder.with_observation_format(t_ds_observation_format)
+    ds_builder.with_parent_system(t_ds_result_parent)
+    ds_builder.with_root_component(t_root_component)
+    datastream = ds_builder.build()
+
+    return datastream
+
+
+@pytest.fixture
+def t_root_component(t_comp_time, t_comp_bool, t_comp_text, t_comp_count, t_comp_category, t_comp_quantity):
+    comp = DataRecordComponent(name='root', label='Root', definition='www.test.org/test/root')
+    comp.add_field(t_comp_time)
+    comp.add_field(t_comp_bool)
+    comp.add_field(t_comp_text)
+    comp.add_field(t_comp_count)
+    comp.add_field(t_comp_category)
+    comp.add_field(t_comp_quantity)
+    return comp
+
+
+# Component Fixtures
+@pytest.fixture
+def t_comp_bool():
+    comp = BooleanComponent(name='test-bool', label='Test Bool', definition='www.test.org/test/bool')
+    return comp
+
+
+@pytest.fixture
+def t_comp_text():
+    comp = TextComponent(name='test-text', label='Test Text', definition='www.test.org/test/text')
+    return comp
+
+
+@pytest.fixture
+def t_comp_count():
+    comp = CountComponent(name='test-count', label='Test Count', definition='www.test.org/test/count')
+    return comp
+
+
+@pytest.fixture
+def t_comp_category():
+    comp = CategoryComponent(name='test-category', label='Test Category', definition='www.test.org/test/category')
+    return comp
+
+
+@pytest.fixture
+def t_comp_quantity():
+    comp = QuantityComponent(name='test-quantity', label='Test Quantity', definition='www.test.org/test/quantity')
+    return comp
+
+
+@pytest.fixture
+def t_comp_time():
+    comp = TimeComponent(name='test-time', label='Test Time', description='Test Description')
+    return comp
