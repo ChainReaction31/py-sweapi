@@ -29,9 +29,9 @@ class Datastream:
     description: str
     output_name: str
     encoding: AbstractEncoding
-    root_component: DataRecordComponent
     obs_format: ObservationFormat
     parent_system: System
+    root_component: DataRecordComponent = None
     schema: dict = None
     __ds_id: str = None
 

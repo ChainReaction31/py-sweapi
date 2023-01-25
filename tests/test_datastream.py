@@ -1,6 +1,3 @@
-from pyconnectedservices.constants import ObservationFormat
-
-
 def test_datastream(t_ds_datastream, t_sys_system, t_root_component):
     ds = t_ds_datastream
     print(ds)

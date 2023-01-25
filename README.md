@@ -31,17 +31,9 @@ system = sys_builder.build()
 
 2. Add Datastream to System
 ```python
-ds_builder = DatastreamBuilder()
-my_datastream = ds_builder \
-    .with_name("My Datastream") \
-    .with_uid("urn:my_project:my_datastream_uid") \
-    .with_description("My datastream description") \
-    # Create a text encoding either inline or beforehand
-    .with_encoding(txt_encoding) \
-    # Choose from ObservationFormat enum in constants.py
-    .with_observation_format(ObservationFormat.JSON) \
-    .with_parent_system(system) \
-    .build()
+datastream = Datastream(name=t_ds_name, description=t_ds_description, encoding=t_ds_encoding,
+                            obs_format=t_ds_observation_format, parent_system=t_ds_result_parent,
+                            root_component=t_root_component, output_name='test-output')
 ```
 
 3. Add Root Component to Datastream
