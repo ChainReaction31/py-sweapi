@@ -3,7 +3,7 @@ from oshdatacore.component_implementations import BooleanComponent, TextComponen
     QuantityComponent, TimeComponent, DataRecordComponent
 
 from pyconnectedservices.constants import ObservationFormat
-from pyconnectedservices.datastream import DatastreamBuilder
+from pyconnectedservices.datastream import Datastream
 from pyconnectedservices.system import SystemBuilder
 
 
@@ -88,14 +88,9 @@ def t_ds_result_parent(t_sys_system):
 @pytest.fixture
 def t_ds_datastream(t_ds_name, t_ds_description, t_ds_encoding, t_ds_observation_format, t_ds_result_parent,
                     t_root_component):
-    ds_builder = DatastreamBuilder()
-    ds_builder.with_name(t_ds_name)
-    ds_builder.with_description(t_ds_description)
-    ds_builder.with_encoding(t_ds_encoding)
-    # ds_builder.with_observation_format(t_ds_observation_format)
-    ds_builder.with_parent_system(t_ds_result_parent)
-    ds_builder.with_root_component(t_root_component)
-    datastream = ds_builder.build()
+    datastream = Datastream(name=t_ds_name, description=t_ds_description, encoding=t_ds_encoding,
+                            obs_format=t_ds_observation_format, parent_system=t_ds_result_parent,
+                            root_component=t_root_component, output_name='test-output')
 
     return datastream
 
