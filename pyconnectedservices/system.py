@@ -1,26 +1,38 @@
 import json
+from dataclasses import dataclass
+
 import requests
 
 from pyconnectedservices.constants import SystemTypes, APITerms
 
 
+@dataclass
 class System:
-    """Should only be assigned by the OSH Node, changing this value manually will break things"""
+    """
+    The System class is used to describe sets of datastreams via the Connected Systems API.
 
-    def __init__(self):
-        """
-        Systems are intended to be built using the SystemBuilder
-        """
-        self.name: str = None
-        self.uid: str = None
-        self.definition: str = None
-        self.def_type: str = None
-        self.description: str = None
-        self.node_url: str = None
-        self.node_port: int = None
-        self.node_endpoint: str = None
-        self.system_dict: dict = None
-        self.__sys_id: str = None
+    Attributes:
+        name: Human readable name for the system
+        uid: A unique identifier for the system
+        definition: A URL to the definition of the system
+        def_type: The type of system, e.g. 'Feature'
+        description: A human readable description of the system
+        node_url: The URL of the OSH Node to which the system will be inserted
+        node_port: The port through which to access the Node
+        node_endpoint: The endpoint of the OSH Node to which the system will be inserted. Usually 'sensorhub'
+        system_dict: A dictionary representation of the system
+        __sys_id: The id of the system in the OSH Node
+    """
+    name: str = None
+    uid: str = None
+    definition: str = None
+    def_type: str = None
+    description: str = None
+    node_url: str = None
+    node_port: int = None
+    node_endpoint: str = None
+    system_dict: dict = None
+    __sys_id: str = None
 
     def build_system_dict(self):
         properties = dict([
@@ -43,11 +55,8 @@ class System:
 
     def insert_system(self) -> str:
         """
-                Naively tries to insert the specified system into Hub at the URL provided.
-                If it is found to be present, then the id will be set
-                :param url: URL of the Hub to insert system into
-                :param system_dict: dictionary with the type and properties needed to create a valid SWEAPI System.
-                :param sys_id: optional, if a system id is provided, this method only returns that value
+                Naively tries to insert the specified system into the OSH Node specified by its url.
+                :return: The id of the system
                 See https://opensensorhub.github.io/sensorweb-api/swagger-ui
 
                 :return:
@@ -81,8 +90,15 @@ class System:
             return self.__sys_id
         return temp_id
 
-    def get_full_node_url(self):
-        return f"{self.node_url}:{str(self.node_port)}/{self.node_endpoint}"
+    def get_full_node_url(self) -> str:
+        """
+        Returns the full url of the node, including the port (if specified) and endpoint
+        :return: the full url of the node as a string
+        """
+        if self.node_port is None:
+            return f"{self.node_url}/{self.node_endpoint}"
+        else:
+            return f"{self.node_url}:{str(self.node_port)}/{self.node_endpoint}"
 
     def get_system_url(self):
         return f"{self.get_full_node_url()}/{APITerms.API.value}/{APITerms.SYSTEMS.value}"
