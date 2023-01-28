@@ -1,3 +1,4 @@
+import json
 from dataclasses import dataclass
 
 import requests
@@ -47,7 +48,7 @@ class Datastream:
             schema = dict([
                 ('obsFormat', self.obs_format),
                 ('resultSchema', self.root_component.datastructure_to_dict()),
-                ('resultEncoding', self.encoding)
+                ('resultEncoding', vars(self.encoding))
             ])
             self.schema = schema
             return schema
@@ -68,8 +69,9 @@ class Datastream:
                 ('schema', self.create_datastream_schema()),
             ])
 
-            full_url = f'{self.parent_system.get_system_url()}/{APITerms.DATASTREAMS.value}'
+            full_url = self.get_ds_insert_url()
             r = requests.post(full_url, json=datastream_dict, headers={'Content-Type': 'application/json'})
+            print(f'\n{json.dumps(datastream_dict, indent=4)}\n')
             location = r.headers.get('Location')
             self.__ds_id = location.removeprefix('/datastreams/')
             return self.__ds_id
@@ -79,8 +81,14 @@ class Datastream:
     def get_datastream_url(self):
         return f'{self.parent_system.get_system_url()}/{APITerms.DATASTREAMS.value}/{self.__ds_id}'
 
+    def get_ds_insert_url(self):
+        return f'{self.parent_system.get_system_url()}/{self.parent_system.get_sys_id()}/{APITerms.DATASTREAMS.value}'
+
     def add_root_component(self, component: DataRecordComponent):
         self.root_component = component
+
+    def get_ds_id(self):
+        return self.__ds_id
 
 
 class ParentSystemNotFound(Exception):

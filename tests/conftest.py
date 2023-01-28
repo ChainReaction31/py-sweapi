@@ -1,6 +1,7 @@
 import pytest
 from oshdatacore.component_implementations import BooleanComponent, TextComponent, CountComponent, CategoryComponent, \
     QuantityComponent, TimeComponent, DataRecordComponent
+from oshdatacore.encoding import TextEncoding
 
 from pyconnectedservices.constants import ObservationFormat
 from pyconnectedservices.datastream import Datastream
@@ -29,14 +30,14 @@ def t_sys_description():
 
 @pytest.fixture
 def t_sys_node_url():
-    return 'http://192.168.56.101'
-    # return 'http://127.0.0.1'
+    # return 'http://192.168.56.101'
+    return 'http://127.0.0.1'
 
 
 @pytest.fixture
 def t_sys_node_port():
-    return 8181
-    # return 8282
+    # return 8181
+    return 8282
 
 
 @pytest.fixture
@@ -72,7 +73,8 @@ def t_ds_description():
 
 @pytest.fixture
 def t_ds_encoding():
-    return 'application/json'
+    encoding = TextEncoding()
+    return encoding
 
 
 @pytest.fixture
@@ -97,7 +99,8 @@ def t_ds_datastream(t_ds_name, t_ds_description, t_ds_encoding, t_ds_observation
 
 @pytest.fixture
 def t_root_component(t_comp_time, t_comp_bool, t_comp_text, t_comp_count, t_comp_category, t_comp_quantity):
-    comp = DataRecordComponent(name='root', label='Root', definition='www.test.org/test/root')
+    comp = DataRecordComponent(name='root', label='Root', definition='www.test.org/test/root',
+                               description='Root Component')
     comp.add_field(t_comp_time)
     comp.add_field(t_comp_bool)
     comp.add_field(t_comp_text)

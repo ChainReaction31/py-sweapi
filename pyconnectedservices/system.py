@@ -111,6 +111,9 @@ class System:
     def add_datastream(self, datastream):
         self.datastreams.append(datastream)
 
+    def get_sys_id(self):
+        return self.__sys_id
+
 
 class SystemBuilder:
 
