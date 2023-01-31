@@ -1,12 +1,14 @@
 import json
+import uuid
 from dataclasses import dataclass
+from datetime import datetime, timezone
+from uuid import UUID
 
 import requests
 from oshdatacore.component_implementations import DataRecordComponent
 from oshdatacore.encoding import AbstractEncoding
 
 from pyconnectedservices.constants import APITerms, ObservationFormat
-from pyconnectedservices.observation import Observation
 from pyconnectedservices.system import System
 
 
@@ -151,6 +153,41 @@ class Datastream:
             return True
         else:
             return False
+
+
+@dataclass
+class Observation:
+    id: UUID = uuid.uuid4()
+    parent_datastream: Datastream = None
+    __name_value_map: dict = None
+    __observation_dict: dict = None
+
+    def create_name_value_map(self):
+        self.parent_datastream.set_field_map()
+        self.__name_value_map = dict([])
+        for field in self.parent_datastream.get_field_map().values():
+            self.__name_value_map[field.name] = field.value
+        return self.__name_value_map
+
+    def create_observation_dict(self):
+        self.__observation_dict = dict([
+            ('phenomenonTime', datetime.now(timezone.utc).isoformat()),
+            ('result', self.create_name_value_map())
+        ])
+        return self.__observation_dict
+
+    def create_observation_dict_with_time(self, obs_time: datetime):
+        self.__observation_dict = dict([
+            ('phenomenonTime', obs_time.isoformat()),
+            ('result', self.create_name_value_map())
+        ])
+        return self.__observation_dict
+
+    def get_observation_dict(self):
+        return self.__observation_dict
+
+    def get_observation_json(self):
+        return json.dumps(self.__observation_dict, indent=4)
 
 
 class ParentSystemNotFound(Exception):

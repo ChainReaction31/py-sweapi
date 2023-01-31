@@ -4,7 +4,7 @@ from oshdatacore.component_implementations import BooleanComponent, TextComponen
 from oshdatacore.encoding import TextEncoding
 
 from pyconnectedservices.constants import ObservationFormat
-from pyconnectedservices.datastream import Datastream
+from pyconnectedservices.datastreams_and_observations import Datastream
 from pyconnectedservices.system import SystemBuilder
 
 
@@ -30,14 +30,14 @@ def t_sys_description():
 
 @pytest.fixture
 def t_sys_node_url():
-    # return 'http://192.168.56.101'
-    return 'http://127.0.0.1'
+    return 'http://192.168.56.101'
+    # return 'http://127.0.0.1'
 
 
 @pytest.fixture
 def t_sys_node_port():
-    # return 8181
-    return 8282
+    return 8181
+    # return 8282
 
 
 @pytest.fixture

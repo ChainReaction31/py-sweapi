@@ -31,9 +31,14 @@ system = sys_builder.build()
 
 2. Add Datastream to System
 ```python
-datastream = Datastream(name=t_ds_name, description=t_ds_description, encoding=t_ds_encoding,
-                            obs_format=t_ds_observation_format, parent_system=t_ds_result_parent,
-                            root_component=t_root_component, output_name='test-output')
+datastream = Datastream(
+    name=t_ds_name, 
+    description=t_ds_description, 
+    encoding=t_ds_encoding,                        
+    obs_format=t_ds_observation_format, 
+    parent_system=t_ds_result_parent,
+    root_component=t_root_component, 
+    output_name='test-output')
 ```
 
 3. Add Root Component to Datastream
