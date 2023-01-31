@@ -1,9 +1,14 @@
+import json
+import uuid
+from dataclasses import dataclass
 from datetime import datetime, timezone
+from uuid import UUID
 
 import requests
-# from osh_data_core.datamodels import DataRecordComponent, DataComponentImpl
 from oshdatacore.component_implementations import DataRecordComponent
 from oshdatacore.datamodels_core import DataComponentImpl
+
+from pyconnectedservices.datastream import Datastream
 
 
 def create_result_dict(root_output: DataRecordComponent):
@@ -43,3 +48,38 @@ def send_result(url, root_record):
 
 def send_result_batch(url, result_list):
     r = requests.post(url, json=result_list, headers={'Content-Type': 'application/json'})
+
+
+@dataclass
+class Observation:
+    id: UUID = uuid.uuid4()
+    parent_datastream: Datastream = None
+    __name_value_map: dict = None
+    __observation_dict: dict = None
+
+    def create_name_value_map(self):
+        self.parent_datastream.set_field_map()
+        self.__name_value_map = dict([])
+        for field in self.parent_datastream.get_field_map().values():
+            self.__name_value_map[field.name] = field.value
+        return self.__name_value_map
+
+    def create_observation_dict(self):
+        self.__observation_dict = dict([
+            ('phenomenonTime', datetime.now(timezone.utc).isoformat()),
+            ('result', self.create_name_value_map())
+        ])
+        return self.__observation_dict
+
+    def create_observation_dict_with_time(self, obs_time: datetime):
+        self.__observation_dict = dict([
+            ('phenomenonTime', obs_time.isoformat()),
+            ('result', self.create_name_value_map())
+        ])
+        return self.__observation_dict
+
+    def get_observation_dict(self):
+        return self.__observation_dict
+
+    def get_observation_json(self):
+        return json.dumps(self.__observation_dict, indent=4)

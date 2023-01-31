@@ -6,6 +6,7 @@ from oshdatacore.component_implementations import DataRecordComponent
 from oshdatacore.encoding import AbstractEncoding
 
 from pyconnectedservices.constants import APITerms, ObservationFormat
+from pyconnectedservices.observation import Observation
 from pyconnectedservices.system import System
 
 
@@ -34,7 +35,9 @@ class Datastream:
     parent_system: System
     root_component: DataRecordComponent = None
     schema: dict = None
+    __field_map: dict = None
     __ds_id: str = None
+    __observations: list = None
 
     def get_fields(self):
         return self.root_component.get_fields()
@@ -84,11 +87,70 @@ class Datastream:
     def get_ds_insert_url(self):
         return f'{self.parent_system.get_system_url()}/{self.parent_system.get_sys_id()}/{APITerms.DATASTREAMS.value}'
 
+    def get_observation_url(self):
+        return f'{self.get_datastream_url()}/{APITerms.OBSERVATIONS.value}'
+
     def add_root_component(self, component: DataRecordComponent):
         self.root_component = component
+        self.set_field_map()
 
     def get_ds_id(self):
         return self.__ds_id
+
+    def add_field(self, field):
+        self.root_component.add_field(field)
+        # TODO: it is not performant to rebuild the field map every time a field is added,
+        #  change this in a future version
+        self.set_field_map()
+
+    def add_value_by_uuid(self, value, uuid):
+        self.__field_map[uuid].value = value
+
+    def get_field_map(self):
+        self.set_field_map()
+        return self.__field_map
+
+    def set_field_map(self):
+        self.__field_map = self.root_component.get_field_map()
+
+    def create_observation_from_current(self):
+        new_obs = Observation(parent_datastream=self)
+        self.__observations
+
+    def send_earliest_observation(self):
+        """
+        Sends the first observation in the list of observations. These should be in chronological order, though setting
+        manual times for can break this. To prevent issues it is recommended that observations be sent as they are created
+        or created in chronological order.
+        :return:
+        """
+        url = self.get_observation_url()
+        if self.__observations is not None and len(self.__observations) > 0:
+            obs = self.__observations[0]
+            # TODO: we'll need to handle this differently when dealing with a binary datastream
+            r = requests.post(url, json=obs.to_dict(), headers={'Content-Type': 'application/json'})
+            if r.status_code == 201:
+                self.__observations.pop(0)
+                return True
+            else:
+                return False
+
+    def send_observation_batch(self, batch_size: int):
+        """
+        Attempts to send a batch of observations to the OSH Node. Actual number of observations will be the least of
+        the batch size and the number of observations in the list.
+        """
+        url = self.get_observation_url()
+        batch = self.__observations[:batch_size]
+        # TODO: as in send_earliest_observation, we'll need to handle this differently when dealing with a
+        #  binary datastream
+        r = requests.post(url, json=batch, headers={'Content-Type': 'application/json'})
+        if r.status_code == 201:
+            # Remove the observations that were sent
+            self.__observations = self.__observations[batch_size:]
+            return True
+        else:
+            return False
 
 
 class ParentSystemNotFound(Exception):
