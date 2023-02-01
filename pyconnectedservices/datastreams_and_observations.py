@@ -1,6 +1,6 @@
 import json
 import uuid
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from uuid import UUID
 
@@ -39,7 +39,7 @@ class Datastream:
     schema: dict = None
     __field_map: dict = None
     __ds_id: str = None
-    __observations: list = None
+    __observations: list = field(default_factory=list)
 
     def get_fields(self):
         return self.root_component.get_fields()
@@ -84,13 +84,16 @@ class Datastream:
             raise ParentSystemNotFound()
 
     def get_datastream_url(self):
+        if self.__ds_id is None:
+            raise DatastreamNotInserted()
         return f'{self.parent_system.get_system_url()}/{APITerms.DATASTREAMS.value}/{self.__ds_id}'
 
     def get_ds_insert_url(self):
         return f'{self.parent_system.get_system_url()}/{self.parent_system.get_sys_id()}/{APITerms.DATASTREAMS.value}'
 
     def get_observation_url(self):
-        return f'{self.get_datastream_url()}/{APITerms.OBSERVATIONS.value}'
+        return f'{self.parent_system.get_full_node_url()}/{APITerms.API.value}/{APITerms.DATASTREAMS.value}/{self.get_ds_id()}' \
+               f'/{APITerms.OBSERVATIONS.value}'
 
     def add_root_component(self, component: DataRecordComponent):
         self.root_component = component
@@ -105,7 +108,9 @@ class Datastream:
         #  change this in a future version
         self.set_field_map()
 
-    def add_value_by_uuid(self, value, uuid):
+    def add_value_by_uuid(self, uuid, value):
+        if self.__field_map is None:
+            self.set_field_map()
         self.__field_map[uuid].value = value
 
     def get_field_map(self):
@@ -113,11 +118,12 @@ class Datastream:
         return self.__field_map
 
     def set_field_map(self):
-        self.__field_map = self.root_component.get_field_map()
+        field_map = self.root_component.flat_id_to_field_map()
+        self.__field_map = field_map.copy()
 
     def create_observation_from_current(self):
         new_obs = Observation(parent_datastream=self)
-        self.__observations
+        self.__observations.append(new_obs)
 
     def send_earliest_observation(self):
         """
@@ -129,8 +135,10 @@ class Datastream:
         url = self.get_observation_url()
         if self.__observations is not None and len(self.__observations) > 0:
             obs = self.__observations[0]
+            json_obs = obs.get_observation_dict()
+            print(json_obs)
             # TODO: we'll need to handle this differently when dealing with a binary datastream
-            r = requests.post(url, json=obs.to_dict(), headers={'Content-Type': 'application/json'})
+            r = requests.post(url, json=json_obs, headers={'Content-Type': 'application/json'})
             if r.status_code == 201:
                 self.__observations.pop(0)
                 return True
@@ -154,13 +162,42 @@ class Datastream:
         else:
             return False
 
+    def get_obs_list(self):
+        return self.__observations
+
 
 @dataclass
 class Observation:
-    id: UUID = uuid.uuid4()
-    parent_datastream: Datastream = None
-    __name_value_map: dict = None
-    __observation_dict: dict = None
+    """
+    An observation is a single data point for a datastream. They are intended to be created by the parent datastream,
+    but can be created manually. Doing so may result in unexpected behavior.
+
+    Attributes:
+        parent_datastream: The datastream that this observation belongs to
+        id: The UUID of the observation
+        timestamp: The timestamp of the observation
+        name_value_map: A dictionary of the field names and their respective values
+        observation_dict: A dictionary representation of the observation for conversion to JSON
+    """
+
+    def __init__(self, parent_datastream: Datastream, timestamp: datetime = None):
+        """
+        Creates a new observation for the given datastream. If no timestamp is provided, the current time will be used.
+        :param parent_datastream:
+        :param timestamp:
+        """
+        self.parent_datastream = parent_datastream
+        self.id = uuid.uuid4()
+        self.timestamp = None
+        self.__name_value_map = None
+        self.__observation_dict = None
+        self.create_name_value_map()
+
+        if self.timestamp is None:
+            self.timestamp = datetime.now(timezone.utc)
+        else:
+            self.timestamp = timestamp
+        self.create_observation_dict_with_time(self.timestamp)
 
     def create_name_value_map(self):
         self.parent_datastream.set_field_map()
@@ -187,7 +224,11 @@ class Observation:
         return self.__observation_dict
 
     def get_observation_json(self):
-        return json.dumps(self.__observation_dict, indent=4)
+        # for key, record in self.__observation_dict['result'].items():
+        #     if isinstance(record, datetime):
+        #         self.__observation_dict['result'][record] = record.isoformat()
+
+        return json.dumps(self.__observation_dict, indent=4, default=str)
 
 
 class ParentSystemNotFound(Exception):
@@ -199,5 +240,12 @@ class ParentSystemNotFound(Exception):
 
 class InvalidDatastream(Exception):
     def __init__(self, message=f'The Datastream cannot be built. Please check that all required fields are set'):
+        self.message = message
+        super().__init__(self.message)
+
+
+class DatastreamNotInserted(Exception):
+    def __init__(self, message=f'The Datastream has not been inserted into the OSH Node. '
+                               f'Please insert the datastream before attempting to insert observations'):
         self.message = message
         super().__init__(self.message)
