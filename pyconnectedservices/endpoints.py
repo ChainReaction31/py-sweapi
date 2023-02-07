@@ -357,4 +357,125 @@ class FOIEndpoints:
 
 
 class DatastreamsEndpoints:
-    pass
+    def get_datastreams(self, node_api_endpoint=None, params=None, datastream_id=None):
+
+        base_url = f'{node_api_endpoint}/{APITerms.DATASTREAMS.value}'
+
+        if datastream_id is not None:
+            base_url += f'/{datastream_id}'
+
+        r = requests.get(base_url, params=params)
+
+        if r.status_code == 200:
+            return r.json()
+        elif not r.ok:
+            raise ValueError(f'Error getting datastreams: {r.status_code}')
+
+    def get_datastream_schema(self, node_api_endpoint=None, params=None, datastream_id=None):
+
+        base_url = f'{node_api_endpoint}/{APITerms.DATASTREAMS.value}/{datastream_id}/schema'
+
+        r = requests.get(base_url, params=params)
+
+        if r.status_code == 200:
+            return r.json()
+        elif not r.ok:
+            raise ValueError(f'Error getting datastreams schema: {r.status_code}')
+
+
+class ObservationEndpoints:
+
+    def get_observations(self, node_api_endpoint=None, params=None, observation_id=None):
+
+        base_url = f'{node_api_endpoint}/{APITerms.OBSERVATIONS.value}'
+
+        if observation_id is not None:
+            base_url += f'/{observation_id}'
+
+        r = requests.get(base_url, params=params)
+
+        if r.status_code == 200:
+            return r.json()
+        elif not r.ok:
+            raise ValueError(f'Error getting observations: {r.status_code}')
+
+
+class TaskingEndpoints:
+
+    def get_tasking_interface(self, node_api_endpoint=None, params=None, tasking_id=None):
+
+        base_url = f'{node_api_endpoint}/{APITerms.TASKING.value}/{tasking_id}'
+
+        r = requests.get(base_url, params=params)
+
+        if r.status_code == 200:
+            return r.json()
+        elif not r.ok:
+            raise ValueError(f'Error getting tasking interface: {r.status_code}')
+
+    def get_tasking_inteface_schema(self, node_api_endpoint=None, params=None, tasking_id=None):
+
+        base_url = f'{node_api_endpoint}/{APITerms.TASKING.value}/{tasking_id}/schema'
+
+        r = requests.get(base_url, params=params)
+
+        if r.status_code == 200:
+            return r.json()
+        elif not r.ok:
+            raise ValueError(f'Error getting tasking interface schema: {r.status_code}')
+
+    def get_tasking_interface_commands(self, node_api_endpoint=None, params=None, tasking_id=None):
+
+        base_url = f'{node_api_endpoint}/{APITerms.TASKING.value}/{tasking_id}/commands'
+
+        r = requests.get(base_url, params=params)
+
+        if r.status_code == 200:
+            return r.json()
+        elif not r.ok:
+            raise ValueError(f'Error getting tasking interface commands: {r.status_code}')
+
+    def get_tasking_interface_status(self, node_api_endpoint=None, params=None, tasking_id=None):
+
+        base_url = f'{node_api_endpoint}/{APITerms.TASKING.value}/{tasking_id}/status'
+
+        r = requests.get(base_url, params=params)
+
+        if r.status_code == 200:
+            return r.json()
+        elif not r.ok:
+            raise ValueError(f'Error getting tasking interface status: {r.status_code}')
+
+    def get_command_status(self, node_api_endpoint=None, params=None, tasking_id=None, command_id=None):
+
+        base_url = f'{node_api_endpoint}/{APITerms.TASKING.value}/{tasking_id}/commands/{command_id}'
+
+        r = requests.get(base_url, params=params)
+
+        if r.status_code == 200:
+            return r.json()
+        elif not r.ok:
+            raise ValueError(f'Error getting command status: {r.status_code}')
+
+    def post_command(self, node_api_endpoint=None, params=None, tasking_id=None, command=None):
+
+        base_url = f'{node_api_endpoint}/{APITerms.TASKING.value}/{tasking_id}/commands'
+
+        r = requests.post(base_url, json=command)
+
+        if r.status_code == 201:
+            return r.json()
+        elif not r.ok:
+            raise ValueError(f'Error posting command: {r.status_code}')
+
+    def post_command_status(self, node_api_endpoint=None, params=None, tasking_id=None, command_id=None,
+                            status=None):
+
+        base_url = f'{node_api_endpoint}/{APITerms.TASKING.value}/{tasking_id}/commands/{command_id}'
+
+        r = requests.post(base_url, json=status)
+
+        if r.status_code == 201:
+            return r.json()
+        elif not r.ok:
+            raise ValueError(f'Error posting command status: {r.status_code}')
