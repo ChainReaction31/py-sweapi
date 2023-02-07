@@ -4,8 +4,10 @@ from enum import Enum
 class APITerms(Enum):
     API = 'api'
     SYSTEMS = 'systems'
+    FOIS = 'featuresOfInterest'
     DATASTREAMS = 'datastreams'
     OBSERVATIONS = 'observations'
+    TASKING = 'tasking'
 
 
 class SystemTypes(Enum):

@@ -43,12 +43,17 @@ datastream = Datastream(
 
 3. Add Root Component to Datastream
 ```python
-root_component = DataRecordComponent("my_record", "My Record", "http://my_record_definition", "My record description")
-my_datastream.set_root_component(root_component)
+root_component =DataRecordComponent(
+    name='root', 
+    label='Root', 
+    definition='www.test.org/test/root',
+    description='Root Component')
+datastream.set_root_component(root_component)
 ```
 
 4. Add Components to Root Component
 ```python
 # Create a component
-
+comp = BooleanComponent(name='test-bool', label='Test Bool', definition='www.test.org/test/bool')
+root_component.add_component(comp)
 ```
