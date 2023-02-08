@@ -46,6 +46,11 @@ def t_sys_node_endpoint():
 
 
 @pytest.fixture
+def t_full_url(t_sys_node_url, t_sys_node_port, t_sys_node_endpoint):
+    return f'{t_sys_node_url}:{t_sys_node_port}/{t_sys_node_endpoint}/api'
+
+
+@pytest.fixture
 def t_sys_system(t_sys_name, t_sys_uid, t_sys_definition, t_sys_description, t_sys_node_url, t_sys_node_port,
                  t_sys_node_endpoint):
     sys_builder = SystemBuilder()

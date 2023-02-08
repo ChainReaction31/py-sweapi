@@ -1,5 +1,5 @@
 import requests
-import system as system
+import pyconnectedservices.endpoints.system as system
 
 from pyconnectedservices.constants import APITerms
 
