@@ -7,7 +7,7 @@ class APITerms(Enum):
     FOIS = 'featuresOfInterest'
     DATASTREAMS = 'datastreams'
     OBSERVATIONS = 'observations'
-    TASKING = 'tasking'
+    TASKING = 'controls'
 
 
 class SystemTypes(Enum):

@@ -76,7 +76,6 @@ class Datastream:
 
             full_url = self.get_ds_insert_url()
             r = requests.post(full_url, json=datastream_dict, headers={'Content-Type': 'application/json'})
-            print(f'\n{json.dumps(datastream_dict, indent=4)}\n')
             location = r.headers.get('Location')
             self.__ds_id = location.removeprefix('/datastreams/')
             return self.__ds_id
@@ -136,7 +135,6 @@ class Datastream:
         if self.__observations is not None and len(self.__observations) > 0:
             obs = self.__observations[0]
             json_obs = obs.get_observation_dict()
-            print(json_obs)
             # TODO: we'll need to handle this differently when dealing with a binary datastream
             r = requests.post(url, json=json_obs, headers={'Content-Type': 'application/json'})
             if r.status_code == 201:
