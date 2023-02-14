@@ -43,6 +43,6 @@ def post_datastream_observations(node_api_endpoint=None, datastream_id=None, obs
     :param observations:
     :return:
     """
-    base_url = f'{node_api_endpoint}/{APITerms.OBSERVATIONS.value}/{APITerms.DATASTREAMS.value}/{datastream_id}'
+    base_url = f'{node_api_endpoint}/{APITerms.DATASTREAMS.value}/{datastream_id}/{APITerms.OBSERVATIONS.value}'
 
-    return endpoints.handle_request(base_url, method='post', data=observations)
+    return endpoints.handle_request(base_url, method='post', json=observations)

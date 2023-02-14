@@ -65,7 +65,7 @@ def handle_request(url, params=None, json=None, method='get', response_handler=N
     if method == 'get':
         r = requests.get(url, params=params)
     elif method == 'post':
-        r = requests.post(url, params=params, json=json)
+        r = requests.post(url, params=params, json=json, headers={'Content-Type': 'application/json'})
     elif method == 'put':
         r = requests.put(url, params=params, json=json)
     elif method == 'delete':
@@ -76,5 +76,4 @@ def handle_request(url, params=None, json=None, method='get', response_handler=N
     if response_handler is not None:
         return response_handler(r)
     else:
-        if r.ok:
-            return r.json()
+        return r
