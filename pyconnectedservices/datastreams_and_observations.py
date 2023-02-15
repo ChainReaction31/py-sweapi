@@ -9,7 +9,29 @@ from oshdatacore.component_implementations import DataRecordComponent
 from oshdatacore.encoding import AbstractEncoding
 
 from pyconnectedservices.constants import APITerms, ObservationFormat
+from pyconnectedservices.endpoints import datastreams
 from pyconnectedservices.system import System
+
+
+def build_ds_from_node(node_url, node_port, node_endpoint, parent_system: System):
+    response = datastreams.get_datastream_from_system(node_api_endpoint=f'{node_url}:{node_port}/{node_endpoint}/api',
+                                                      system_id=parent_system.get_sys_id())
+    ds_list = []
+    for ds in response.json()['items']:
+        print(ds)
+        new_ds = Datastream(
+            name=ds['name'],
+            output_name=ds['outputName'],
+            encoding=AbstractEncoding(),
+            parent_system=parent_system,
+            obs_format=None
+        )
+
+        # for  output in ds
+
+        ds_list.append(new_ds)
+
+    return ds_list
 
 
 @dataclass(kw_only=True)
@@ -30,11 +52,11 @@ class Datastream:
         __ds_id: The internal id of the datastream
     """
     name: str
-    description: str
     output_name: str
     encoding: AbstractEncoding
     obs_format: ObservationFormat
     parent_system: System
+    description: str = ''
     root_component: DataRecordComponent = None
     schema: dict = None
     __field_map: dict = None
