@@ -4,6 +4,32 @@ from dataclasses import dataclass
 import requests
 
 from pyconnectedservices.constants import SystemTypes, APITerms
+from pyconnectedservices.endpoints import system_ep as system_eps
+
+
+def build_systems_from_node(node_url, node_port, node_endpoint):
+    response = system_eps.get_systems(node_api_endpoint=f'{node_url}:{node_port}{node_endpoint}/{APITerms.API.value}')
+    systems = []
+    if response.ok:
+        print(response.json())
+        for sys in response.json()['items']:
+            print(sys)
+            new_system = System(
+                name=sys['properties']['name'],
+                uid=sys['properties']['uid'],
+                node_url=node_url,
+                node_port=node_port,
+                node_endpoint=node_endpoint,
+            )
+            new_system.set_sys_id(sys['id'])
+            if 'definition' in sys['properties']:
+                new_system.definition = sys['properties']['definition']
+                new_system.def_type = sys['properties']['type']
+            if 'description' in sys['properties']:
+                new_system.description = sys['properties']['description']
+
+            systems.append(new_system)
+        return systems
 
 
 @dataclass
@@ -113,6 +139,9 @@ class System:
 
     def get_sys_id(self):
         return self.__sys_id
+
+    def set_sys_id(self, sys_id):
+        self.__sys_id = sys_id
 
 
 class SystemBuilder:

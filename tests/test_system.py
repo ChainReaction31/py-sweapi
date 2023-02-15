@@ -2,6 +2,7 @@ import pytest
 
 from pyconnectedservices.constants import SystemTypes
 from pyconnectedservices.system import SystemBuilder
+import pyconnectedservices.system as systems
 
 
 def test_system_builder_empty():
@@ -127,3 +128,9 @@ def test_generate_json(t_sys_system):
 def test_insert_system(t_sys_system):
     sys_id = t_sys_system.insert_system()
     assert sys_id is not None
+
+
+def test_build_from_node():
+    test_systems = systems.build_systems_from_node('http://192.168.56.101', '8181', '/sensorhub')
+    print(test_systems)
+    assert True

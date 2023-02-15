@@ -1,6 +1,6 @@
 import json
 
-from pyconnectedservices.endpoints import system, fois, datastreams, observations, tasking
+from pyconnectedservices.endpoints import system_ep, fois, datastreams, observations, tasking
 
 
 def test_get_systems(t_full_url):
