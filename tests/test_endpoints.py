@@ -4,56 +4,56 @@ from pyswapi.endpoints import system_ep, fois, datastreams, observations, taskin
 
 
 def test_get_systems(t_full_url):
-    response = system.get_systems(node_api_endpoint=t_full_url,
-                                  params=None)
+    response = system_ep.get_systems(node_api_endpoint=t_full_url,
+                                     params=None)
     print(response)
     assert response is not None
 
 
 def test_get_system(t_full_url):
-    response = system.get_system(node_api_endpoint=t_full_url,
-                                 params=None,
-                                 system_id='7eg2t8tntjlte')
+    response = system_ep.get_system(node_api_endpoint=t_full_url,
+                                    params=None,
+                                    system_id='7eg2t8tntjlte')
     print(response)
     assert response is not None
 
 
 def test_get_system_details(t_full_url):
-    response = system.get_system_details(node_api_endpoint=t_full_url,
-                                         params=None,
-                                         system_id='7eg2t8tntjlte')
+    response = system_ep.get_system_details(node_api_endpoint=t_full_url,
+                                            params=None,
+                                            system_id='7eg2t8tntjlte')
     print(response)
     assert response is not None
 
 
 def test_get_system_datastreams(t_full_url):
-    response = system.get_system_datastreams(node_api_endpoint=t_full_url,
+    response = system_ep.get_system_datastreams(node_api_endpoint=t_full_url,
+                                                params=None,
+                                                system_id='7eg2t8tntjlte')
+    print(response)
+    assert response is not None
+
+
+def test_get_system_controls(t_full_url):
+    response = system_ep.get_system_controls(node_api_endpoint=t_full_url,
                                              params=None,
                                              system_id='7eg2t8tntjlte')
     print(response)
     assert response is not None
 
 
-def test_get_system_controls(t_full_url):
-    response = system.get_system_controls(node_api_endpoint=t_full_url,
-                                          params=None,
-                                          system_id='7eg2t8tntjlte')
-    print(response)
-    assert response is not None
-
-
 def test_get_system_fois(t_full_url):
-    response = system.get_system_fois(node_api_endpoint=t_full_url,
-                                      params=None,
-                                      system_id='7eg2t8tntjlte')
+    response = system_ep.get_system_fois(node_api_endpoint=t_full_url,
+                                         params=None,
+                                         system_id='7eg2t8tntjlte')
     print(response)
     assert response is not None
 
 
 def test_get_system_history(t_full_url):
-    response = system.get_system_history(node_api_endpoint=t_full_url,
-                                         params=None,
-                                         system_id='7eg2t8tntjlte')
+    response = system_ep.get_system_history(node_api_endpoint=t_full_url,
+                                            params=None,
+                                            system_id='7eg2t8tntjlte')
     print(response)
     assert response is not None
 
@@ -69,49 +69,49 @@ def test_post_system(t_full_url):
     }
     print(json.dumps(test_system_json, indent=4))
 
-    response = system.post_system(node_api_endpoint=t_full_url,
-                                  system=test_system_json)
+    response = system_ep.post_system(node_api_endpoint=t_full_url,
+                                     system=test_system_json)
 
     print(response.headers)
     assert response is not None
 
 
 def test_post_system_contact(t_full_url):
-    response = system.post_system_contact(node_api_endpoint=t_full_url,
-                                          system_id='7eg2t8tntjlte',
-                                          contact=None)
+    response = system_ep.post_system_contact(node_api_endpoint=t_full_url,
+                                             system_id='7eg2t8tntjlte',
+                                             contact=None)
     print(response)
     assert response is not None
 
 
 def test_post_system_events(t_full_url):
-    response = system.post_system_events(node_api_endpoint=t_full_url,
-                                         system_id='7eg2t8tntjlte',
-                                         events=None)
+    response = system_ep.post_system_events(node_api_endpoint=t_full_url,
+                                            system_id='7eg2t8tntjlte',
+                                            events=None)
     print(response)
     assert response is not None
 
 
 def test_post_system_members(t_full_url):
-    response = system.post_system_member(node_api_endpoint=t_full_url,
-                                         system_id='7eg2t8tntjlte',
-                                         member=None)
+    response = system_ep.post_system_member(node_api_endpoint=t_full_url,
+                                            system_id='7eg2t8tntjlte',
+                                            member=None)
     print(response)
     assert response is not None
 
 
 def test_post_system_datastream(t_full_url):
-    response = system.post_system_datastream(node_api_endpoint=t_full_url,
-                                             system_id='7eg2t8tntjlte',
-                                             datastream=None)
+    response = system_ep.post_system_datastream(node_api_endpoint=t_full_url,
+                                                system_id='7eg2t8tntjlte',
+                                                datastream=None)
     print(response)
     assert response is not None
 
 
 def test_post_system_controls(t_full_url):
-    response = system.post_system_controls(node_api_endpoint=t_full_url,
-                                           system_id='7eg2t8tntjlte',
-                                           controls=None)
+    response = system_ep.post_system_controls(node_api_endpoint=t_full_url,
+                                              system_id='7eg2t8tntjlte',
+                                              controls=None)
     print(response)
     assert response is not None
 
@@ -128,42 +128,42 @@ def test_post_system_foi(t_full_url):
         #     'type': None
         # }
     }
-    response = system.post_system_foi(node_api_endpoint=t_full_url,
-                                      system_id='7eg2t8tntjlte',
-                                      foi=test_foi)
+    response = system_ep.post_system_foi(node_api_endpoint=t_full_url,
+                                         system_id='7eg2t8tntjlte',
+                                         foi=test_foi)
     print(response)
     assert response is not None
 
 
 def test_post_system_history(t_full_url):
-    response = system.post_system_history(node_api_endpoint=t_full_url,
-                                          system_id='7eg2t8tntjlte',
-                                          history=None)
+    response = system_ep.post_system_history(node_api_endpoint=t_full_url,
+                                             system_id='7eg2t8tntjlte',
+                                             history=None)
     print(response)
     assert response is not None
 
 
 def test_put_system(t_full_url):
-    response = system.put_system(node_api_endpoint=t_full_url,
-                                 system_id='7eg2t8tntjlte',
-                                 system=None)
+    response = system_ep.put_system(node_api_endpoint=t_full_url,
+                                    system_id='7eg2t8tntjlte',
+                                    system=None)
     print(response)
     assert response is not None
 
 
 def test_put_system_details(t_full_url):
-    response = system.put_system_details(node_api_endpoint=t_full_url,
-                                         system_id='7eg2t8tntjlte',
-                                         details=None)
+    response = system_ep.put_system_details(node_api_endpoint=t_full_url,
+                                            system_id='7eg2t8tntjlte',
+                                            details=None)
     print(response)
     assert response is not None
 
 
 def test_put_system_history_version(t_full_url):
-    response = system.put_system_history_version(node_api_endpoint=t_full_url,
-                                                 system_id='7eg2t8tntjlte',
-                                                 version='7eg2t8tntjlte',
-                                                 history=None)
+    response = system_ep.put_system_history_version(node_api_endpoint=t_full_url,
+                                                    system_id='7eg2t8tntjlte',
+                                                    version='7eg2t8tntjlte',
+                                                    history=None)
     print(response)
     assert response is not None
 
@@ -317,9 +317,9 @@ def test_post_control_interface(t_full_url):
 
     print(f'\n{json.dumps(test_control, indent=4)}')
 
-    response = system.post_system_controls(node_api_endpoint=t_full_url,
-                                           system_id='7eg2t8tntjlte',
-                                           controls=test_control)
+    response = system_ep.post_system_controls(node_api_endpoint=t_full_url,
+                                              system_id='7eg2t8tntjlte',
+                                              controls=test_control)
     print(response)
 
 
