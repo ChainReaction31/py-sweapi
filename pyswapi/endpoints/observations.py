@@ -1,7 +1,7 @@
 import requests
 
-from pyconnectedservices.constants import APITerms
-from pyconnectedservices.endpoints import endpoints
+from pyswapi.constants import APITerms
+from pyswapi.endpoints import endpoints
 
 
 def get_observations(node_api_endpoint=None, params=None, observation_id=None):

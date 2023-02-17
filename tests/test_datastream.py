@@ -1,5 +1,5 @@
-from pyconnectedservices import datastreams_and_observations as ds
-from pyconnectedservices import system
+from pyswapi import datastreams_and_observations as ds
+from pyswapi import system
 
 
 def test_datastream(t_ds_datastream, t_sys_system, t_root_component):

@@ -3,8 +3,8 @@ from dataclasses import dataclass
 
 import requests
 
-from pyconnectedservices.constants import SystemTypes, APITerms
-from pyconnectedservices.endpoints import system_ep as system_eps
+from pyswapi.constants import SystemTypes, APITerms
+from pyswapi.endpoints import system_ep as system_eps
 
 
 def build_systems_from_node(node_url, node_port, node_endpoint):

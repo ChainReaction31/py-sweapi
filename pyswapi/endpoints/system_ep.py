@@ -1,6 +1,6 @@
 import requests
-from pyconnectedservices.endpoints import endpoints
-from pyconnectedservices.constants import APITerms
+from pyswapi.endpoints import endpoints
+from pyswapi.constants import APITerms
 
 
 def get_systems(node_api_endpoint=None, params: dict = None):

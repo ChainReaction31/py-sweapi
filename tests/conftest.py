@@ -3,9 +3,9 @@ from oshdatacore.component_implementations import BooleanComponent, TextComponen
     QuantityComponent, TimeComponent, DataRecordComponent
 from oshdatacore.encoding import TextEncoding
 
-from pyconnectedservices.constants import ObservationFormat
-from pyconnectedservices.datastreams_and_observations import Datastream
-from pyconnectedservices.system import SystemBuilder
+from pyswapi.constants import ObservationFormat
+from pyswapi.datastreams_and_observations import Datastream
+from pyswapi.system import SystemBuilder
 
 
 @pytest.fixture

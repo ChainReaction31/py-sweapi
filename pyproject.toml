@@ -2,14 +2,17 @@
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
+[tools.setuptools]
+packages = ["pyswapi"]
+
 [project]
-name = "py-connected-systems"
-version = "0.0.1-alpha"
+name = "py-swapi"
+version = "0.0.1-alpha.1"
 authors = [
     { name = "Ian Patterson", email = "ian@botts-inc.com" }
 ]
 description = """
-    A Python library for interacting with the Connected Systems API.
+    A Python library for interacting with the Sensor Web API.
     """
 readme = "README.md"
 requires-python = ">=3.11"

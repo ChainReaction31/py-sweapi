@@ -2,7 +2,7 @@ from enum import Enum
 
 import requests
 
-from pyconnectedservices.constants import APITerms
+from pyswapi.constants import APITerms
 
 
 class SystemQueryParams(Enum):

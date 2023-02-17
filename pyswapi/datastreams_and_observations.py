@@ -8,16 +8,16 @@ from oshdatacore.component_implementations import DataRecordComponent, TimeCompo
     CategoryComponent, TextComponent, BooleanComponent
 from oshdatacore.encoding import AbstractEncoding
 
-from pyconnectedservices.constants import APITerms, ObservationFormat
-from pyconnectedservices.endpoints import datastreams
-from pyconnectedservices.system import System
+from pyswapi.constants import APITerms, ObservationFormat
+from pyswapi.endpoints import datastreams
+from pyswapi.system import System
 
 
 def build_ds_from_node(node_url, node_port, node_endpoint, parent_system: System):
     """
     Builds a list of Datastreams from a SensorHub node. May lose some resolution compared to creating a datastream
     directly, but the API does not currently provide things like definition or encoding.
-    :param node_url: 
+    :param node_url:
     :param node_port:
     :param node_endpoint:
     :param parent_system:

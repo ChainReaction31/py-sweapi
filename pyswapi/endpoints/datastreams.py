@@ -1,6 +1,6 @@
 import requests
-from pyconnectedservices.endpoints import system_ep, endpoints
-from pyconnectedservices.constants import APITerms
+from pyswapi.endpoints import system_ep, endpoints
+from pyswapi.constants import APITerms
 
 
 def get_datastreams(node_api_endpoint=None, params=None, datastream_id=None):
