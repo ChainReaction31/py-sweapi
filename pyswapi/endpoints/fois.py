@@ -1,7 +1,7 @@
 import requests
-import pyconnectedservices.endpoints.system_ep as system
+import pyswapi.endpoints.system_ep as system
 
-from pyconnectedservices.constants import APITerms
+from pyswapi.constants import APITerms
 
 
 def get_foi(node_api_endpoint=None, params=None, foi_id=None):

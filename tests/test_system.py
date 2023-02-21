@@ -1,8 +1,8 @@
 import pytest
 
-from pyconnectedservices.constants import SystemTypes
-from pyconnectedservices.system import SystemBuilder
-import pyconnectedservices.system as systems
+from pyswapi.constants import SystemTypes
+from pyswapi.system import SystemBuilder
+import pyswapi.system as systems
 
 
 def test_system_builder_empty():

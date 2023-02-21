@@ -2,14 +2,81 @@ import json
 import uuid
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from uuid import UUID
 
 import requests
-from oshdatacore.component_implementations import DataRecordComponent
+from oshdatacore.component_implementations import DataRecordComponent, TimeComponent, QuantityComponent, CountComponent, \
+    CategoryComponent, TextComponent, BooleanComponent
 from oshdatacore.encoding import AbstractEncoding
 
-from pyconnectedservices.constants import APITerms, ObservationFormat
-from pyconnectedservices.system import System
+from pyswapi.constants import APITerms, ObservationFormat
+from pyswapi.endpoints import datastreams
+from pyswapi.system import System
+
+
+def build_ds_from_node(node_url, node_port, node_endpoint, parent_system: System):
+    """
+    Builds a list of Datastreams from a SensorHub node. May lose some resolution compared to creating a datastream
+    directly, but the API does not currently provide things like definition or encoding.
+    :param node_url:
+    :param node_port:
+    :param node_endpoint:
+    :param parent_system:
+    :return:
+    """
+    response = datastreams.get_datastream_from_system(node_api_endpoint=f'{node_url}:{node_port}/{node_endpoint}/api',
+                                                      system_id=parent_system.get_sys_id())
+    ds_list = []
+    for ds in response.json()['items']:
+        print(ds)
+        new_ds = Datastream(
+            name=ds['name'],
+            output_name=ds['outputName'],
+            encoding=AbstractEncoding(),
+            parent_system=parent_system,
+            obs_format=None
+        )
+
+        schema_resp = datastreams.get_datastream_schema(node_api_endpoint=f'{node_url}:{node_port}/{node_endpoint}/api',
+                                                        datastream_id=ds['id'])
+        r_json = schema_resp.json()
+        ds_root = DataRecordComponent(description=r_json['resultSchema']['description'],
+                                      label=r_json['resultSchema']['label'],
+                                      name=r_json['resultSchema']['label'],
+                                      definition='')
+
+        for field in schema_resp.json()['resultSchema']['fields']:
+            ds_root.add_field(__ds_builder(field))
+
+        ds_list.append(new_ds)
+
+    return ds_list
+
+
+def __ds_builder(field_dict):
+    match field_dict['type']:
+        case 'Time':
+            return TimeComponent(name=field_dict['name'], label=field_dict['label'],
+                                 description='', definition='')
+        case 'Boolean':
+            return BooleanComponent(name=field_dict['name'], label=field_dict['label'],
+                                    description='', definition='')
+        case 'Text':
+            return TextComponent(name=field_dict['name'], label=field_dict['label'],
+                                 description='', definition='')
+        case 'Category':
+            return CategoryComponent(name=field_dict['name'], label=field_dict['label'],
+                                     description='', definition='')
+        case 'Count':
+            return CountComponent(name=field_dict['name'], label=field_dict['label'],
+                                  description='', definition='')
+        case 'Quantity':
+            return QuantityComponent(name=field_dict['name'], label=field_dict['label'],
+                                     description='', definition='',
+                                     uom=field_dict['uom']['href'])
+        case 'DataRecord':
+            return DataRecordComponent(name=field_dict['name'], label=field_dict['label'],
+                                       description='', definition='',
+                                       fields=list(map(__ds_builder, field_dict['fields'])))
 
 
 @dataclass(kw_only=True)
@@ -30,11 +97,11 @@ class Datastream:
         __ds_id: The internal id of the datastream
     """
     name: str
-    description: str
     output_name: str
     encoding: AbstractEncoding
     obs_format: ObservationFormat
     parent_system: System
+    description: str = ''
     root_component: DataRecordComponent = None
     schema: dict = None
     __field_map: dict = None
