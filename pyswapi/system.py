@@ -96,6 +96,7 @@ class System:
         check_sys = system_eps.get_systems(node_api_endpoint=self.get_node_api_url(), params={'uid': self.uid})
         if check_sys.ok and len(check_sys.json()['items']) > 0:
             temp_id = check_sys.json()['items'][0]['id']
+            self.__sys_id = temp_id
 
         if temp_id is None or temp_id == '':
             r = system_eps.post_system(node_api_endpoint=self.get_node_api_url(), system=self.system_dict)

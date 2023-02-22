@@ -141,8 +141,8 @@ class Datastream:
                 ('schema', self.create_datastream_schema()),
             ])
 
-            full_url = self.get_ds_insert_url()
-            r = requests.post(full_url, json=datastream_dict, headers={'Content-Type': 'application/json'})
+            r = datastreams.post_datastream(self.parent_system.get_node_api_url(), self.parent_system.get_sys_id(),
+                                            datastream_dict)
             location = r.headers.get('Location')
             self.__ds_id = location.removeprefix('/datastreams/')
             return self.__ds_id
