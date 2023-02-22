@@ -92,25 +92,20 @@ class System:
         if self.system_dict is None:
             self.build_system_dict()
 
+        # Check for existing system
+        check_sys = system_eps.get_systems(node_api_endpoint=self.get_node_api_url(), params={'uid': self.uid})
+        if check_sys.ok and len(check_sys.json()['items']) > 0:
+            temp_id = check_sys.json()['items'][0]['id']
+
         if temp_id is None or temp_id == '':
-            r = requests.post(self.get_system_url(), json=self.system_dict,
-                              headers={'Content-Type': 'application/json'})
+            r = system_eps.post_system(node_api_endpoint=self.get_node_api_url(), system=self.system_dict)
 
             # This is what we hope to get, but cases arise where the sensor is already inserted
             if r.status_code == 201:
                 temp_id = r.headers.get('Location').removeprefix('/systems/')
-
-            # This means the result told us we already had a matching sensor inserted
-            elif r.status_code == 400:
-                # Additional parameters are possible, but not needed at this time
-                r = requests.get(self.get_system_url(), params={'validTime': '../..'})
-                decoded_content = r.json()['items'][0]
-                temp_id = decoded_content['id']
-
             else:
-                # TODO: add error handling
-                print('Error inserting system')
-                return None
+                # TODO: add specific Exception
+                raise Exception(f"Error inserting system: {r.text}")
 
             self.__sys_id = temp_id
             return self.__sys_id
@@ -125,6 +120,9 @@ class System:
             return f"{self.node_url}/{self.node_endpoint}"
         else:
             return f"{self.node_url}:{str(self.node_port)}/{self.node_endpoint}"
+
+    def get_node_api_url(self):
+        return f"{self.get_full_node_url()}/{APITerms.API.value}"
 
     def get_system_url(self):
         return f"{self.get_full_node_url()}/{APITerms.API.value}/{APITerms.SYSTEMS.value}"
