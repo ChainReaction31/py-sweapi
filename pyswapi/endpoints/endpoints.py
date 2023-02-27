@@ -1,6 +1,8 @@
 from enum import Enum
+import json
 
 import requests
+import websockets
 
 from pyswapi.constants import APITerms
 
@@ -77,3 +79,21 @@ def handle_request(url, params=None, json=None, method='get', response_handler=N
         return response_handler(r)
     else:
         return r
+
+
+async def handle_ws(url, params=None, json_data=None, method='get', response_handler=None):
+    """
+    Handles a request to the API. Functionality is limited to receiving observations for now, but will be improved in
+    future versions.
+    :param url: The URL to make the request to
+    :param params: The parameters to send with the request
+    :param json_data: The JSON to send with the request
+    :param method: The method to use for the request
+    :param response_handler: callback function to handle the response msg
+    :return: The response from the API
+    """
+
+    async with websockets.connect(url) as ws:
+        while True:
+            msg = await ws.recv()
+            response_handler(msg)
