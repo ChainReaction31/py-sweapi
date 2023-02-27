@@ -141,8 +141,8 @@ class Datastream:
                 ('schema', self.create_datastream_schema()),
             ])
 
-            full_url = self.get_ds_insert_url()
-            r = requests.post(full_url, json=datastream_dict, headers={'Content-Type': 'application/json'})
+            r = datastreams.post_datastream(self.parent_system.get_node_api_url(), self.parent_system.get_sys_id(),
+                                            datastream_dict)
             location = r.headers.get('Location')
             self.__ds_id = location.removeprefix('/datastreams/')
             return self.__ds_id
@@ -227,6 +227,17 @@ class Datastream:
         else:
             return False
 
+    def insert_obs_values_and_send(self, values: dict):
+        """
+        Creates observations from the provided key-value pairs and sends them to the OSH Node.
+        :param values: dictionary uuid-value pairs where the uuid is for a field in the datastream
+        :return:
+        """
+        for key, value in values.items():
+            self.add_value_by_uuid(key, value)
+        self.create_observation_from_current()
+        return self.send_earliest_observation()
+
     def get_obs_list(self):
         return self.__observations
 
@@ -241,8 +252,8 @@ class Observation:
         parent_datastream: The datastream that this observation belongs to
         id: The UUID of the observation
         timestamp: The timestamp of the observation
-        name_value_map: A dictionary of the field names and their respective values
-        observation_dict: A dictionary representation of the observation for conversion to JSON
+        __name_value_map: A dictionary of the field names and their respective values
+        __observation_dict: A dictionary representation of the observation for conversion to JSON
     """
 
     def __init__(self, parent_datastream: Datastream, timestamp: datetime = None):
