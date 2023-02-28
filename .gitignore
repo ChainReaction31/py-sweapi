@@ -4,3 +4,7 @@ __pycache__/
 external/
 
 .idea/
+
+dist/
+
+py_swapi.egg-info/
