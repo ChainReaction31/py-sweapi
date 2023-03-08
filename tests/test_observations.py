@@ -88,7 +88,7 @@ def test_insert_earliest_observation(t_ds_datastream, t_sys_system, t_root_compo
 
 
 def test_insert_via_dict_and_send(t_ds_datastream, t_sys_system, t_root_component, t_comp_time, t_comp_bool,
-                                     t_comp_text, t_comp_count, t_comp_category, t_comp_quantity):
+                                  t_comp_text, t_comp_count, t_comp_category, t_comp_quantity):
     ds = t_ds_datastream
     the_time = datetime.now().timestamp() * 1000
     ds.parent_system.insert_system()

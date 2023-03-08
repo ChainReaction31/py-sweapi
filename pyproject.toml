@@ -7,7 +7,7 @@ packages = ["pyswapi"]
 
 [project]
 name = "py-swapi"
-version = "0.0.1-alpha.1"
+version = "0.0.1-alpha.2"
 authors = [
     { name = "Ian Patterson", email = "ian@botts-inc.com" }
 ]
@@ -20,6 +20,13 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
     "Operating System :: OS Independent"
+]
+
+dependencies = [
+    "requests",
+    "pydantic",
+    "python-dateutil",
+    "typing-extensions"
 ]
 
 [project.urls]

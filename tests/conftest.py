@@ -1,6 +1,6 @@
 import pytest
 from oshdatacore.component_implementations import BooleanComponent, TextComponent, CountComponent, CategoryComponent, \
-    QuantityComponent, TimeComponent, DataRecordComponent
+    QuantityComponent, TimeComponent, DataRecordComponent, VectorComponent, DataArrayComponent
 from oshdatacore.encoding import TextEncoding
 
 from pyswapi.constants import ObservationFormat
@@ -149,4 +149,28 @@ def t_comp_quantity():
 @pytest.fixture
 def t_comp_time():
     comp = TimeComponent(name='test-time', label='Test Time', description='Test Description')
+    return comp
+
+
+@pytest.fixture
+def t_comp_vector():
+    comp = VectorComponent(name='test-vector', label='Test Vector', definition='www.test.org/test/vector',
+                           local_frame='#SENSOR_FRAME', reference_frame='http://www.opengis.net/def/crs/EPSG/0/9705')
+    lat = QuantityComponent(name='lat', label='Latitude', definition='www.test.org/test/lat')
+    lon = QuantityComponent(name='lon', label='Longitude', definition='www.test.org/test/lon')
+    alt = QuantityComponent(name='alt', label='Altitude', definition='www.test.org/test/alt')
+    comp.add_coord(lat)
+    comp.add_coord(lon)
+    comp.add_coord(alt)
+    return comp
+
+
+@pytest.fixture
+def t_comp_data_array():
+    count = CountComponent(name='count', label='Count', definition='www.test.org/test/count')
+    count.value = 3
+    e_type = QuantityComponent(name='e-type', label='Element Type', definition='www.test.org/test/e-type')
+    comp = DataArrayComponent(name='test-data-array', label='Test Data Array',
+                              definition='www.test.org/test/data-array',
+                              element_count=count, element_type=e_type)
     return comp
