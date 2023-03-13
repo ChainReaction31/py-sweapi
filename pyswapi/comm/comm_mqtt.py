@@ -133,6 +133,11 @@ class MQTTComm:
         self.__client.on_message = on_message
 
     def set_on_log(self, on_log):
+        """
+        Set the on_log callback for the MQTT client.
+        :param on_log:
+        :return:
+        """
         self.__client.on_log = on_log
 
     def start(self):

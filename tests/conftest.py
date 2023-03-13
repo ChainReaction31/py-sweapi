@@ -1,4 +1,6 @@
 import pytest
+import json
+import pathlib
 from oshdatacore.component_implementations import BooleanComponent, TextComponent, CountComponent, CategoryComponent, \
     QuantityComponent, TimeComponent, DataRecordComponent, VectorComponent, DataArrayComponent
 from oshdatacore.encoding import TextEncoding
@@ -6,6 +8,14 @@ from oshdatacore.encoding import TextEncoding
 from pyswapi.constants import ObservationFormat
 from pyswapi.datastreams_and_observations import Datastream
 from pyswapi.system import SystemBuilder
+
+
+@pytest.fixture
+def secret_json(request):
+    file = pathlib.Path(request.node.fspath)
+    secrets = file.with_name('secrets.json')
+    with secrets.open() as cf:
+        return json.load(cf)
 
 
 @pytest.fixture
@@ -29,20 +39,19 @@ def t_sys_description():
 
 
 @pytest.fixture
-def t_sys_node_url():
-    return 'http://192.168.56.101'
-    # return 'http://127.0.0.1'
+def t_sys_node_url(secret_json):
+
+    return secret_json['url']
 
 
 @pytest.fixture
-def t_sys_node_port():
-    return 8181
-    # return 8282
+def t_sys_node_port(secret_json):
+    return secret_json['port']
 
 
 @pytest.fixture
-def t_sys_node_endpoint():
-    return 'sensorhub'
+def t_sys_node_endpoint(secret_json):
+    return secret_json['endpoint']
 
 
 @pytest.fixture

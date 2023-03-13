@@ -191,6 +191,15 @@ class Datastream:
         new_obs = Observation(parent_datastream=self)
         self.__observations.append(new_obs)
 
+    def set_values(self, values):
+        """
+        Sets the values of the datastream from a dictionary. The format required is dependent on the composition of the
+        components. Top level is most often a dictionary representing a DataRecordComponent.
+        :param values:
+        :return:
+        """
+        self.root_component.set_value(values)
+
     def send_earliest_observation(self):
         """
         Sends the first observation in the list of observations. These should be in chronological order, though setting
@@ -227,14 +236,13 @@ class Datastream:
         else:
             return False
 
-    def insert_obs_values_and_send(self, values: dict):
+    def insert_obs_values_and_send(self, values):
         """
         Creates observations from the provided key-value pairs and sends them to the OSH Node.
         :param values: dictionary uuid-value pairs where the uuid is for a field in the datastream
         :return:
         """
-        for key, value in values.items():
-            self.add_value_by_uuid(key, value)
+        self.set_values(values)
         self.create_observation_from_current()
         return self.send_earliest_observation()
 
@@ -285,7 +293,7 @@ class Observation:
     def create_observation_dict(self):
         self.__observation_dict = dict([
             ('phenomenonTime', datetime.now(timezone.utc).isoformat()),
-            ('result', self.create_name_value_map())
+            ('result', self.parent_datastream.root_component.get_value())
         ])
         return self.__observation_dict
 

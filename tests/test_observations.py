@@ -95,11 +95,11 @@ def test_insert_via_dict_and_send(t_ds_datastream, t_sys_system, t_root_componen
     ds.insert_datastream()
 
     values = {
-        t_comp_time.get_uuid(): the_time,
-        t_comp_bool.get_uuid(): True,
-        t_comp_text.get_uuid(): 'Test Text',
-        t_comp_count.get_uuid(): 1,
-        t_comp_category.get_uuid(): 'Test Category',
-        t_comp_quantity.get_uuid(): 1.0
+        t_comp_time.name: the_time,
+        t_comp_bool.name: True,
+        t_comp_text.name: 'Test Text',
+        t_comp_count.name: 1,
+        t_comp_category.name: 'Test Category',
+        t_comp_quantity.name: 1.0
     }
     ds.insert_obs_values_and_send(values)
