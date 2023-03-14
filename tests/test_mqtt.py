@@ -16,3 +16,15 @@ def test_mqtt_client():
     tclient.subscribe('#', 0)
     while True:
         tclient.loop(1)
+
+
+def test_publish_obs_mqtt():
+    tclient = mqtt_ph.Client()
+    tclient.on_message = mqtt.on_message
+    tclient.on_connect = mqtt.on_connect
+    tclient.on_publish = mqtt.on_publish
+    tclient.on_subscribe = mqtt.on_subscribe
+
+    # TODO: Add Method to Datastream to take an MQTT Client and publish an Observation
+    # Datastream -> MQTTClient
+    # Datastream -> Publish Earliest Observation

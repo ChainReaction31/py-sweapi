@@ -21,7 +21,7 @@ class MQTTComm:
         self.__client_id = client_id
         self.__transport = transport
 
-        self.__client = mqtt.Client(client_id=self.__client_id, transport=self.transport)
+        self.__client = mqtt.Client(client_id=self.__client_id, transport=self.__transport)
 
         if self.__transport == 'websockets':
             self.__client.ws_set_options(path=self.__path)
@@ -36,6 +36,8 @@ class MQTTComm:
         self.__client.on_publish = self.on_publish
         self.__client.on_log = self.on_log
         self.__client.on_disconnect = self.on_disconnect
+
+        self.__is_connected = False
 
     @staticmethod
     def on_connect(client, userdata, flags, rc):
@@ -153,3 +155,20 @@ class MQTTComm:
         :return: 
         """
         self.__client.loop_stop()
+
+    def __toggle_is_connected(self):
+        self.__is_connected = not self.__is_connected
+
+    def is_connected(self):
+        return self.__is_connected
+
+    def publish(self, topic, msg):
+        self.__client.publish(topic, msg, 1)
+
+    @staticmethod
+    def publish_single(self, topic, msg):
+        self.__client.single(topic, msg, 1)
+
+    @staticmethod
+    def publish_multiple(self, topic, msg):
+        self.__client.multiple(msgs,)
