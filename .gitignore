@@ -8,3 +8,5 @@ external/
 dist/
 
 py_swapi.egg-info/
+
+tests/secrets.json
