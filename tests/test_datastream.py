@@ -36,6 +36,7 @@ def test_build_ds_from_node():
 
 def test_publish_single(t_ds_datastream, t_sys_system, t_root_component, t_comp_time, t_comp_bool,
                         t_comp_text, t_comp_count, t_comp_category, t_comp_quantity, t_sys_node_url, t_sys_node_port):
+    hostname = t_sys_node_url.replace('http://', '')
     datastream = t_ds_datastream
     the_time = datetime.now().timestamp() * 1000
     datastream.parent_system.insert_system()
@@ -51,11 +52,12 @@ def test_publish_single(t_ds_datastream, t_sys_system, t_root_component, t_comp_
     }
     datastream.set_values(values)
     datastream.create_observation_from_current()
-    datastream.publish_earliest_observation(node_url=f'digitalbridge.tech/sensorhub', port=t_sys_node_port)
+    datastream.publish_earliest_observation(hostname=hostname, port=1883, transport='tcp')
 
 
 def test_publish_client(t_ds_datastream, t_sys_system, t_root_component, t_comp_time, t_comp_bool,
                         t_comp_text, t_comp_count, t_comp_category, t_comp_quantity, t_sys_node_url, t_sys_node_port):
+    hostname = t_sys_node_url.replace('http://', '')
     datastream = t_ds_datastream
     the_time = datetime.now().timestamp() * 1000
     datastream.parent_system.insert_system()
@@ -71,8 +73,7 @@ def test_publish_client(t_ds_datastream, t_sys_system, t_root_component, t_comp_
     }
     datastream.set_values(values)
     datastream.create_observation_from_current()
-    client = mqtt.MQTTComm('digitalbridge.tech', 1883)
+    client = mqtt.MQTTComm(hostname, 1883)
     client.connect()
-    # time.sleep(3)
     client.start()
     datastream.publish_earliest_observation_client(client)

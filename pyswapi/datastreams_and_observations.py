@@ -111,9 +111,6 @@ class Datastream:
         self.__field_map = {}
         self.__observations: list = []
 
-    def get_fields(self):
-        return self.root_component.get_fields()
-
     def create_datastream_schema(self):
         """
         create the schema for the datastream, returns the schema if it already exists
@@ -148,23 +145,45 @@ class Datastream:
                                             datastream_dict)
             location = r.headers.get('Location')
             self.__ds_id = location.removeprefix('/datastreams/')
+            self.set_topic()
             return self.__ds_id
         else:
             raise ParentSystemNotFound()
 
     def get_datastream_url(self):
+        """
+        Get the URL of this datastream
+        :return:
+        """
         if self.__ds_id is None:
             raise DatastreamNotInserted()
         return f'{self.parent_system.get_system_url()}/{APITerms.DATASTREAMS.value}/{self.__ds_id}'
 
     def get_ds_insert_url(self):
+        """
+        Get the parent system's URL for datastreams
+        :return:
+        """
         return f'{self.parent_system.get_system_url()}/{self.parent_system.get_sys_id()}/{APITerms.DATASTREAMS.value}'
 
     def get_observation_url(self):
-        return f'{self.parent_system.get_full_node_url()}/{APITerms.API.value}/{APITerms.DATASTREAMS.value}/{self.get_ds_id()}' \
-               f'/{APITerms.OBSERVATIONS.value}'
+        """
+        Get the URL for observations of this datastream
+        :return:
+        """
+        return f'{self.parent_system.get_full_node_url()}/{APITerms.API.value}/{APITerms.DATASTREAMS.value}/' \
+               f'{self.get_ds_id()}/{APITerms.OBSERVATIONS.value}'
 
     def add_root_component(self, component: DataRecordComponent):
+        """
+        Add a root component to the datastream. Use this method only if the datastream does not already have a root, or
+        a change needs to be made to the root component. If the datastreams already has observations, this method will
+        remove them.
+        :param component:
+        :return:
+        """
+        if self.root_component is not None:
+            self.__observations = []
         self.root_component = component
         self.set_field_map()
 
@@ -252,7 +271,7 @@ class Datastream:
     def get_obs_list(self):
         return self.__observations
 
-    def publish_earliest_observation(self, node_url, port, tls=None, username=None, password=None,
+    def publish_earliest_observation(self, hostname, port, tls=None, username=None, password=None,
                                      transport='websockets'):
         """
         Publishes the earliest observation to the MQTT broker.
@@ -264,20 +283,20 @@ class Datastream:
         :param username: optional, use when auth is required
         :param password: optional, use when auth is required
         :param transport: the transport to use, defaults to websockets, other option is tcp
-        :param node_url: the hostname of the broker
+        :param hostname: the hostname of the broker
         :return:
         """
         if self.__observations is not None and len(self.__observations) > 0:
             obs = self.__observations[0]
             json_obs = obs.get_observation_dict()
-            hn = node_url if transport == 'tcp' else f'{node_url}/mqtt'
-            topic = f'/api/datastreams/{self.__ds_id}/observations'
+            hn = hostname if transport == 'tcp' else f'{hostname}/mqtt'
             if username is None:
-                publish.single(topic=topic, payload=json.dumps(json_obs),
-                               hostname='http://digitalbridge.tech/sensorhub/mqtt', port=port, tls=tls,
-                               transport=transport)
+                msg = publish.single(topic=self.__topic, payload=json.dumps(json_obs),
+                                     hostname=hn, port=port, tls=tls,
+                                     transport=transport)
+                print(msg)
             else:
-                publish.single(topic=f'{node_url}/{self.__ds_id}/observations', payload=json.dumps(json_obs),
+                publish.single(topic=self.__topic, payload=json.dumps(json_obs),
                                hostname=hn, port=port, tls=tls, auth={'username': username, 'password': password},
                                transport=transport)
 
@@ -291,6 +310,18 @@ class Datastream:
             obs = self.__observations[0]
             json_obs = obs.get_observation_dict()
             client.publish(f'/api/datastreams/{self.__ds_id}/observations', msg=json.dumps(json_obs))
+
+    def set_topic(self, topic=None):
+        """
+        Sets the topic for the datastream. If no topic is provided, the default topic is used.
+        :param topic: MQTT topic the datastream will publish observations to
+        :return: the topic set by the method
+        """
+        if topic is None:
+            self.__topic = f'/api/datastreams/{self.__ds_id}/observations'
+        else:
+            self.__topic = topic
+        return self.__topic
 
 
 @dataclass

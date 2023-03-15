@@ -167,7 +167,7 @@ class MQTTComm:
 
     @staticmethod
     def publish_single(self, topic, msg):
-        self.__client.single(topic, msg, 1)
+        self.__client.single(topic, msg, 0)
 
     @staticmethod
     def publish_multiple(self, topic, msg):
