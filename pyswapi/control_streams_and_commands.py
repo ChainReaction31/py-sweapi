@@ -2,6 +2,11 @@ from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
 
+from oshdatacore.component_implementations import DataRecordComponent
+
+from pyswapi.endpoints.system_ep import post_system_controls
+from pyswapi.system import System
+
 
 @dataclass(kw_only=True)
 class ControlledProperty:
@@ -40,8 +45,32 @@ class CommandStatusCode(Enum):
     FAILED = 'FAILED'
 
 
+# @dataclass(kw_only=True)
+# class CommandStatus:
+#     command_id: str
+#     report_time: datetime
+#     status: CommandStatusCode.value
+
+
 @dataclass(kw_only=True)
-class CommandStatus:
-    command_id: str
-    report_time: datetime
-    status: CommandStatusCode.value
+class ControlInterface:
+    name: str
+    input_name: str
+    __command_schema: DataRecordComponent = None
+
+    def add_schema(self, component: DataRecordComponent):
+        self.__command_schema = component
+
+    def insert_control_stream(self, system: System):
+        post_system_controls(system.get_node_api_url(), system.get_sys_id(), self.__get_control_stream_dict())
+
+    def __get_control_stream_dict(self):
+        return {
+            'name': self.name,
+            'inputName': self.input_name,
+            'schema': {
+                'commandSchema': self.__command_schema.datastructure_to_dict()
+            }
+        }
+
+    # def set):

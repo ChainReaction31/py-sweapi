@@ -1,11 +1,8 @@
-import time
 from datetime import datetime
 
+import pyswapi.comm.comm_mqtt as mqtt
 from pyswapi import datastreams_and_observations as ds
 from pyswapi import system
-import pyswapi.comm.comm_mqtt as mqtt
-import paho.mqtt.client as mqtt_ph
-
 
 
 def test_datastream(t_ds_datastream, t_sys_system, t_root_component):
