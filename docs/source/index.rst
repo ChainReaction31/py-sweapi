@@ -34,7 +34,7 @@ PySWAPI Datastreams and Observations
    :undoc-members:
    :show-inheritance:
 
-PYSWAPI Constants
+PySWAPI Constants
 =================
 .. automodule:: pyswapi.constants
    :members:
