@@ -22,7 +22,7 @@ def build_ds_from_node(node_url, node_port, node_endpoint, parent_system: System
     :param node_port: port the node is running on (often 8181 or 8282)
     :param node_endpoint: endpoint of the node, typically 'sensorhub' or APITerms.SENSORHUB.type
     :param parent_system: the System object that this datastream belongs to
-    :return:
+    :return: a list of datastream objects
     """
     response = datastreams.get_datastream_from_system(node_api_endpoint=f'{node_url}:{node_port}/{node_endpoint}/api',
                                                       system_id=parent_system.get_sys_id())
