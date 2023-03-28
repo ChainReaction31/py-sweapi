@@ -2,6 +2,9 @@ from enum import Enum
 
 
 class APITerms(Enum):
+    """
+    Defines common endpoint terms used in the API
+    """
     API = 'api'
     SYSTEMS = 'systems'
     FOIS = 'featuresOfInterest'
@@ -11,10 +14,16 @@ class APITerms(Enum):
 
 
 class SystemTypes(Enum):
+    """
+    Defines the system types
+    """
     FEATURE = "Feature"
 
 
 class ObservationFormat(Enum):
+    """
+    Defines common observation formats
+    """
     JSON = "application/om+json"
     XML = "application/om+xml"
     SWE_XML = "application/swe+xml"
