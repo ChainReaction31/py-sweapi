@@ -115,6 +115,31 @@
 <li><a class="reference internal" href="#pyswapi.datastreams_and_observations.build_ds_from_node"><code class="docutils literal notranslate"><span class="pre">build_ds_from_node()</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#module-pyswapi.constants">PYSWAPI Constants</a><ul>
+<li><a class="reference internal" href="#pyswapi.constants.APITerms"><code class="docutils literal notranslate"><span class="pre">APITerms</span></code></a><ul>
+<li><a class="reference internal" href="#pyswapi.constants.APITerms.API"><code class="docutils literal notranslate"><span class="pre">APITerms.API</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.constants.APITerms.DATASTREAMS"><code class="docutils literal notranslate"><span class="pre">APITerms.DATASTREAMS</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.constants.APITerms.FOIS"><code class="docutils literal notranslate"><span class="pre">APITerms.FOIS</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.constants.APITerms.OBSERVATIONS"><code class="docutils literal notranslate"><span class="pre">APITerms.OBSERVATIONS</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.constants.APITerms.SYSTEMS"><code class="docutils literal notranslate"><span class="pre">APITerms.SYSTEMS</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.constants.APITerms.TASKING"><code class="docutils literal notranslate"><span class="pre">APITerms.TASKING</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyswapi.constants.ObservationFormat"><code class="docutils literal notranslate"><span class="pre">ObservationFormat</span></code></a><ul>
+<li><a class="reference internal" href="#pyswapi.constants.ObservationFormat.JSON"><code class="docutils literal notranslate"><span class="pre">ObservationFormat.JSON</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.constants.ObservationFormat.SWE_BINARY"><code class="docutils literal notranslate"><span class="pre">ObservationFormat.SWE_BINARY</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.constants.ObservationFormat.SWE_CSV"><code class="docutils literal notranslate"><span class="pre">ObservationFormat.SWE_CSV</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.constants.ObservationFormat.SWE_JSON"><code class="docutils literal notranslate"><span class="pre">ObservationFormat.SWE_JSON</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.constants.ObservationFormat.SWE_XML"><code class="docutils literal notranslate"><span class="pre">ObservationFormat.SWE_XML</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.constants.ObservationFormat.XML"><code class="docutils literal notranslate"><span class="pre">ObservationFormat.XML</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyswapi.constants.SystemTypes"><code class="docutils literal notranslate"><span class="pre">SystemTypes</span></code></a><ul>
+<li><a class="reference internal" href="#pyswapi.constants.SystemTypes.FEATURE"><code class="docutils literal notranslate"><span class="pre">SystemTypes.FEATURE</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
         </div>
@@ -554,6 +579,95 @@ directly, but the API does not currently provide things like definition or encod
 :param node_endpoint:
 :param parent_system:
 :return:</p>
+</dd></dl>
+
+</section>
+<section id="module-pyswapi.constants">
+<span id="pyswapi-constants"></span><h1>PYSWAPI Constants<a class="headerlink" href="#module-pyswapi.constants" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyswapi.constants.APITerms">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyswapi.constants.</span></span><span class="sig-name descname"><span class="pre">APITerms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/constants.html#APITerms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.constants.APITerms" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.APITerms.API">
+<span class="sig-name descname"><span class="pre">API</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'api'</span></em><a class="headerlink" href="#pyswapi.constants.APITerms.API" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.APITerms.DATASTREAMS">
+<span class="sig-name descname"><span class="pre">DATASTREAMS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'datastreams'</span></em><a class="headerlink" href="#pyswapi.constants.APITerms.DATASTREAMS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.APITerms.FOIS">
+<span class="sig-name descname"><span class="pre">FOIS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'featuresOfInterest'</span></em><a class="headerlink" href="#pyswapi.constants.APITerms.FOIS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.APITerms.OBSERVATIONS">
+<span class="sig-name descname"><span class="pre">OBSERVATIONS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'observations'</span></em><a class="headerlink" href="#pyswapi.constants.APITerms.OBSERVATIONS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.APITerms.SYSTEMS">
+<span class="sig-name descname"><span class="pre">SYSTEMS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'systems'</span></em><a class="headerlink" href="#pyswapi.constants.APITerms.SYSTEMS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.APITerms.TASKING">
+<span class="sig-name descname"><span class="pre">TASKING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'controls'</span></em><a class="headerlink" href="#pyswapi.constants.APITerms.TASKING" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyswapi.constants.ObservationFormat">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyswapi.constants.</span></span><span class="sig-name descname"><span class="pre">ObservationFormat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/constants.html#ObservationFormat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.constants.ObservationFormat" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.ObservationFormat.JSON">
+<span class="sig-name descname"><span class="pre">JSON</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'application/om+json'</span></em><a class="headerlink" href="#pyswapi.constants.ObservationFormat.JSON" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.ObservationFormat.SWE_BINARY">
+<span class="sig-name descname"><span class="pre">SWE_BINARY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'application/swe+binary'</span></em><a class="headerlink" href="#pyswapi.constants.ObservationFormat.SWE_BINARY" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.ObservationFormat.SWE_CSV">
+<span class="sig-name descname"><span class="pre">SWE_CSV</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'application/swe+csv'</span></em><a class="headerlink" href="#pyswapi.constants.ObservationFormat.SWE_CSV" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.ObservationFormat.SWE_JSON">
+<span class="sig-name descname"><span class="pre">SWE_JSON</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'application/swe+json'</span></em><a class="headerlink" href="#pyswapi.constants.ObservationFormat.SWE_JSON" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.ObservationFormat.SWE_XML">
+<span class="sig-name descname"><span class="pre">SWE_XML</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'application/swe+xml'</span></em><a class="headerlink" href="#pyswapi.constants.ObservationFormat.SWE_XML" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.ObservationFormat.XML">
+<span class="sig-name descname"><span class="pre">XML</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'application/om+xml'</span></em><a class="headerlink" href="#pyswapi.constants.ObservationFormat.XML" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyswapi.constants.SystemTypes">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyswapi.constants.</span></span><span class="sig-name descname"><span class="pre">SystemTypes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/constants.html#SystemTypes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.constants.SystemTypes" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.SystemTypes.FEATURE">
+<span class="sig-name descname"><span class="pre">FEATURE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Feature'</span></em><a class="headerlink" href="#pyswapi.constants.SystemTypes.FEATURE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </section>
