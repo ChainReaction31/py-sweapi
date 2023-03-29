@@ -34,6 +34,13 @@ PySWAPI Datastreams and Observations
    :undoc-members:
    :show-inheritance:
 
+PySWAPI Control Streams and Commands
+====================================
+.. automodule:: pyswapi.control_streams_and_commands
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 PySWAPI Constants
 =================
 .. automodule:: pyswapi.constants
