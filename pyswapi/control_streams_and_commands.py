@@ -1,8 +1,10 @@
+import json
 from dataclasses import dataclass
 from enum import Enum
 
 from oshdatacore.component_implementations import DataRecordComponent
 
+from pyswapi.comm.comm_mqtt import MQTTComm
 from pyswapi.endpoints.system_ep import post_system_controls
 from pyswapi.system import System
 
@@ -59,6 +61,8 @@ class ControlInterface:
     name: str
     input_name: str
     __command_schema: DataRecordComponent = None
+    __csi_id: str = None
+    __mqtt_client: MQTTComm = None
 
     def add_schema(self, component: DataRecordComponent):
         """
@@ -83,3 +87,57 @@ class ControlInterface:
                 'commandSchema': self.__command_schema.datastructure_to_dict()
             }
         }
+
+    def set_client(self, client: MQTTComm):
+        """
+        Sets the MQTT client
+        :param client:
+        """
+        self.__mqtt_client = client
+
+    def publish_control_stream_interface(self, system: System):
+        """
+        Publishes the control stream to topic /api/systems/{system_id}/controls using the MQTT client set by the
+        set_client method
+        :param system: The system to which the control stream will be published
+        """
+        if self.__mqtt_client is None:
+            raise Exception('MQTT client not set')
+
+        topic = f'{system.get_node_api_url()}/api/systems/{system.get_sys_id()}/controls'
+        self.__mqtt_client.publish(topic, self.__get_control_stream_dict())
+        self.__mqtt_client.subscribe(f'/api/controls/{self.__csi_id}/commands')
+
+    def publish_command(self, system: System, command: Command):
+        """
+        Publishes a command to the control interface. OSH rejects commands if there is no subscriber to the command
+        interface's topic
+        :param system: The system to which the command will be published
+        :param client:
+        :param command: The command to be published
+        """
+        topic = f'/api/systems/{system.get_sys_id()}/controls/{self.name}/commands'
+        self.__mqtt_client.publish(topic, command.__dict__)
+
+    def subscribe_to_commands(self, callback=None):
+        """
+        Subscribes to the command interface's topic
+        :param callback: handler for dealing with the received commands, by default the handler just accepts
+        the command with a status of ACCEPTED and does no further processing
+        """
+        self.__mqtt_client.subscribe(f'/api/controls/{self.__csi_id}/commands')
+        if callback is not None:
+            self.__mqtt_client.on_message = callback
+        else:
+            def on_msg(client, userdata, msg):
+                json_msg = json.loads(msg.payload.decode("utf-8"))
+                resp = {
+                    'id': json_msg.id,
+                    'commad@id': json_msg.commandId,
+                    'status': CommandStatusCode.ACCEPTED.value
+                }
+                self.__mqtt_client.publish(f'/api/controls/{self.__csi_id}/commands/status', resp)
+
+            self.__mqtt_client.on_message = on_msg
+
+    
