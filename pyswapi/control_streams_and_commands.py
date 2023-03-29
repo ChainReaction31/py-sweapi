@@ -6,6 +6,7 @@ from oshdatacore.component_implementations import DataRecordComponent
 
 from pyswapi.comm.comm_mqtt import MQTTComm
 from pyswapi.endpoints.system_ep import post_system_controls
+from pyswapi.endpoints import tasking as task
 from pyswapi.system import System
 
 
@@ -32,6 +33,13 @@ class Command:
     execution_time: tuple
     current_status: str
     params: dict
+
+    def params_as_json(self):
+        """
+        returns the commands parameters as a json string
+        :return:
+        """
+        json.dumps(self.params)
 
 
 class CommandStatusCode(Enum):
@@ -63,6 +71,7 @@ class ControlInterface:
     __command_schema: DataRecordComponent = None
     __csi_id: str = None
     __mqtt_client: MQTTComm = None
+    __parent_system: System = None
 
     def add_schema(self, component: DataRecordComponent):
         """
@@ -72,12 +81,19 @@ class ControlInterface:
         """
         self.__command_schema = component
 
-    def insert_control_stream(self, system: System):
+    def set_parent_system(self, system: System):
         """
-        Inserts the control stream into the system
-        :param system: The system to which the control stream will be added
+        Sets the parent system of the control interface
+        :param system:
         """
-        post_system_controls(system.get_node_api_url(), system.get_sys_id(), self.__get_control_stream_dict())
+        self.__parent_system = system
+
+    def insert_control_stream(self):
+        """
+        Inserts the control stream into the parent system
+        """
+        post_system_controls(self.__parent_system.get_node_api_url(), self.__parent_system.get_sys_id(),
+                             self.__get_control_stream_dict())
 
     def __get_control_stream_dict(self):
         return {
@@ -95,7 +111,7 @@ class ControlInterface:
         """
         self.__mqtt_client = client
 
-    def publish_control_stream_interface(self, system: System):
+    def publish_control_stream_interface(self):
         """
         Publishes the control stream to topic /api/systems/{system_id}/controls using the MQTT client set by the
         set_client method
@@ -104,11 +120,11 @@ class ControlInterface:
         if self.__mqtt_client is None:
             raise Exception('MQTT client not set')
 
-        topic = f'{system.get_node_api_url()}/api/systems/{system.get_sys_id()}/controls'
+        topic = f'{self.__parent_system.get_node_api_url()}/api/systems/{self.__parent_system.get_sys_id()}/controls'
         self.__mqtt_client.publish(topic, self.__get_control_stream_dict())
         self.__mqtt_client.subscribe(f'/api/controls/{self.__csi_id}/commands')
 
-    def publish_command(self, system: System, command: Command):
+    def publish_command(self, command: Command):
         """
         Publishes a command to the control interface. OSH rejects commands if there is no subscriber to the command
         interface's topic
@@ -116,8 +132,8 @@ class ControlInterface:
         :param client:
         :param command: The command to be published
         """
-        topic = f'/api/systems/{system.get_sys_id()}/controls/{self.name}/commands'
-        self.__mqtt_client.publish(topic, command.__dict__)
+        topic = f'/api/systems/{self.__parent_system.get_sys_id()}/controls/{self.name}/commands'
+        self.__mqtt_client.publish(topic, command.params_as_json())
 
     def subscribe_to_commands(self, callback=None):
         """
@@ -140,4 +156,21 @@ class ControlInterface:
 
             self.__mqtt_client.on_message = on_msg
 
-    
+    def insert_command(self, command: Command):
+        """
+        Inserts a command into the control interface. The node will reject commands if there is no subscriber to the
+        command interface's topic so it's recommended to use publish_command instead.
+        :param command: The command to be inserted
+        """
+        url = f'{self.__parent_system.get_node_api_url()}'
+        task.post_command(node_api_endpoint=url, system_id=self.__parent_system.get_sys_id(), tasking_id=self.__csi_id,
+                          command=command.params_as_json())
+
+    def get_commands(self):
+        """
+        Gets the commands for the control interface
+        :return:
+        """
+        url = f'{self.__parent_system.get_node_api_url()}'
+        return task.get_tasking_interface_commands(node_api_endpoint=url, system_id=self.__parent_system.get_sys_id(),
+                                                   tasking_id=self.__csi_id)
