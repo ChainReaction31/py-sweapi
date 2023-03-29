@@ -1,13 +1,20 @@
 import json
 from dataclasses import dataclass
 
-import requests
-
 from pyswapi.constants import SystemTypes, APITerms
 from pyswapi.endpoints import system_ep as system_eps
 
 
 def build_systems_from_node(node_url, node_port, node_endpoint):
+    """
+    Builds a list of System objects from a given OSH Node. The API requires multiple calls to retrieve all provided
+    metadata and even then can lose some resolution. As such, it is recommended to manually create a representation of
+    the system, but this method does enable a fast way to get a list of systems and perform quick operations on them.
+    :param node_url: base URL of the node
+    :param node_port: port the node is running on (often 8181 or 8282)
+    :param node_endpoint: endpoint of the node, typically 'sensorhub' or APITerms.SENSORHUB.type
+    :return: a list of System objects
+    """
     response = system_eps.get_systems(node_api_endpoint=f'{node_url}:{node_port}{node_endpoint}/{APITerms.API.value}')
     systems = []
     if response.ok:
@@ -61,6 +68,10 @@ class System:
     __sys_id: str = None
 
     def build_system_dict(self):
+        """
+        Builds a dictionary representation of the system. This is necessary as the API requires a JSON representation.
+        :return:
+        """
         properties = dict([
 
             ('name', self.name),
@@ -81,12 +92,12 @@ class System:
 
     def insert_system(self) -> str:
         """
-                Naively tries to insert the specified system into the OSH Node specified by its url.
-                :return: The id of the system
-                See https://opensensorhub.github.io/sensorweb-api/swagger-ui
+        Naively tries to insert the system into the OSH Node specified by its url.
+        :return: The id of the system
+        See https://opensensorhub.github.io/sensorweb-api/swagger-ui
 
-                :return:
-                """
+        :return:
+        """
 
         temp_id = self.__sys_id
         if self.system_dict is None:
@@ -114,8 +125,8 @@ class System:
 
     def get_full_node_url(self) -> str:
         """
-        Returns the full url of the node, including the port (if specified) and endpoint
-        :return: the full url of the node as a string
+        Returns the full URL of the node, including the port (if specified) and endpoint
+        :return: the full URL of the node as a string
         """
         if self.node_port is None:
             return f"{self.node_url}/{self.node_endpoint}"
@@ -123,53 +134,115 @@ class System:
             return f"{self.node_url}:{str(self.node_port)}/{self.node_endpoint}"
 
     def get_node_api_url(self):
+        """
+        returns the node's API URL
+        :return:
+        """
         return f"{self.get_full_node_url()}/{APITerms.API.value}"
 
     def get_system_url(self):
+        """
+        Retruns the node's system URL for the API
+        :return:
+        """
         return f"{self.get_full_node_url()}/{APITerms.API.value}/{APITerms.SYSTEMS.value}"
 
     # TODO: add this method to datastream
     def get_observation_url(self, datastream_id):
+        """
+        Returns the URL for the observations of a given datastream
+        :param datastream_id:
+        :return:
+        """
         url = f"{self.get_full_node_url()}/{APITerms.API.value}/{APITerms.DATASTREAMS.value}/{datastream_id}/{APITerms.OBSERVATIONS.value}"
         return url
 
     def add_datastream(self, datastream):
+        """
+        Adds a datastream to the system
+        :param datastream:
+        :return:
+        """
         self.datastreams.append(datastream)
 
     def get_sys_id(self):
+        """
+        Returns the id of the system in the OSH Node
+        :return:
+        """
         return self.__sys_id
 
     def set_sys_id(self, sys_id):
+        """
+        Sets the id of the system in the OSH Node. This should only need to be called when the system is inserted
+        :param sys_id:
+        :return:
+        """
         self.__sys_id = sys_id
 
 
 class SystemBuilder:
 
     def __init__(self):
+        """
+        The SystemBuilder class is used to build a System object. It can be used instead of the System class's
+        constructor.
+        """
         self.system = System()
 
     def with_name(self, name):
+        """
+        Sets the name of the system
+        :param name:
+        :return:
+        """
         self.system.name = name
         return self
 
     def with_uid(self, uid):
+        """
+        Sets the uid of the system
+        :param uid:
+        :return:
+        """
         self.system.uid = uid
         return self
 
     def with_definition(self, definition):
+        """
+        Sets the definition of the system
+        :param definition:
+        :return:
+        """
         self.system.definition = definition
         self.system.def_type = definition
         return self
 
     def with_description(self, description):
+        """
+        Sets the description of the system
+        :param description:
+        :return:
+        """
         self.system.description = description
         return self
 
     def with_node(self, node_url, node_port, node_endpoint):
+        """
+        Sets the node url, port, and endpoint
+        :param node_url:
+        :param node_port:
+        :param node_endpoint:
+        :return:
+        """
         self.system.node_url = node_url
         self.system.node_port = node_port
         self.system.node_endpoint = node_endpoint
         return self
 
     def build(self):
+        """
+        Builds the system and returns it.
+        :return:
+        """
         return self.system

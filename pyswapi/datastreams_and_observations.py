@@ -1,30 +1,28 @@
 import json
 import uuid
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime, timezone
 
 import requests
 from oshdatacore.component_implementations import DataRecordComponent, TimeComponent, QuantityComponent, CountComponent, \
     CategoryComponent, TextComponent, BooleanComponent
 from oshdatacore.encoding import AbstractEncoding
-
 from paho.mqtt import publish
 
-from pyswapi.constants import APITerms, ObservationFormat
+from pyswapi.constants import APITerms
 from pyswapi.endpoints import datastreams
 from pyswapi.system import System
-from pyswapi.comm.comm_mqtt import MQTTComm
 
 
 def build_ds_from_node(node_url, node_port, node_endpoint, parent_system: System):
     """
     Builds a list of Datastreams from a SensorHub node. May lose some resolution compared to creating a datastream
-    directly, but the API does not currently provide things like definition or encoding.
-    :param node_url:
-    :param node_port:
-    :param node_endpoint:
-    :param parent_system:
-    :return:
+    directly, but the API does not currently provide things like definition or encoding in some cases.
+    :param node_url: base URL of the node
+    :param node_port: port the node is running on (often 8181 or 8282)
+    :param node_endpoint: endpoint of the node, typically 'sensorhub' or APITerms.SENSORHUB.type
+    :param parent_system: the System object that this datastream belongs to
+    :return: a list of datastream objects
     """
     response = datastreams.get_datastream_from_system(node_api_endpoint=f'{node_url}:{node_port}/{node_endpoint}/api',
                                                       system_id=parent_system.get_sys_id())
@@ -113,8 +111,8 @@ class Datastream:
 
     def create_datastream_schema(self):
         """
-        create the schema for the datastream, returns the schema if it already exists
-        :return:
+        create the schema for the datastream or return the existing schema
+        :return: the datastream's schema
         """
         if self.schema is None:
             schema = dict([
@@ -178,7 +176,7 @@ class Datastream:
         """
         Add a root component to the datastream. Use this method only if the datastream does not already have a root, or
         a change needs to be made to the root component. If the datastreams already has observations, this method will
-        remove them.
+        remove them as they are no longer valid.
         :param component:
         :return:
         """
@@ -188,28 +186,62 @@ class Datastream:
         self.set_field_map()
 
     def get_ds_id(self):
+        """
+        Get the ID of the datastream
+        :return:
+        """
         return self.__ds_id
 
     def add_field(self, field):
+        """
+        Adds a field to the root component of the datastream.
+        :param field:
+        :return:
+        """
         self.root_component.add_field(field)
         # TODO: it is not performant to rebuild the field map every time a field is added,
         #  change this in a future version
         self.set_field_map()
 
     def add_value_by_uuid(self, uuid, value):
+        """
+        Adds a value to the datastream by UUID. This method doesn't work in all cases and will be removed in a future
+        version.
+        Prefer using the set_values method instead.
+        .. deprecated:: 0.0.1-alpha.3
+        :param uuid:
+        :param value:
+        :return:
+        """
         if self.__field_map is None:
             self.set_field_map()
         self.__field_map[uuid].value = value
 
     def get_field_map(self):
+        """
+        Get the field map of the datastream. The field map is a dictionary of UUIDs to fields.
+        It can be used to set values.
+        .. deprecated:: 0.0.1-alpha.3
+        Will be removed in 0.0.1
+        :return:
+        """
         self.set_field_map()
         return self.__field_map
 
     def set_field_map(self):
+        """
+        Sets the field map of the datastream. This is generated from the root component.
+        :return:
+        """
         field_map = self.root_component.flat_id_to_field_map()
         self.__field_map = field_map.copy()
 
     def create_observation_from_current(self):
+        """
+        Creates a new observation from the current values of the datastream and adds it to the list of observations.
+        This prepares the datastream to send observations to the node.
+        :return:
+        """
         new_obs = Observation(parent_datastream=self)
         self.__observations.append(new_obs)
 
@@ -227,7 +259,7 @@ class Datastream:
         Sends the first observation in the list of observations. These should be in chronological order, though setting
         manual times for can break this. To prevent issues it is recommended that observations be sent as they are created
         or created in chronological order.
-        :return:
+        :return: True if the observation was sent successfully, False otherwise.
         """
         url = self.get_observation_url()
         if self.__observations is not None and len(self.__observations) > 0:
@@ -260,7 +292,9 @@ class Datastream:
 
     def insert_obs_values_and_send(self, values):
         """
-        Creates observations from the provided key-value pairs and sends them to the OSH Node.
+        Creates observations from the provided values and sends them to the OSH Node in one go.
+        This is the preferred method for sending observations but set_values and create_observation_from_current can be
+        called separately if required.
         :param values: dictionary uuid-value pairs where the uuid is for a field in the datastream
         :return:
         """
@@ -269,12 +303,16 @@ class Datastream:
         return self.send_earliest_observation()
 
     def get_obs_list(self):
+        """
+        Returns the list of queued observations.
+        :return:
+        """
         return self.__observations
 
     def publish_earliest_observation(self, hostname, port, tls=None, username=None, password=None,
                                      transport='websockets'):
         """
-        Publishes the earliest observation to the MQTT broker.
+        Publishes the earliest observation to the MQTT broker but doesn't require any long-term client object.
         :param port: the port to connect to the broker on
         :param tls: a dict containing TLS configuration parameters for the client:
                     dict = {'ca_certs':"<ca_certs>", 'certfile':"<certfile>", 'keyfile':"<keyfile>", 'tls_version':"<tls_version>", 'ciphers':"<ciphers">}
@@ -302,7 +340,7 @@ class Datastream:
 
     def publish_earliest_observation_client(self, client):
         """
-        Publishes the earliest observation to the MQTT broker.
+        Publishes the earliest observation to the MQTT broker using a provided MQTT client.
         :param client: the client to use to publish the observation
         :return:
         """
