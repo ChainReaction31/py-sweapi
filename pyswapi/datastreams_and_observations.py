@@ -216,8 +216,9 @@ class Datastream:
         Adds a value to the datastream by UUID. This method doesn't work in all cases and will be removed in a future
         version.
 
-        Prefer using the set_values method instead.
         .. deprecated:: 0.0.1-alpha.3
+            Will be removed in 0.0.1.
+            Prefer using the set_values method instead.
 
         :param uuid:
         :param value:
@@ -233,7 +234,7 @@ class Datastream:
         It can be used to set values.
 
         .. deprecated:: 0.0.1-alpha.3
-        Will be removed in 0.0.1
+            Will be removed in 0.0.1
 
         :return:
         """
@@ -334,8 +335,10 @@ class Datastream:
 
         :param port: the port to connect to the broker on
         :param tls: a dict containing TLS configuration parameters for the client:
-                    dict = {'ca_certs':"<ca_certs>", 'certfile':"<certfile>", 'keyfile':"<keyfile>", 'tls_version':"<tls_version>", 'ciphers':"<ciphers">}
-                    ca_certs is required, all other parameters are optional and will default to None if not provided, which results in the client using the default behaviour - see the paho.mqtt.client documentation.
+                    dict = {'ca_certs':"<ca_certs>", 'certfile':"<certfile>", 'keyfile':"<keyfile>",
+                    'tls_version':"<tls_version>", 'ciphers':"<ciphers">}
+                    ca_certs is required, all other parameters are optional and will default to None if not provided,
+                    which results in the client using the default behaviour - see the paho.mqtt.client documentation.
                     Defaults to None, which indicates that TLS should not be used.
         :param username: optional, use when auth is required
         :param password: optional, use when auth is required

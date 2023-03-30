@@ -11,7 +11,6 @@ Welcome to PySWAPI's documentation!
    :caption: Contents:
 
 
-
 Indices and tables
 ==================
 
@@ -20,8 +19,22 @@ Indices and tables
 * :ref:`search`
 
 
+What is PySWAPI?
+================
+PySWAPI is a Python library for interacting with the SensorWebAPI (SWAPI) and later, the ConnectedSystemsAPI
+as support for that is improved within OSH Core.
+
+At the core, PySWAPI depends on a small package called 'oshdatacore' which provides a simplified representation of
+OGC's SWE Common Data Model V2.0.
+
+
 PySWAPI Systems
 ===============
+
+The System module is the heart and soul of the PySWAPI library. Every other part of the library will, at some point,
+have to interact with a System. It is as representation of a single OSH system that allows access to Datastreams
+and their Observations, FeaturesOfInterest, ControlStreams and their Commands.
+
 .. automodule:: pyswapi.system
    :members:
    :undoc-members:
