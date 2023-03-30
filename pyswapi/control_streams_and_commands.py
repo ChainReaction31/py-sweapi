@@ -37,6 +37,7 @@ class Command:
     def params_as_json(self):
         """
         returns the commands parameters as a json string
+
         :return:
         """
         json.dumps(self.params)
@@ -61,6 +62,7 @@ class CommandStatusCode(Enum):
 class ControlInterface:
     """
     Control interfaces define the commands that can be issued to a system.
+
     :param name: The machine name of the control interface
     :param input_name: The human-readable name of the control interface
     :param __command_schema: The schema of the commands that can be issued to the system, often a reflection of the
@@ -76,6 +78,7 @@ class ControlInterface:
     def add_schema(self, component: DataRecordComponent):
         """
         Adds a schema to the control interface
+
         :param component: The DataRecordComponent that defines the names and types of the commands that can be issued to
         the system
         """
@@ -84,6 +87,7 @@ class ControlInterface:
     def set_parent_system(self, system: System):
         """
         Sets the parent system of the control interface
+
         :param system:
         """
         self.__parent_system = system
@@ -107,6 +111,7 @@ class ControlInterface:
     def set_client(self, client: MQTTComm):
         """
         Sets the MQTT client
+
         :param client:
         """
         self.__mqtt_client = client
@@ -115,6 +120,7 @@ class ControlInterface:
         """
         Publishes the control stream to topic /api/systems/{system_id}/controls using the MQTT client set by the
         set_client method
+
         :param system: The system to which the control stream will be published
         """
         if self.__mqtt_client is None:
@@ -128,6 +134,7 @@ class ControlInterface:
         """
         Publishes a command to the control interface. OSH rejects commands if there is no subscriber to the command
         interface's topic
+
         :param system: The system to which the command will be published
         :param client:
         :param command: The command to be published
@@ -138,6 +145,7 @@ class ControlInterface:
     def subscribe_to_commands(self, callback=None):
         """
         Subscribes to the command interface's topic
+
         :param callback: handler for dealing with the received commands, by default the handler just accepts
         the command with a status of ACCEPTED and does no further processing
         """
@@ -160,6 +168,7 @@ class ControlInterface:
         """
         Inserts a command into the control interface. The node will reject commands if there is no subscriber to the
         command interface's topic so it's recommended to use publish_command instead.
+
         :param command: The command to be inserted
         """
         url = f'{self.__parent_system.get_node_api_url()}'
@@ -169,6 +178,7 @@ class ControlInterface:
     def get_commands(self):
         """
         Gets the commands for the control interface
+
         :return:
         """
         url = f'{self.__parent_system.get_node_api_url()}'
