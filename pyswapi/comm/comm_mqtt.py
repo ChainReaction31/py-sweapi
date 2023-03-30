@@ -7,6 +7,8 @@ class MQTTComm:
 
     def __init__(self, url, port=1883, username=None, password=None, path=None, client_id="", transport='tcp'):
         """
+        Wraps a paho mqtt client to provide a simple interface for interacting with the mqtt server that is customized
+        for this library.
 
         :param url: url of the mqtt server
         :param port: port the mqtt server is communicating over, default is 1883 or whichever port the main node is
@@ -70,6 +72,7 @@ class MQTTComm:
         """
         Subscribe to a topic, and optionally set a callback for when a message is received on that topic. To actually
         retrieve any information you must set a callback.
+
         :param topic: MQTT topic to subscribe to (example/topic)
         :param qos: quality of service, 0, 1, or 2
         :param msg_callback: callback with the form: callback(client, userdata, msg)
@@ -88,6 +91,7 @@ class MQTTComm:
     def set_on_connect(self, on_connect):
         """
         Set the on_connect callback for the MQTT client.
+
         :param on_connect:
         :return:
         """
@@ -96,6 +100,7 @@ class MQTTComm:
     def set_on_disconnect(self, on_disconnect):
         """
         Set the on_disconnect callback for the MQTT client.
+
         :param on_disconnect:
         :return:
         """
@@ -104,6 +109,7 @@ class MQTTComm:
     def set_on_subscribe(self, on_subscribe):
         """
         Set the on_subscribe callback for the MQTT client.
+
         :param on_subscribe:
         :return:
         """
@@ -112,6 +118,7 @@ class MQTTComm:
     def set_on_unsubscribe(self, on_unsubscribe):
         """
         Set the on_unsubscribe callback for the MQTT client.
+
         :param on_unsubscribe:
         :return:
         """
@@ -120,6 +127,7 @@ class MQTTComm:
     def set_on_publish(self, on_publish):
         """
         Set the on_publish callback for the MQTT client.
+
         :param on_publish:
         :return:
         """
@@ -129,6 +137,7 @@ class MQTTComm:
         """
         Set the on_message callback for the MQTT client. It is recommended to set individual callbacks for each
         subscribed topic.
+
         :param on_message:
         :return:
         """
@@ -137,6 +146,7 @@ class MQTTComm:
     def set_on_log(self, on_log):
         """
         Set the on_log callback for the MQTT client.
+
         :param on_log:
         :return:
         """
@@ -145,13 +155,15 @@ class MQTTComm:
     def start(self):
         """
         Start the MQTT client in a separate thread. This is required for the client to be able to receive messages.
+
         :return:
         """
         self.__client.loop_start()
 
     def stop(self):
         """
-        Stop the MQTT client.
+        Stop the MQTT client.\
+
         :return: 
         """
         self.__client.loop_stop()
