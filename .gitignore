@@ -10,3 +10,4 @@ dist/
 py_swapi.egg-info/
 
 tests/secrets.json
+/docs/build/
