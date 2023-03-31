@@ -14,6 +14,7 @@ def build_systems_from_node(node_url, node_port, node_endpoint):
     :param node_url: base URL of the node
     :param node_port: port the node is running on (often 8181 or 8282)
     :param node_endpoint: endpoint of the node, typically 'sensorhub' or APITerms.SENSORHUB.type
+
     :return: a list of System objects
     """
     response = system_eps.get_systems(node_api_endpoint=f'{node_url}:{node_port}{node_endpoint}/{APITerms.API.value}')
@@ -50,7 +51,7 @@ class System:
         uid: A unique identifier for the system
         definition: A URL to the definition of the system
         def_type: The type of system, e.g. 'Feature'
-        description: A human readable description of the system
+        description: A human-readable description of the system
         node_url: The URL of the OSH Node to which the system will be inserted
         node_port: The port through which to access the Node
         node_endpoint: The endpoint of the OSH Node to which the system will be inserted. Usually 'sensorhub'
@@ -97,7 +98,6 @@ class System:
         Naively tries to insert the system into the OSH Node specified by its url.
 
         :return: The id of the system
-        See https://opensensorhub.github.io/sensorweb-api/swagger-ui
         """
 
         temp_id = self.__sys_id
@@ -145,7 +145,7 @@ class System:
 
     def get_system_url(self):
         """
-        Retruns the node's system URL for the API
+        Returns the node's system URL for the API
 
         :return:
         """
@@ -157,6 +157,7 @@ class System:
         Returns the URL for the observations of a given datastream
 
         :param datastream_id:
+
         :return:
         """
         url = f"{self.get_full_node_url()}/{APITerms.API.value}/{APITerms.DATASTREAMS.value}/{datastream_id}/{APITerms.OBSERVATIONS.value}"
@@ -167,6 +168,7 @@ class System:
         Adds a datastream to the system
 
         :param datastream:
+
         :return:
         """
         self.datastreams.append(datastream)
@@ -184,6 +186,7 @@ class System:
         Sets the id of the system in the OSH Node. This should only need to be called when the system is inserted
 
         :param sys_id:
+
         :return:
         """
         self.__sys_id = sys_id
@@ -203,6 +206,7 @@ class SystemBuilder:
         Sets the name of the system
 
         :param name:
+
         :return:
         """
         self.system.name = name
@@ -213,6 +217,7 @@ class SystemBuilder:
         Sets the uid of the system
 
         :param uid:
+
         :return:
         """
         self.system.uid = uid
@@ -223,6 +228,7 @@ class SystemBuilder:
         Sets the definition of the system
 
         :param definition:
+
         :return:
         """
         self.system.definition = definition
@@ -234,6 +240,7 @@ class SystemBuilder:
         Sets the description of the system
 
         :param description:
+
         :return:
         """
         self.system.description = description
@@ -246,6 +253,7 @@ class SystemBuilder:
         :param node_url:
         :param node_port:
         :param node_endpoint:
+
         :return:
         """
         self.system.node_url = node_url

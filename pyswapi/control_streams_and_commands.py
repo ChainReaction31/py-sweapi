@@ -66,7 +66,7 @@ class ControlInterface:
     :param name: The machine name of the control interface
     :param input_name: The human-readable name of the control interface
     :param __command_schema: The schema of the commands that can be issued to the system, often a reflection of the
-    system's data model
+        system's data model
     """
     name: str
     input_name: str
@@ -80,7 +80,7 @@ class ControlInterface:
         Adds a schema to the control interface
 
         :param component: The DataRecordComponent that defines the names and types of the commands that can be issued to
-        the system
+            the system
         """
         self.__command_schema = component
 
@@ -147,7 +147,7 @@ class ControlInterface:
         Subscribes to the command interface's topic
 
         :param callback: handler for dealing with the received commands, by default the handler just accepts
-        the command with a status of ACCEPTED and does no further processing
+            the command with a status of ACCEPTED and does no further processing
         """
         self.__mqtt_client.subscribe(f'/api/controls/{self.__csi_id}/commands')
         if callback is not None:
@@ -167,7 +167,7 @@ class ControlInterface:
     def insert_command(self, command: Command):
         """
         Inserts a command into the control interface. The node will reject commands if there is no subscriber to the
-        command interface's topic so it's recommended to use publish_command instead.
+        command interface's topic, therefore it's recommended to use publish_command instead.
 
         :param command: The command to be inserted
         """
