@@ -6,6 +6,7 @@ from oshdatacore.component_implementations import BooleanComponent, TextComponen
 from oshdatacore.encoding import TextEncoding
 
 from pyswapi.constants import ObservationFormat
+from pyswapi.control_streams_and_commands import ControlInterface
 from pyswapi.datastreams_and_observations import Datastream
 from pyswapi.system import SystemBuilder
 
@@ -40,7 +41,6 @@ def t_sys_description():
 
 @pytest.fixture
 def t_sys_node_url(secret_json):
-
     return secret_json['url']
 
 
@@ -183,3 +183,9 @@ def t_comp_data_array():
                               definition='www.test.org/test/data-array',
                               element_count=count, element_type=e_type)
     return comp
+
+
+@pytest.fixture
+def t_command_interface():
+    ci = ControlInterface(name='test-command-interface', input_name='Command Test')
+    return ci

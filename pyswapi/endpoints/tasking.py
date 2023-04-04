@@ -13,7 +13,7 @@ def get_tasking_interface(node_api_endpoint=None, params=None, system_id=None, t
     return endpoints.handle_request(base_url, method='get', params=params)
 
 
-def get_tasking_inteface_schema(node_api_endpoint=None, params=None, system_id=None, tasking_id=None):
+def get_tasking_interface_schema(node_api_endpoint=None, params=None, system_id=None, tasking_id=None):
     base_url = f'{node_api_endpoint}/{APITerms.SYSTEMS.value}/{system_id}/{APITerms.TASKING.value}' \
                f'/{tasking_id}/schema'
 
