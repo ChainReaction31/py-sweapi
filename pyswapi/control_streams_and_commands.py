@@ -8,6 +8,8 @@ from pyswapi.comm.comm_mqtt import MQTTComm
 from pyswapi.endpoints.system_ep import post_system_controls
 from pyswapi.endpoints import tasking as task
 from pyswapi.system import System
+from pyswapi.endpoints import tasking as tasking_ep
+from pyswapi.utilities import datarecord_from_json
 
 
 @dataclass(kw_only=True)
@@ -18,6 +20,9 @@ class ControlledProperty:
 
 @dataclass(kw_only=True)
 class ControlStream:
+    """
+    Unused. Will be implemented as the API Client rolls out support for the Connected Systems API
+    """
     name: str
     issue_time: tuple
     execution_time: tuple
@@ -96,8 +101,10 @@ class ControlInterface:
         """
         Inserts the control stream into the parent system
         """
-        post_system_controls(self.__parent_system.get_node_api_url(), self.__parent_system.get_sys_id(),
-                             self.__get_control_stream_dict())
+        res = post_system_controls(self.__parent_system.get_node_api_url(), self.__parent_system.get_sys_id(),
+                                   self.__get_control_stream_dict())
+        if res.status_code == 201:
+            self.__csi_id = res.headers.get('Location').removeprefix('/controls/')
 
     def __get_control_stream_dict(self):
         return {
@@ -184,3 +191,42 @@ class ControlInterface:
         url = f'{self.__parent_system.get_node_api_url()}'
         return task.get_tasking_interface_commands(node_api_endpoint=url, system_id=self.__parent_system.get_sys_id(),
                                                    tasking_id=self.__csi_id)
+
+    def retrieve_schema(self):
+        """
+        Gets the schema for the control interface
+
+        :return:
+        """
+        url = f'{self.__parent_system.get_node_api_url()}'
+        tmp_schema_json = tasking_ep.get_tasking_interface_schema(node_api_endpoint=url,
+                                                                  system_id=self.__parent_system.get_sys_id(),
+                                                                  tasking_id=self.__csi_id)
+        ds_json = json.loads(tmp_schema_json.content)['paramsSchema']
+        new_schema = datarecord_from_json(ds_json)
+        return new_schema
+
+    @staticmethod
+    def build_command_interfaces_from_system(system: System):
+        """
+        Builds the control interface from the system
+        :return: list of ControlInterfaces
+        """
+        # Get the control interfaces from the system
+        base_url = system.get_node_api_url()
+        resp = tasking_ep.get_tasking_interface(base_url, system_id=system.get_sys_id())
+
+        resp_items = []
+        if resp.ok:
+            resp_items = resp.json()['items']
+            command_interfaces = []
+
+            for ci in resp_items:
+                new_ci = ControlInterface(name=ci['name'], input_name=ci['inputName'])
+                new_ci.__csi_id = ci['id']
+                new_ci.set_parent_system(system)
+                new_ci.add_schema(new_ci.retrieve_schema())
+                command_interfaces.append(new_ci)
+
+            return command_interfaces
+        return None

@@ -41,6 +41,7 @@ def build_ds_from_node(node_url, node_port, node_endpoint, parent_system: System
         schema_resp = datastreams.get_datastream_schema(node_api_endpoint=f'{node_url}:{node_port}/{node_endpoint}/api',
                                                         datastream_id=ds['id'])
         r_json = schema_resp.json()
+        # TODO: replace with datarecord_from_json from pyswapi.utilities
         ds_root = DataRecordComponent(description=r_json['resultSchema']['description'],
                                       label=r_json['resultSchema']['label'],
                                       name=r_json['resultSchema']['label'],
@@ -55,6 +56,7 @@ def build_ds_from_node(node_url, node_port, node_endpoint, parent_system: System
 
 
 def __ds_builder(field_dict):
+    # TODO: replace with datarecord_field_builder from pyswapi.utilities
     match field_dict['type']:
         case 'Time':
             return TimeComponent(name=field_dict['name'], label=field_dict['label'],
