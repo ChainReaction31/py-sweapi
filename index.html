@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to PySWAPI’s documentation! &mdash; PySWAPI 0.0.1-alpha documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            PySWAPI
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Welcome to PySWAPI’s documentation!</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+<li><a class="reference internal" href="#what-is-pyswapi">What is PySWAPI?</a></li>
+<li><a class="reference internal" href="#pyswapi-systems">PySWAPI Systems</a><ul>
+<li><a class="reference internal" href="#pyswapi.system.System"><code class="docutils literal notranslate"><span class="pre">System</span></code></a><ul>
+<li><a class="reference internal" href="#pyswapi.system.System.add_datastream"><code class="docutils literal notranslate"><span class="pre">System.add_datastream()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.system.System.build_system_dict"><code class="docutils literal notranslate"><span class="pre">System.build_system_dict()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.system.System.def_type"><code class="docutils literal notranslate"><span class="pre">System.def_type</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.system.System.definition"><code class="docutils literal notranslate"><span class="pre">System.definition</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.system.System.description"><code class="docutils literal notranslate"><span class="pre">System.description</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.system.System.generate_json"><code class="docutils literal notranslate"><span class="pre">System.generate_json()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.system.System.get_full_node_url"><code class="docutils literal notranslate"><span class="pre">System.get_full_node_url()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.system.System.get_node_api_url"><code class="docutils literal notranslate"><span class="pre">System.get_node_api_url()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.system.System.get_observation_url"><code class="docutils literal notranslate"><span class="pre">System.get_observation_url()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.system.System.get_sys_id"><code class="docutils literal notranslate"><span class="pre">System.get_sys_id()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.system.System.get_system_url"><code class="docutils literal notranslate"><span class="pre">System.get_system_url()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.system.System.insert_system"><code class="docutils literal notranslate"><span class="pre">System.insert_system()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.system.System.name"><code class="docutils literal notranslate"><span class="pre">System.name</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.system.System.node_endpoint"><code class="docutils literal notranslate"><span class="pre">System.node_endpoint</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.system.System.node_port"><code class="docutils literal notranslate"><span class="pre">System.node_port</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.system.System.node_url"><code class="docutils literal notranslate"><span class="pre">System.node_url</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.system.System.set_sys_id"><code class="docutils literal notranslate"><span class="pre">System.set_sys_id()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.system.System.system_dict"><code class="docutils literal notranslate"><span class="pre">System.system_dict</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.system.System.uid"><code class="docutils literal notranslate"><span class="pre">System.uid</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyswapi.system.SystemBuilder"><code class="docutils literal notranslate"><span class="pre">SystemBuilder</span></code></a><ul>
+<li><a class="reference internal" href="#pyswapi.system.SystemBuilder.build"><code class="docutils literal notranslate"><span class="pre">SystemBuilder.build()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.system.SystemBuilder.with_definition"><code class="docutils literal notranslate"><span class="pre">SystemBuilder.with_definition()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.system.SystemBuilder.with_description"><code class="docutils literal notranslate"><span class="pre">SystemBuilder.with_description()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.system.SystemBuilder.with_name"><code class="docutils literal notranslate"><span class="pre">SystemBuilder.with_name()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.system.SystemBuilder.with_node"><code class="docutils literal notranslate"><span class="pre">SystemBuilder.with_node()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.system.SystemBuilder.with_uid"><code class="docutils literal notranslate"><span class="pre">SystemBuilder.with_uid()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyswapi.system.build_systems_from_node"><code class="docutils literal notranslate"><span class="pre">build_systems_from_node()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyswapi-datastreams-and-observations">PySWAPI Datastreams and Observations</a><ul>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Datastream"><code class="docutils literal notranslate"><span class="pre">Datastream</span></code></a><ul>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Datastream.add_field"><code class="docutils literal notranslate"><span class="pre">Datastream.add_field()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Datastream.add_root_component"><code class="docutils literal notranslate"><span class="pre">Datastream.add_root_component()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Datastream.add_value_by_uuid"><code class="docutils literal notranslate"><span class="pre">Datastream.add_value_by_uuid()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Datastream.create_datastream_schema"><code class="docutils literal notranslate"><span class="pre">Datastream.create_datastream_schema()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Datastream.create_observation_from_current"><code class="docutils literal notranslate"><span class="pre">Datastream.create_observation_from_current()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Datastream.get_datastream_url"><code class="docutils literal notranslate"><span class="pre">Datastream.get_datastream_url()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Datastream.get_ds_id"><code class="docutils literal notranslate"><span class="pre">Datastream.get_ds_id()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Datastream.get_ds_insert_url"><code class="docutils literal notranslate"><span class="pre">Datastream.get_ds_insert_url()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Datastream.get_field_map"><code class="docutils literal notranslate"><span class="pre">Datastream.get_field_map()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Datastream.get_obs_list"><code class="docutils literal notranslate"><span class="pre">Datastream.get_obs_list()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Datastream.get_observation_url"><code class="docutils literal notranslate"><span class="pre">Datastream.get_observation_url()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Datastream.insert_datastream"><code class="docutils literal notranslate"><span class="pre">Datastream.insert_datastream()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Datastream.insert_obs_values_and_send"><code class="docutils literal notranslate"><span class="pre">Datastream.insert_obs_values_and_send()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Datastream.publish_earliest_observation"><code class="docutils literal notranslate"><span class="pre">Datastream.publish_earliest_observation()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Datastream.publish_earliest_observation_client"><code class="docutils literal notranslate"><span class="pre">Datastream.publish_earliest_observation_client()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Datastream.send_earliest_observation"><code class="docutils literal notranslate"><span class="pre">Datastream.send_earliest_observation()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Datastream.send_observation_batch"><code class="docutils literal notranslate"><span class="pre">Datastream.send_observation_batch()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Datastream.set_field_map"><code class="docutils literal notranslate"><span class="pre">Datastream.set_field_map()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Datastream.set_topic"><code class="docutils literal notranslate"><span class="pre">Datastream.set_topic()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Datastream.set_values"><code class="docutils literal notranslate"><span class="pre">Datastream.set_values()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.DatastreamNotInserted"><code class="docutils literal notranslate"><span class="pre">DatastreamNotInserted</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.InvalidDatastream"><code class="docutils literal notranslate"><span class="pre">InvalidDatastream</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Observation"><code class="docutils literal notranslate"><span class="pre">Observation</span></code></a><ul>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Observation.create_name_value_map"><code class="docutils literal notranslate"><span class="pre">Observation.create_name_value_map()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Observation.create_observation_dict"><code class="docutils literal notranslate"><span class="pre">Observation.create_observation_dict()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Observation.create_observation_dict_with_time"><code class="docutils literal notranslate"><span class="pre">Observation.create_observation_dict_with_time()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Observation.get_observation_dict"><code class="docutils literal notranslate"><span class="pre">Observation.get_observation_dict()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.Observation.get_observation_json"><code class="docutils literal notranslate"><span class="pre">Observation.get_observation_json()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.ParentSystemNotFound"><code class="docutils literal notranslate"><span class="pre">ParentSystemNotFound</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.datastreams_and_observations.build_ds_from_node"><code class="docutils literal notranslate"><span class="pre">build_ds_from_node()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyswapi-control-streams-and-commands">PySWAPI Control Streams and Commands</a><ul>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.Command"><code class="docutils literal notranslate"><span class="pre">Command</span></code></a><ul>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.Command.control_stream_id"><code class="docutils literal notranslate"><span class="pre">Command.control_stream_id</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.Command.current_status"><code class="docutils literal notranslate"><span class="pre">Command.current_status</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.Command.execution_time"><code class="docutils literal notranslate"><span class="pre">Command.execution_time</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.Command.issue_time"><code class="docutils literal notranslate"><span class="pre">Command.issue_time</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.Command.params"><code class="docutils literal notranslate"><span class="pre">Command.params</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.Command.params_as_json"><code class="docutils literal notranslate"><span class="pre">Command.params_as_json()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.Command.user_id"><code class="docutils literal notranslate"><span class="pre">Command.user_id</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.CommandStatusCode"><code class="docutils literal notranslate"><span class="pre">CommandStatusCode</span></code></a><ul>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.CommandStatusCode.ACCEPTED"><code class="docutils literal notranslate"><span class="pre">CommandStatusCode.ACCEPTED</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.CommandStatusCode.CANCELLED"><code class="docutils literal notranslate"><span class="pre">CommandStatusCode.CANCELLED</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.CommandStatusCode.COMPLETED"><code class="docutils literal notranslate"><span class="pre">CommandStatusCode.COMPLETED</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.CommandStatusCode.EXECUTING"><code class="docutils literal notranslate"><span class="pre">CommandStatusCode.EXECUTING</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.CommandStatusCode.FAILED"><code class="docutils literal notranslate"><span class="pre">CommandStatusCode.FAILED</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.CommandStatusCode.PENDING"><code class="docutils literal notranslate"><span class="pre">CommandStatusCode.PENDING</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.CommandStatusCode.REJECTED"><code class="docutils literal notranslate"><span class="pre">CommandStatusCode.REJECTED</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.CommandStatusCode.SCHEDULED"><code class="docutils literal notranslate"><span class="pre">CommandStatusCode.SCHEDULED</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.CommandStatusCode.UPDATED"><code class="docutils literal notranslate"><span class="pre">CommandStatusCode.UPDATED</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.ControlInterface"><code class="docutils literal notranslate"><span class="pre">ControlInterface</span></code></a><ul>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.ControlInterface.add_schema"><code class="docutils literal notranslate"><span class="pre">ControlInterface.add_schema()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.ControlInterface.build_command_interfaces_from_system"><code class="docutils literal notranslate"><span class="pre">ControlInterface.build_command_interfaces_from_system()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.ControlInterface.get_commands"><code class="docutils literal notranslate"><span class="pre">ControlInterface.get_commands()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.ControlInterface.input_name"><code class="docutils literal notranslate"><span class="pre">ControlInterface.input_name</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.ControlInterface.insert_command"><code class="docutils literal notranslate"><span class="pre">ControlInterface.insert_command()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.ControlInterface.insert_control_stream"><code class="docutils literal notranslate"><span class="pre">ControlInterface.insert_control_stream()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.ControlInterface.name"><code class="docutils literal notranslate"><span class="pre">ControlInterface.name</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.ControlInterface.publish_command"><code class="docutils literal notranslate"><span class="pre">ControlInterface.publish_command()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.ControlInterface.publish_control_stream_interface"><code class="docutils literal notranslate"><span class="pre">ControlInterface.publish_control_stream_interface()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.ControlInterface.retrieve_schema"><code class="docutils literal notranslate"><span class="pre">ControlInterface.retrieve_schema()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.ControlInterface.set_client"><code class="docutils literal notranslate"><span class="pre">ControlInterface.set_client()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.ControlInterface.set_parent_system"><code class="docutils literal notranslate"><span class="pre">ControlInterface.set_parent_system()</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.ControlInterface.subscribe_to_commands"><code class="docutils literal notranslate"><span class="pre">ControlInterface.subscribe_to_commands()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.ControlStream"><code class="docutils literal notranslate"><span class="pre">ControlStream</span></code></a><ul>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.ControlStream.controlled_properties"><code class="docutils literal notranslate"><span class="pre">ControlStream.controlled_properties</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.ControlStream.execution_time"><code class="docutils literal notranslate"><span class="pre">ControlStream.execution_time</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.ControlStream.formats"><code class="docutils literal notranslate"><span class="pre">ControlStream.formats</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.ControlStream.issue_time"><code class="docutils literal notranslate"><span class="pre">ControlStream.issue_time</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.ControlStream.name"><code class="docutils literal notranslate"><span class="pre">ControlStream.name</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.ControlledProperty"><code class="docutils literal notranslate"><span class="pre">ControlledProperty</span></code></a><ul>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.ControlledProperty.definition"><code class="docutils literal notranslate"><span class="pre">ControlledProperty.definition</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.control_streams_and_commands.ControlledProperty.label"><code class="docutils literal notranslate"><span class="pre">ControlledProperty.label</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyswapi-constants">PySWAPI Constants</a><ul>
+<li><a class="reference internal" href="#pyswapi.constants.APITerms"><code class="docutils literal notranslate"><span class="pre">APITerms</span></code></a><ul>
+<li><a class="reference internal" href="#pyswapi.constants.APITerms.API"><code class="docutils literal notranslate"><span class="pre">APITerms.API</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.constants.APITerms.DATASTREAMS"><code class="docutils literal notranslate"><span class="pre">APITerms.DATASTREAMS</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.constants.APITerms.FOIS"><code class="docutils literal notranslate"><span class="pre">APITerms.FOIS</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.constants.APITerms.OBSERVATIONS"><code class="docutils literal notranslate"><span class="pre">APITerms.OBSERVATIONS</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.constants.APITerms.SYSTEMS"><code class="docutils literal notranslate"><span class="pre">APITerms.SYSTEMS</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.constants.APITerms.TASKING"><code class="docutils literal notranslate"><span class="pre">APITerms.TASKING</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyswapi.constants.ObservationFormat"><code class="docutils literal notranslate"><span class="pre">ObservationFormat</span></code></a><ul>
+<li><a class="reference internal" href="#pyswapi.constants.ObservationFormat.JSON"><code class="docutils literal notranslate"><span class="pre">ObservationFormat.JSON</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.constants.ObservationFormat.SWE_BINARY"><code class="docutils literal notranslate"><span class="pre">ObservationFormat.SWE_BINARY</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.constants.ObservationFormat.SWE_CSV"><code class="docutils literal notranslate"><span class="pre">ObservationFormat.SWE_CSV</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.constants.ObservationFormat.SWE_JSON"><code class="docutils literal notranslate"><span class="pre">ObservationFormat.SWE_JSON</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.constants.ObservationFormat.SWE_XML"><code class="docutils literal notranslate"><span class="pre">ObservationFormat.SWE_XML</span></code></a></li>
+<li><a class="reference internal" href="#pyswapi.constants.ObservationFormat.XML"><code class="docutils literal notranslate"><span class="pre">ObservationFormat.XML</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyswapi.constants.SystemTypes"><code class="docutils literal notranslate"><span class="pre">SystemTypes</span></code></a><ul>
+<li><a class="reference internal" href="#pyswapi.constants.SystemTypes.FEATURE"><code class="docutils literal notranslate"><span class="pre">SystemTypes.FEATURE</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">PySWAPI</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Welcome to PySWAPI’s documentation!</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="welcome-to-pyswapi-s-documentation">
+<h1>Welcome to PySWAPI’s documentation!<a class="headerlink" href="#welcome-to-pyswapi-s-documentation" title="Permalink to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+<section id="what-is-pyswapi">
+<h1>What is PySWAPI?<a class="headerlink" href="#what-is-pyswapi" title="Permalink to this heading"></a></h1>
+<p>PySWAPI is a Python library for interacting with the SensorWebAPI (SWAPI) and later, the ConnectedSystemsAPI
+as support for that is improved within OSH Core.</p>
+<p>At the core, PySWAPI depends on a small package called ‘oshdatacore’ which provides a simplified representation of
+OGC’s SWE Common Data Model V2.0.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>OSHDataCore is not yet published on PyPI, so it needs to be installed manually.
+For now, you can install it by cloning the repository from GitHub and running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>oshdatacore@git+https://github.com/ChainReaction31/py_osh_data_core.git
+</pre></div>
+</div>
+</div>
+</section>
+<section id="pyswapi-systems">
+<h1>PySWAPI Systems<a class="headerlink" href="#pyswapi-systems" title="Permalink to this heading"></a></h1>
+<p>The System module is the heart and soul of the PySWAPI library. Every other part of the library will, at some point,
+have to interact with a System. It is as representation of a single OSH system that allows access to Datastreams
+and their Observations, FeaturesOfInterest, ControlStreams and their Commands.</p>
+<span class="target" id="module-pyswapi.system"></span><dl class="py class">
+<dt class="sig sig-object py" id="pyswapi.system.System">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyswapi.system.</span></span><span class="sig-name descname"><span class="pre">System</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">definition</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">def_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_endpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_System__sys_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/system.html#System"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.system.System" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The System class is used to describe sets of datastreams via the Connected Systems API.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>name: Human readable name for the system
+uid: A unique identifier for the system
+definition: A URL to the definition of the system
+def_type: The type of system, e.g. ‘Feature’
+description: A human-readable description of the system
+node_url: The URL of the OSH Node to which the system will be inserted
+node_port: The port through which to access the Node
+node_endpoint: The endpoint of the OSH Node to which the system will be inserted. Usually ‘sensorhub’
+system_dict: A dictionary representation of the system
+__sys_id: The id of the system in the OSH Node</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.system.System.add_datastream">
+<span class="sig-name descname"><span class="pre">add_datastream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datastream</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/system.html#System.add_datastream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.system.System.add_datastream" title="Permalink to this definition"></a></dt>
+<dd><p>Adds a datastream to the system</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>datastream</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.system.System.build_system_dict">
+<span class="sig-name descname"><span class="pre">build_system_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/system.html#System.build_system_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.system.System.build_system_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Builds a dictionary representation of the system. This is necessary as the API requires a JSON representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.system.System.def_type">
+<span class="sig-name descname"><span class="pre">def_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyswapi.system.System.def_type" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.system.System.definition">
+<span class="sig-name descname"><span class="pre">definition</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyswapi.system.System.definition" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.system.System.description">
+<span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyswapi.system.System.description" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.system.System.generate_json">
+<span class="sig-name descname"><span class="pre">generate_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyswapi/system.html#System.generate_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.system.System.generate_json" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.system.System.get_full_node_url">
+<span class="sig-name descname"><span class="pre">get_full_node_url</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyswapi/system.html#System.get_full_node_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.system.System.get_full_node_url" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the full URL of the node, including the port (if specified) and endpoint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the full URL of the node as a string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.system.System.get_node_api_url">
+<span class="sig-name descname"><span class="pre">get_node_api_url</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/system.html#System.get_node_api_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.system.System.get_node_api_url" title="Permalink to this definition"></a></dt>
+<dd><p>returns the node’s API URL</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.system.System.get_observation_url">
+<span class="sig-name descname"><span class="pre">get_observation_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datastream_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/system.html#System.get_observation_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.system.System.get_observation_url" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the URL for the observations of a given datastream</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>datastream_id</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.system.System.get_sys_id">
+<span class="sig-name descname"><span class="pre">get_sys_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/system.html#System.get_sys_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.system.System.get_sys_id" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the id of the system in the OSH Node</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.system.System.get_system_url">
+<span class="sig-name descname"><span class="pre">get_system_url</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/system.html#System.get_system_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.system.System.get_system_url" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the node’s system URL for the API</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.system.System.insert_system">
+<span class="sig-name descname"><span class="pre">insert_system</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyswapi/system.html#System.insert_system"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.system.System.insert_system" title="Permalink to this definition"></a></dt>
+<dd><p>Naively tries to insert the system into the OSH Node specified by its url.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The id of the system</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.system.System.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyswapi.system.System.name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.system.System.node_endpoint">
+<span class="sig-name descname"><span class="pre">node_endpoint</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyswapi.system.System.node_endpoint" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.system.System.node_port">
+<span class="sig-name descname"><span class="pre">node_port</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyswapi.system.System.node_port" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.system.System.node_url">
+<span class="sig-name descname"><span class="pre">node_url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyswapi.system.System.node_url" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.system.System.set_sys_id">
+<span class="sig-name descname"><span class="pre">set_sys_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sys_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/system.html#System.set_sys_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.system.System.set_sys_id" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the id of the system in the OSH Node. This should only need to be called when the system is inserted</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sys_id</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.system.System.system_dict">
+<span class="sig-name descname"><span class="pre">system_dict</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyswapi.system.System.system_dict" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.system.System.uid">
+<span class="sig-name descname"><span class="pre">uid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyswapi.system.System.uid" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyswapi.system.SystemBuilder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyswapi.system.</span></span><span class="sig-name descname"><span class="pre">SystemBuilder</span></span><a class="reference internal" href="_modules/pyswapi/system.html#SystemBuilder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.system.SystemBuilder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.system.SystemBuilder.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/system.html#SystemBuilder.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.system.SystemBuilder.build" title="Permalink to this definition"></a></dt>
+<dd><p>Builds the system and returns it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.system.SystemBuilder.with_definition">
+<span class="sig-name descname"><span class="pre">with_definition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">definition</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/system.html#SystemBuilder.with_definition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.system.SystemBuilder.with_definition" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the definition of the system</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>definition</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.system.SystemBuilder.with_description">
+<span class="sig-name descname"><span class="pre">with_description</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">description</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/system.html#SystemBuilder.with_description"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.system.SystemBuilder.with_description" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the description of the system</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>description</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.system.SystemBuilder.with_name">
+<span class="sig-name descname"><span class="pre">with_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/system.html#SystemBuilder.with_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.system.SystemBuilder.with_name" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the name of the system</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.system.SystemBuilder.with_node">
+<span class="sig-name descname"><span class="pre">with_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_port</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_endpoint</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/system.html#SystemBuilder.with_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.system.SystemBuilder.with_node" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the node url, port, and endpoint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node_url</strong> – </p></li>
+<li><p><strong>node_port</strong> – </p></li>
+<li><p><strong>node_endpoint</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.system.SystemBuilder.with_uid">
+<span class="sig-name descname"><span class="pre">with_uid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/system.html#SystemBuilder.with_uid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.system.SystemBuilder.with_uid" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the uid of the system</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uid</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyswapi.system.build_systems_from_node">
+<span class="sig-prename descclassname"><span class="pre">pyswapi.system.</span></span><span class="sig-name descname"><span class="pre">build_systems_from_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_port</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_endpoint</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/system.html#build_systems_from_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.system.build_systems_from_node" title="Permalink to this definition"></a></dt>
+<dd><p>Builds a list of System objects from a given OSH Node. The API requires multiple calls to retrieve all provided
+metadata and even then can lose some resolution. As such, it is recommended to manually create a representation of
+the system, but this method does enable a fast way to get a list of systems and perform quick operations on them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node_url</strong> – base URL of the node</p></li>
+<li><p><strong>node_port</strong> – port the node is running on (often 8181 or 8282)</p></li>
+<li><p><strong>node_endpoint</strong> – endpoint of the node, typically ‘sensorhub’ or APITerms.SENSORHUB.type</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a list of System objects</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="pyswapi-datastreams-and-observations">
+<h1>PySWAPI Datastreams and Observations<a class="headerlink" href="#pyswapi-datastreams-and-observations" title="Permalink to this heading"></a></h1>
+<p>The Datastreams and Observations module is the main reason you likely are interested in PySWAPI. It provides
+the objects and methods necessary to actually send data to an OSH Node.</p>
+<span class="target" id="module-pyswapi.datastreams_and_observations"></span><dl class="py class">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Datastream">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyswapi.datastreams_and_observations.</span></span><span class="sig-name descname"><span class="pre">Datastream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs_format</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root_component</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataRecordComponent</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Datastream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Datastream" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Datastream.add_field">
+<span class="sig-name descname"><span class="pre">add_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Datastream.add_field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Datastream.add_field" title="Permalink to this definition"></a></dt>
+<dd><p>Adds a field to the root component of the datastream.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>field</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Datastream.add_root_component">
+<span class="sig-name descname"><span class="pre">add_root_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataRecordComponent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Datastream.add_root_component"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Datastream.add_root_component" title="Permalink to this definition"></a></dt>
+<dd><p>Add a root component to the datastream. Use this method only if the datastream does not already have a root, or
+a change needs to be made to the root component. If the datastreams already has observations, this method will
+remove them as they are no longer valid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>component</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Datastream.add_value_by_uuid">
+<span class="sig-name descname"><span class="pre">add_value_by_uuid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uuid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Datastream.add_value_by_uuid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Datastream.add_value_by_uuid" title="Permalink to this definition"></a></dt>
+<dd><p>Adds a value to the datastream by UUID. This method doesn’t work in all cases and will be removed in a future
+version.</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.0.1-alpha.3: </span>Will be removed in 0.0.1.
+Prefer using the set_values method instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uuid</strong> – </p></li>
+<li><p><strong>value</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Datastream.create_datastream_schema">
+<span class="sig-name descname"><span class="pre">create_datastream_schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Datastream.create_datastream_schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Datastream.create_datastream_schema" title="Permalink to this definition"></a></dt>
+<dd><p>create the schema for the datastream or return the existing schema</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the datastream’s schema</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Datastream.create_observation_from_current">
+<span class="sig-name descname"><span class="pre">create_observation_from_current</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Datastream.create_observation_from_current"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Datastream.create_observation_from_current" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a new observation from the current values of the datastream and adds it to the list of observations.
+This prepares the datastream to send observations to the node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Datastream.get_datastream_url">
+<span class="sig-name descname"><span class="pre">get_datastream_url</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Datastream.get_datastream_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Datastream.get_datastream_url" title="Permalink to this definition"></a></dt>
+<dd><p>Get the URL of this datastream</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Datastream.get_ds_id">
+<span class="sig-name descname"><span class="pre">get_ds_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Datastream.get_ds_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Datastream.get_ds_id" title="Permalink to this definition"></a></dt>
+<dd><p>Get the ID of the datastream</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Datastream.get_ds_insert_url">
+<span class="sig-name descname"><span class="pre">get_ds_insert_url</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Datastream.get_ds_insert_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Datastream.get_ds_insert_url" title="Permalink to this definition"></a></dt>
+<dd><p>Get the parent system’s URL for datastreams</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Datastream.get_field_map">
+<span class="sig-name descname"><span class="pre">get_field_map</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Datastream.get_field_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Datastream.get_field_map" title="Permalink to this definition"></a></dt>
+<dd><p>Get the field map of the datastream. The field map is a dictionary of UUIDs to fields.
+It can be used to set values.</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.0.1-alpha.3: </span>Will be removed in 0.0.1</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Datastream.get_obs_list">
+<span class="sig-name descname"><span class="pre">get_obs_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Datastream.get_obs_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Datastream.get_obs_list" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the list of queued observations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Datastream.get_observation_url">
+<span class="sig-name descname"><span class="pre">get_observation_url</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Datastream.get_observation_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Datastream.get_observation_url" title="Permalink to this definition"></a></dt>
+<dd><p>Get the URL for observations of this datastream</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Datastream.insert_datastream">
+<span class="sig-name descname"><span class="pre">insert_datastream</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Datastream.insert_datastream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Datastream.insert_datastream" title="Permalink to this definition"></a></dt>
+<dd><p>Insert the datastream into the parent system. Throws an error if the parent system is not set.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Datastream.insert_obs_values_and_send">
+<span class="sig-name descname"><span class="pre">insert_obs_values_and_send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Datastream.insert_obs_values_and_send"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Datastream.insert_obs_values_and_send" title="Permalink to this definition"></a></dt>
+<dd><p>Creates observations from the provided values and sends them to the OSH Node in one go.
+This is the preferred method for sending observations but set_values and create_observation_from_current can be
+called separately if required.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>values</strong> – dictionary uuid-value pairs where the uuid is for a field in the datastream</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Datastream.publish_earliest_observation">
+<span class="sig-name descname"><span class="pre">publish_earliest_observation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hostname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transport</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'websockets'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Datastream.publish_earliest_observation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Datastream.publish_earliest_observation" title="Permalink to this definition"></a></dt>
+<dd><p>Publishes the earliest observation to the MQTT broker but doesn’t require any long-term client object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>port</strong> – the port to connect to the broker on</p></li>
+<li><p><strong>tls</strong> – a dict containing TLS configuration parameters for the client:
+dict = {‘ca_certs’:”&lt;ca_certs&gt;”, ‘certfile’:”&lt;certfile&gt;”, ‘keyfile’:”&lt;keyfile&gt;”,
+‘tls_version’:”&lt;tls_version&gt;”, ‘ciphers’:”&lt;ciphers”&gt;}
+ca_certs is required, all other parameters are optional and will default to None if not provided,
+which results in the client using the default behaviour - see the paho.mqtt.client documentation.
+Defaults to None, which indicates that TLS should not be used.</p></li>
+<li><p><strong>username</strong> – optional, use when auth is required</p></li>
+<li><p><strong>password</strong> – optional, use when auth is required</p></li>
+<li><p><strong>transport</strong> – the transport to use, defaults to websockets, other option is tcp</p></li>
+<li><p><strong>hostname</strong> – the hostname of the broker</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Datastream.publish_earliest_observation_client">
+<span class="sig-name descname"><span class="pre">publish_earliest_observation_client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Datastream.publish_earliest_observation_client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Datastream.publish_earliest_observation_client" title="Permalink to this definition"></a></dt>
+<dd><p>Publishes the earliest observation to the MQTT broker using a provided MQTT client.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>client</strong> – the client to use to publish the observation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Datastream.send_earliest_observation">
+<span class="sig-name descname"><span class="pre">send_earliest_observation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Datastream.send_earliest_observation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Datastream.send_earliest_observation" title="Permalink to this definition"></a></dt>
+<dd><p>Sends the first observation in the list of observations. These should be in chronological order, though setting
+manual times for can break this. To prevent issues it is recommended that observations be sent as they are created
+or created in chronological order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the observation was sent successfully, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Datastream.send_observation_batch">
+<span class="sig-name descname"><span class="pre">send_observation_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Datastream.send_observation_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Datastream.send_observation_batch" title="Permalink to this definition"></a></dt>
+<dd><p>Attempts to send a batch of observations to the OSH Node. Actual number of observations will be the least of
+the batch size and the number of observations in the list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Datastream.set_field_map">
+<span class="sig-name descname"><span class="pre">set_field_map</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Datastream.set_field_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Datastream.set_field_map" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the field map of the datastream. This is generated from the root component.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Datastream.set_topic">
+<span class="sig-name descname"><span class="pre">set_topic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Datastream.set_topic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Datastream.set_topic" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the topic for the datastream. If no topic is provided, the default topic is used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>topic</strong> – MQTT topic the datastream will publish observations to</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the topic set by the method</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Datastream.set_values">
+<span class="sig-name descname"><span class="pre">set_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Datastream.set_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Datastream.set_values" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the values of the datastream from a dictionary. The format required is dependent on the composition of the
+components. Top level is most often a dictionary representing a DataRecordComponent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>values</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.DatastreamNotInserted">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyswapi.datastreams_and_observations.</span></span><span class="sig-name descname"><span class="pre">DatastreamNotInserted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'The</span> <span class="pre">Datastream</span> <span class="pre">has</span> <span class="pre">not</span> <span class="pre">been</span> <span class="pre">inserted</span> <span class="pre">into</span> <span class="pre">the</span> <span class="pre">OSH</span> <span class="pre">Node.</span> <span class="pre">Please</span> <span class="pre">insert</span> <span class="pre">the</span> <span class="pre">datastream</span> <span class="pre">before</span> <span class="pre">attempting</span> <span class="pre">to</span> <span class="pre">insert</span> <span class="pre">observations'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#DatastreamNotInserted"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.DatastreamNotInserted" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.InvalidDatastream">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyswapi.datastreams_and_observations.</span></span><span class="sig-name descname"><span class="pre">InvalidDatastream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'The</span> <span class="pre">Datastream</span> <span class="pre">cannot</span> <span class="pre">be</span> <span class="pre">built.</span> <span class="pre">Please</span> <span class="pre">check</span> <span class="pre">that</span> <span class="pre">all</span> <span class="pre">required</span> <span class="pre">fields</span> <span class="pre">are</span> <span class="pre">set'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#InvalidDatastream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.InvalidDatastream" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Observation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyswapi.datastreams_and_observations.</span></span><span class="sig-name descname"><span class="pre">Observation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_datastream</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyswapi.datastreams_and_observations.Datastream" title="pyswapi.datastreams_and_observations.Datastream"><span class="pre">Datastream</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Observation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Observation" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>An observation is a single data point for a datastream. They are intended to be created by the parent datastream,
+but can be created manually. Doing so may result in unexpected behavior.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>parent_datastream: The datastream that this observation belongs to
+id: The UUID of the observation
+timestamp: The timestamp of the observation
+__name_value_map: A dictionary of the field names and their respective values
+__observation_dict: A dictionary representation of the observation for conversion to JSON</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Observation.create_name_value_map">
+<span class="sig-name descname"><span class="pre">create_name_value_map</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Observation.create_name_value_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Observation.create_name_value_map" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Observation.create_observation_dict">
+<span class="sig-name descname"><span class="pre">create_observation_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Observation.create_observation_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Observation.create_observation_dict" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Observation.create_observation_dict_with_time">
+<span class="sig-name descname"><span class="pre">create_observation_dict_with_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obs_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Observation.create_observation_dict_with_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Observation.create_observation_dict_with_time" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Observation.get_observation_dict">
+<span class="sig-name descname"><span class="pre">get_observation_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Observation.get_observation_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Observation.get_observation_dict" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.Observation.get_observation_json">
+<span class="sig-name descname"><span class="pre">get_observation_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#Observation.get_observation_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.Observation.get_observation_json" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.ParentSystemNotFound">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyswapi.datastreams_and_observations.</span></span><span class="sig-name descname"><span class="pre">ParentSystemNotFound</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Cannot</span> <span class="pre">insert</span> <span class="pre">datastream</span> <span class="pre">without</span> <span class="pre">a</span> <span class="pre">parent</span> <span class="pre">system'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#ParentSystemNotFound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.ParentSystemNotFound" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyswapi.datastreams_and_observations.build_ds_from_node">
+<span class="sig-prename descclassname"><span class="pre">pyswapi.datastreams_and_observations.</span></span><span class="sig-name descname"><span class="pre">build_ds_from_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_port</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_system</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyswapi.system.System" title="pyswapi.system.System"><span class="pre">System</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/datastreams_and_observations.html#build_ds_from_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.datastreams_and_observations.build_ds_from_node" title="Permalink to this definition"></a></dt>
+<dd><p>Builds a list of Datastreams from a SensorHub node. May lose some resolution compared to creating a datastream
+directly, but the API does not currently provide things like definition or encoding in some cases.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node_url</strong> – base URL of the node</p></li>
+<li><p><strong>node_port</strong> – port the node is running on (often 8181 or 8282)</p></li>
+<li><p><strong>node_endpoint</strong> – endpoint of the node, typically ‘sensorhub’ or APITerms.SENSORHUB.type</p></li>
+<li><p><strong>parent_system</strong> – the System object that this datastream belongs to</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a list of datastream objects</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="pyswapi-control-streams-and-commands">
+<h1>PySWAPI Control Streams and Commands<a class="headerlink" href="#pyswapi-control-streams-and-commands" title="Permalink to this heading"></a></h1>
+<p>The Control Streams and Commands module is responsible for creating control interfaces and interacting with them
+through commands and status updates.</p>
+<span class="target" id="module-pyswapi.control_streams_and_commands"></span><dl class="py class">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.Command">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyswapi.control_streams_and_commands.</span></span><span class="sig-name descname"><span class="pre">Command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">control_stream_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">issue_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">execution_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/control_streams_and_commands.html#Command"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.control_streams_and_commands.Command" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.Command.control_stream_id">
+<span class="sig-name descname"><span class="pre">control_stream_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyswapi.control_streams_and_commands.Command.control_stream_id" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.Command.current_status">
+<span class="sig-name descname"><span class="pre">current_status</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyswapi.control_streams_and_commands.Command.current_status" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.Command.execution_time">
+<span class="sig-name descname"><span class="pre">execution_time</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><a class="headerlink" href="#pyswapi.control_streams_and_commands.Command.execution_time" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.Command.issue_time">
+<span class="sig-name descname"><span class="pre">issue_time</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><a class="headerlink" href="#pyswapi.control_streams_and_commands.Command.issue_time" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.Command.params">
+<span class="sig-name descname"><span class="pre">params</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><a class="headerlink" href="#pyswapi.control_streams_and_commands.Command.params" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.Command.params_as_json">
+<span class="sig-name descname"><span class="pre">params_as_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/control_streams_and_commands.html#Command.params_as_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.control_streams_and_commands.Command.params_as_json" title="Permalink to this definition"></a></dt>
+<dd><p>returns the commands parameters as a json string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.Command.user_id">
+<span class="sig-name descname"><span class="pre">user_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyswapi.control_streams_and_commands.Command.user_id" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.CommandStatusCode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyswapi.control_streams_and_commands.</span></span><span class="sig-name descname"><span class="pre">CommandStatusCode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/control_streams_and_commands.html#CommandStatusCode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.control_streams_and_commands.CommandStatusCode" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>Defines accepted command status codes</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.CommandStatusCode.ACCEPTED">
+<span class="sig-name descname"><span class="pre">ACCEPTED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ACCEPTED'</span></em><a class="headerlink" href="#pyswapi.control_streams_and_commands.CommandStatusCode.ACCEPTED" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.CommandStatusCode.CANCELLED">
+<span class="sig-name descname"><span class="pre">CANCELLED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'CANCELLED'</span></em><a class="headerlink" href="#pyswapi.control_streams_and_commands.CommandStatusCode.CANCELLED" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.CommandStatusCode.COMPLETED">
+<span class="sig-name descname"><span class="pre">COMPLETED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'COMPLETED'</span></em><a class="headerlink" href="#pyswapi.control_streams_and_commands.CommandStatusCode.COMPLETED" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.CommandStatusCode.EXECUTING">
+<span class="sig-name descname"><span class="pre">EXECUTING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'EXECUTING'</span></em><a class="headerlink" href="#pyswapi.control_streams_and_commands.CommandStatusCode.EXECUTING" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.CommandStatusCode.FAILED">
+<span class="sig-name descname"><span class="pre">FAILED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'FAILED'</span></em><a class="headerlink" href="#pyswapi.control_streams_and_commands.CommandStatusCode.FAILED" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.CommandStatusCode.PENDING">
+<span class="sig-name descname"><span class="pre">PENDING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PENDING'</span></em><a class="headerlink" href="#pyswapi.control_streams_and_commands.CommandStatusCode.PENDING" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.CommandStatusCode.REJECTED">
+<span class="sig-name descname"><span class="pre">REJECTED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'REJECTED'</span></em><a class="headerlink" href="#pyswapi.control_streams_and_commands.CommandStatusCode.REJECTED" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.CommandStatusCode.SCHEDULED">
+<span class="sig-name descname"><span class="pre">SCHEDULED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SCHEDULED'</span></em><a class="headerlink" href="#pyswapi.control_streams_and_commands.CommandStatusCode.SCHEDULED" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.CommandStatusCode.UPDATED">
+<span class="sig-name descname"><span class="pre">UPDATED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'UPDATED'</span></em><a class="headerlink" href="#pyswapi.control_streams_and_commands.CommandStatusCode.UPDATED" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.ControlInterface">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyswapi.control_streams_and_commands.</span></span><span class="sig-name descname"><span class="pre">ControlInterface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_ControlInterface__command_schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataRecordComponent</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_ControlInterface__csi_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_ControlInterface__mqtt_client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MQTTComm</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_ControlInterface__parent_system</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyswapi.system.System" title="pyswapi.system.System"><span class="pre">System</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/control_streams_and_commands.html#ControlInterface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.control_streams_and_commands.ControlInterface" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Control interfaces define the commands that can be issued to a system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – The machine name of the control interface</p></li>
+<li><p><strong>input_name</strong> – The human-readable name of the control interface</p></li>
+<li><p><strong>__command_schema</strong> – The schema of the commands that can be issued to the system, often a reflection of the
+system’s data model</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.ControlInterface.add_schema">
+<span class="sig-name descname"><span class="pre">add_schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataRecordComponent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/control_streams_and_commands.html#ControlInterface.add_schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.control_streams_and_commands.ControlInterface.add_schema" title="Permalink to this definition"></a></dt>
+<dd><p>Adds a schema to the control interface</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>component</strong> – The DataRecordComponent that defines the names and types of the commands that can be issued to
+the system</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.ControlInterface.build_command_interfaces_from_system">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build_command_interfaces_from_system</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyswapi.system.System" title="pyswapi.system.System"><span class="pre">System</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/control_streams_and_commands.html#ControlInterface.build_command_interfaces_from_system"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.control_streams_and_commands.ControlInterface.build_command_interfaces_from_system" title="Permalink to this definition"></a></dt>
+<dd><p>Builds the control interface from the system
+:return: list of ControlInterfaces</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.ControlInterface.get_commands">
+<span class="sig-name descname"><span class="pre">get_commands</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/control_streams_and_commands.html#ControlInterface.get_commands"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.control_streams_and_commands.ControlInterface.get_commands" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the commands for the control interface</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.ControlInterface.input_name">
+<span class="sig-name descname"><span class="pre">input_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyswapi.control_streams_and_commands.ControlInterface.input_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.ControlInterface.insert_command">
+<span class="sig-name descname"><span class="pre">insert_command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyswapi.control_streams_and_commands.Command" title="pyswapi.control_streams_and_commands.Command"><span class="pre">Command</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/control_streams_and_commands.html#ControlInterface.insert_command"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.control_streams_and_commands.ControlInterface.insert_command" title="Permalink to this definition"></a></dt>
+<dd><p>Inserts a command into the control interface. The node will reject commands if there is no subscriber to the
+command interface’s topic, therefore it’s recommended to use publish_command instead.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>command</strong> – The command to be inserted</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.ControlInterface.insert_control_stream">
+<span class="sig-name descname"><span class="pre">insert_control_stream</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/control_streams_and_commands.html#ControlInterface.insert_control_stream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.control_streams_and_commands.ControlInterface.insert_control_stream" title="Permalink to this definition"></a></dt>
+<dd><p>Inserts the control stream into the parent system</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.ControlInterface.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyswapi.control_streams_and_commands.ControlInterface.name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.ControlInterface.publish_command">
+<span class="sig-name descname"><span class="pre">publish_command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyswapi.control_streams_and_commands.Command" title="pyswapi.control_streams_and_commands.Command"><span class="pre">Command</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/control_streams_and_commands.html#ControlInterface.publish_command"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.control_streams_and_commands.ControlInterface.publish_command" title="Permalink to this definition"></a></dt>
+<dd><p>Publishes a command to the control interface. OSH rejects commands if there is no subscriber to the command
+interface’s topic</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>system</strong> – The system to which the command will be published</p></li>
+<li><p><strong>client</strong> – </p></li>
+<li><p><strong>command</strong> – The command to be published</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.ControlInterface.publish_control_stream_interface">
+<span class="sig-name descname"><span class="pre">publish_control_stream_interface</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/control_streams_and_commands.html#ControlInterface.publish_control_stream_interface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.control_streams_and_commands.ControlInterface.publish_control_stream_interface" title="Permalink to this definition"></a></dt>
+<dd><p>Publishes the control stream to topic /api/systems/{system_id}/controls using the MQTT client set by the
+set_client method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>system</strong> – The system to which the control stream will be published</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.ControlInterface.retrieve_schema">
+<span class="sig-name descname"><span class="pre">retrieve_schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/control_streams_and_commands.html#ControlInterface.retrieve_schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.control_streams_and_commands.ControlInterface.retrieve_schema" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the schema for the control interface</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.ControlInterface.set_client">
+<span class="sig-name descname"><span class="pre">set_client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MQTTComm</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/control_streams_and_commands.html#ControlInterface.set_client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.control_streams_and_commands.ControlInterface.set_client" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the MQTT client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>client</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.ControlInterface.set_parent_system">
+<span class="sig-name descname"><span class="pre">set_parent_system</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyswapi.system.System" title="pyswapi.system.System"><span class="pre">System</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/control_streams_and_commands.html#ControlInterface.set_parent_system"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.control_streams_and_commands.ControlInterface.set_parent_system" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the parent system of the control interface</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>system</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.ControlInterface.subscribe_to_commands">
+<span class="sig-name descname"><span class="pre">subscribe_to_commands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/control_streams_and_commands.html#ControlInterface.subscribe_to_commands"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.control_streams_and_commands.ControlInterface.subscribe_to_commands" title="Permalink to this definition"></a></dt>
+<dd><p>Subscribes to the command interface’s topic</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>callback</strong> – handler for dealing with the received commands, by default the handler just accepts
+the command with a status of ACCEPTED and does no further processing</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.ControlStream">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyswapi.control_streams_and_commands.</span></span><span class="sig-name descname"><span class="pre">ControlStream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">issue_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">execution_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">controlled_properties</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pyswapi.control_streams_and_commands.ControlledProperty" title="pyswapi.control_streams_and_commands.ControlledProperty"><span class="pre">pyswapi.control_streams_and_commands.ControlledProperty</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/control_streams_and_commands.html#ControlStream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.control_streams_and_commands.ControlStream" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Unused. Will be implemented as the API Client rolls out support for the Connected Systems API</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.ControlStream.controlled_properties">
+<span class="sig-name descname"><span class="pre">controlled_properties</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pyswapi.control_streams_and_commands.ControlledProperty" title="pyswapi.control_streams_and_commands.ControlledProperty"><span class="pre">pyswapi.control_streams_and_commands.ControlledProperty</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyswapi.control_streams_and_commands.ControlStream.controlled_properties" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.ControlStream.execution_time">
+<span class="sig-name descname"><span class="pre">execution_time</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><a class="headerlink" href="#pyswapi.control_streams_and_commands.ControlStream.execution_time" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.ControlStream.formats">
+<span class="sig-name descname"><span class="pre">formats</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#pyswapi.control_streams_and_commands.ControlStream.formats" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.ControlStream.issue_time">
+<span class="sig-name descname"><span class="pre">issue_time</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><a class="headerlink" href="#pyswapi.control_streams_and_commands.ControlStream.issue_time" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.ControlStream.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyswapi.control_streams_and_commands.ControlStream.name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.ControlledProperty">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyswapi.control_streams_and_commands.</span></span><span class="sig-name descname"><span class="pre">ControlledProperty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">definition</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/control_streams_and_commands.html#ControlledProperty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.control_streams_and_commands.ControlledProperty" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.ControlledProperty.definition">
+<span class="sig-name descname"><span class="pre">definition</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyswapi.control_streams_and_commands.ControlledProperty.definition" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.control_streams_and_commands.ControlledProperty.label">
+<span class="sig-name descname"><span class="pre">label</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyswapi.control_streams_and_commands.ControlledProperty.label" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="pyswapi-constants">
+<h1>PySWAPI Constants<a class="headerlink" href="#pyswapi-constants" title="Permalink to this heading"></a></h1>
+<p>The Constants module is a collection of constant values that make appearances throughout the library.
+It’s unlikely that you’ll be using them too often, but they’re there if you need them.</p>
+<span class="target" id="module-pyswapi.constants"></span><dl class="py class">
+<dt class="sig sig-object py" id="pyswapi.constants.APITerms">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyswapi.constants.</span></span><span class="sig-name descname"><span class="pre">APITerms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/constants.html#APITerms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.constants.APITerms" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>Defines common endpoint terms used in the API</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.APITerms.API">
+<span class="sig-name descname"><span class="pre">API</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'api'</span></em><a class="headerlink" href="#pyswapi.constants.APITerms.API" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.APITerms.DATASTREAMS">
+<span class="sig-name descname"><span class="pre">DATASTREAMS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'datastreams'</span></em><a class="headerlink" href="#pyswapi.constants.APITerms.DATASTREAMS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.APITerms.FOIS">
+<span class="sig-name descname"><span class="pre">FOIS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'featuresOfInterest'</span></em><a class="headerlink" href="#pyswapi.constants.APITerms.FOIS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.APITerms.OBSERVATIONS">
+<span class="sig-name descname"><span class="pre">OBSERVATIONS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'observations'</span></em><a class="headerlink" href="#pyswapi.constants.APITerms.OBSERVATIONS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.APITerms.SYSTEMS">
+<span class="sig-name descname"><span class="pre">SYSTEMS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'systems'</span></em><a class="headerlink" href="#pyswapi.constants.APITerms.SYSTEMS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.APITerms.TASKING">
+<span class="sig-name descname"><span class="pre">TASKING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'controls'</span></em><a class="headerlink" href="#pyswapi.constants.APITerms.TASKING" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyswapi.constants.ObservationFormat">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyswapi.constants.</span></span><span class="sig-name descname"><span class="pre">ObservationFormat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/constants.html#ObservationFormat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.constants.ObservationFormat" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>Defines common observation formats</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.ObservationFormat.JSON">
+<span class="sig-name descname"><span class="pre">JSON</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'application/om+json'</span></em><a class="headerlink" href="#pyswapi.constants.ObservationFormat.JSON" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.ObservationFormat.SWE_BINARY">
+<span class="sig-name descname"><span class="pre">SWE_BINARY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'application/swe+binary'</span></em><a class="headerlink" href="#pyswapi.constants.ObservationFormat.SWE_BINARY" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.ObservationFormat.SWE_CSV">
+<span class="sig-name descname"><span class="pre">SWE_CSV</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'application/swe+csv'</span></em><a class="headerlink" href="#pyswapi.constants.ObservationFormat.SWE_CSV" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.ObservationFormat.SWE_JSON">
+<span class="sig-name descname"><span class="pre">SWE_JSON</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'application/swe+json'</span></em><a class="headerlink" href="#pyswapi.constants.ObservationFormat.SWE_JSON" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.ObservationFormat.SWE_XML">
+<span class="sig-name descname"><span class="pre">SWE_XML</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'application/swe+xml'</span></em><a class="headerlink" href="#pyswapi.constants.ObservationFormat.SWE_XML" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.ObservationFormat.XML">
+<span class="sig-name descname"><span class="pre">XML</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'application/om+xml'</span></em><a class="headerlink" href="#pyswapi.constants.ObservationFormat.XML" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyswapi.constants.SystemTypes">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyswapi.constants.</span></span><span class="sig-name descname"><span class="pre">SystemTypes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyswapi/constants.html#SystemTypes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyswapi.constants.SystemTypes" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>Defines the system types</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyswapi.constants.SystemTypes.FEATURE">
+<span class="sig-name descname"><span class="pre">FEATURE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Feature'</span></em><a class="headerlink" href="#pyswapi.constants.SystemTypes.FEATURE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ian Patterson.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

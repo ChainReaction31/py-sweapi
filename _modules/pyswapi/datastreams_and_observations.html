@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyswapi.datastreams_and_observations &mdash; PySWAPI 0.0.1-alpha documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PySWAPI
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PySWAPI</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyswapi.datastreams_and_observations</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyswapi.datastreams_and_observations</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
+
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">oshdatacore.component_implementations</span> <span class="kn">import</span> <span class="n">DataRecordComponent</span><span class="p">,</span> <span class="n">TimeComponent</span><span class="p">,</span> <span class="n">QuantityComponent</span><span class="p">,</span> <span class="n">CountComponent</span><span class="p">,</span> \
+    <span class="n">CategoryComponent</span><span class="p">,</span> <span class="n">TextComponent</span><span class="p">,</span> <span class="n">BooleanComponent</span>
+<span class="kn">from</span> <span class="nn">oshdatacore.encoding</span> <span class="kn">import</span> <span class="n">AbstractEncoding</span>
+<span class="kn">from</span> <span class="nn">paho.mqtt</span> <span class="kn">import</span> <span class="n">publish</span>
+
+<span class="kn">from</span> <span class="nn">pyswapi.constants</span> <span class="kn">import</span> <span class="n">APITerms</span>
+<span class="kn">from</span> <span class="nn">pyswapi.endpoints</span> <span class="kn">import</span> <span class="n">datastreams</span>
+<span class="kn">from</span> <span class="nn">pyswapi.system</span> <span class="kn">import</span> <span class="n">System</span>
+
+
+<div class="viewcode-block" id="build_ds_from_node"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.build_ds_from_node">[docs]</a><span class="k">def</span> <span class="nf">build_ds_from_node</span><span class="p">(</span><span class="n">node_url</span><span class="p">,</span> <span class="n">node_port</span><span class="p">,</span> <span class="n">node_endpoint</span><span class="p">,</span> <span class="n">parent_system</span><span class="p">:</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Builds a list of Datastreams from a SensorHub node. May lose some resolution compared to creating a datastream</span>
+<span class="sd">    directly, but the API does not currently provide things like definition or encoding in some cases.</span>
+
+<span class="sd">    :param node_url: base URL of the node</span>
+<span class="sd">    :param node_port: port the node is running on (often 8181 or 8282)</span>
+<span class="sd">    :param node_endpoint: endpoint of the node, typically &#39;sensorhub&#39; or APITerms.SENSORHUB.type</span>
+<span class="sd">    :param parent_system: the System object that this datastream belongs to</span>
+<span class="sd">    :return: a list of datastream objects</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">datastreams</span><span class="o">.</span><span class="n">get_datastream_from_system</span><span class="p">(</span><span class="n">node_api_endpoint</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">node_url</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">node_port</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">node_endpoint</span><span class="si">}</span><span class="s1">/api&#39;</span><span class="p">,</span>
+                                                      <span class="n">system_id</span><span class="o">=</span><span class="n">parent_system</span><span class="o">.</span><span class="n">get_sys_id</span><span class="p">())</span>
+    <span class="n">ds_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">ds</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;items&#39;</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+        <span class="n">new_ds</span> <span class="o">=</span> <span class="n">Datastream</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
+            <span class="n">output_name</span><span class="o">=</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;outputName&#39;</span><span class="p">],</span>
+            <span class="n">encoding</span><span class="o">=</span><span class="n">AbstractEncoding</span><span class="p">(),</span>
+            <span class="n">parent_system</span><span class="o">=</span><span class="n">parent_system</span><span class="p">,</span>
+            <span class="n">obs_format</span><span class="o">=</span><span class="kc">None</span>
+        <span class="p">)</span>
+
+        <span class="n">schema_resp</span> <span class="o">=</span> <span class="n">datastreams</span><span class="o">.</span><span class="n">get_datastream_schema</span><span class="p">(</span><span class="n">node_api_endpoint</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">node_url</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">node_port</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">node_endpoint</span><span class="si">}</span><span class="s1">/api&#39;</span><span class="p">,</span>
+                                                        <span class="n">datastream_id</span><span class="o">=</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+        <span class="n">r_json</span> <span class="o">=</span> <span class="n">schema_resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="c1"># TODO: replace with datarecord_from_json from pyswapi.utilities</span>
+        <span class="n">ds_root</span> <span class="o">=</span> <span class="n">DataRecordComponent</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">r_json</span><span class="p">[</span><span class="s1">&#39;resultSchema&#39;</span><span class="p">][</span><span class="s1">&#39;description&#39;</span><span class="p">],</span>
+                                      <span class="n">label</span><span class="o">=</span><span class="n">r_json</span><span class="p">[</span><span class="s1">&#39;resultSchema&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">],</span>
+                                      <span class="n">name</span><span class="o">=</span><span class="n">r_json</span><span class="p">[</span><span class="s1">&#39;resultSchema&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">],</span>
+                                      <span class="n">definition</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">schema_resp</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;resultSchema&#39;</span><span class="p">][</span><span class="s1">&#39;fields&#39;</span><span class="p">]:</span>
+            <span class="n">ds_root</span><span class="o">.</span><span class="n">add_field</span><span class="p">(</span><span class="n">__ds_builder</span><span class="p">(</span><span class="n">field</span><span class="p">))</span>
+
+        <span class="n">ds_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_ds</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ds_list</span></div>
+
+
+<span class="k">def</span> <span class="nf">__ds_builder</span><span class="p">(</span><span class="n">field_dict</span><span class="p">):</span>
+    <span class="c1"># TODO: replace with datarecord_field_builder from pyswapi.utilities</span>
+    <span class="k">match</span> <span class="n">field_dict</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]:</span>
+        <span class="k">case</span> <span class="s1">&#39;Time&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">TimeComponent</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">field_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">field_dict</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span>
+                                 <span class="n">description</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">case</span> <span class="s1">&#39;Boolean&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">BooleanComponent</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">field_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">field_dict</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span>
+                                    <span class="n">description</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">case</span> <span class="s1">&#39;Text&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">TextComponent</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">field_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">field_dict</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span>
+                                 <span class="n">description</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">case</span> <span class="s1">&#39;Category&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">CategoryComponent</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">field_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">field_dict</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span>
+                                     <span class="n">description</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">case</span> <span class="s1">&#39;Count&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">CountComponent</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">field_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">field_dict</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span>
+                                  <span class="n">description</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">case</span> <span class="s1">&#39;Quantity&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">QuantityComponent</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">field_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">field_dict</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span>
+                                     <span class="n">description</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+                                     <span class="n">uom</span><span class="o">=</span><span class="n">field_dict</span><span class="p">[</span><span class="s1">&#39;uom&#39;</span><span class="p">][</span><span class="s1">&#39;href&#39;</span><span class="p">])</span>
+        <span class="k">case</span> <span class="s1">&#39;DataRecord&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">DataRecordComponent</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">field_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">field_dict</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span>
+                                       <span class="n">description</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+                                       <span class="n">fields</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">__ds_builder</span><span class="p">,</span> <span class="n">field_dict</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">])))</span>
+
+
+<div class="viewcode-block" id="Datastream"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Datastream">[docs]</a><span class="k">class</span> <span class="nc">Datastream</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">output_name</span><span class="p">,</span> <span class="n">encoding</span><span class="p">,</span> <span class="n">obs_format</span><span class="p">,</span> <span class="n">parent_system</span><span class="p">,</span>
+                 <span class="n">root_component</span><span class="p">:</span> <span class="n">DataRecordComponent</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Datastreams define the structure of data sent to an OSH Node. They provide a means of defining what and how</span>
+<span class="sd">        data must be packaged.</span>
+
+<span class="sd">        :param name: Human-readable name for the datastream</span>
+<span class="sd">        :param description: A brief description of the datastream</span>
+<span class="sd">        :param output_name: The machine name of the datastream, often lowercase and hyphenated (e.g. &#39;your-output&#39;)</span>
+<span class="sd">        :param encoding: One of the supported encodings</span>
+<span class="sd">        :param root_component: The DataRecordComponent that is the root of the datastream</span>
+<span class="sd">        :param obs_format: The observation format of the datastream (e.g. &#39;application/om+json&#39;)</span>
+<span class="sd">        :param parent_system: The parent system of the datastream</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_name</span> <span class="o">=</span> <span class="n">output_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="n">encoding</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obs_format</span> <span class="o">=</span> <span class="n">obs_format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_system</span> <span class="o">=</span> <span class="n">parent_system</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root_component</span> <span class="o">=</span> <span class="n">root_component</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ds_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__topic</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">APITerms</span><span class="o">.</span><span class="n">API</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">APITerms</span><span class="o">.</span><span class="n">DATASTREAMS</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__ds_id</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">APITerms</span><span class="o">.</span><span class="n">OBSERVATIONS</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__field_map</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__observations</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="Datastream.create_datastream_schema"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Datastream.create_datastream_schema">[docs]</a>    <span class="k">def</span> <span class="nf">create_datastream_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        create the schema for the datastream or return the existing schema</span>
+
+<span class="sd">        :return: the datastream&#39;s schema</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">schema</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([</span>
+                <span class="p">(</span><span class="s1">&#39;obsFormat&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">obs_format</span><span class="p">),</span>
+                <span class="p">(</span><span class="s1">&#39;resultSchema&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_component</span><span class="o">.</span><span class="n">datastructure_to_dict</span><span class="p">()),</span>
+                <span class="p">(</span><span class="s1">&#39;resultEncoding&#39;</span><span class="p">,</span> <span class="nb">vars</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">encoding</span><span class="p">))</span>
+            <span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">schema</span>
+            <span class="k">return</span> <span class="n">schema</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span></div>
+
+    <span class="c1"># TODO: Test this method thoroughly</span>
+<div class="viewcode-block" id="Datastream.insert_datastream"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Datastream.insert_datastream">[docs]</a>    <span class="k">def</span> <span class="nf">insert_datastream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Insert the datastream into the parent system. Throws an error if the parent system is not set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_system</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">datastream_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([</span>
+                <span class="p">(</span><span class="s1">&#39;outputName&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_name</span><span class="p">),</span>
+                <span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                <span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">),</span>
+                <span class="p">(</span><span class="s1">&#39;schema&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_datastream_schema</span><span class="p">()),</span>
+            <span class="p">])</span>
+
+            <span class="n">r</span> <span class="o">=</span> <span class="n">datastreams</span><span class="o">.</span><span class="n">post_datastream</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent_system</span><span class="o">.</span><span class="n">get_node_api_url</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_system</span><span class="o">.</span><span class="n">get_sys_id</span><span class="p">(),</span>
+                                            <span class="n">datastream_dict</span><span class="p">)</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Location&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__ds_id</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="n">removeprefix</span><span class="p">(</span><span class="s1">&#39;/datastreams/&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_topic</span><span class="p">()</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ds_id</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ParentSystemNotFound</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Datastream.get_datastream_url"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Datastream.get_datastream_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_datastream_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the URL of this datastream</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ds_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">DatastreamNotInserted</span><span class="p">()</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">parent_system</span><span class="o">.</span><span class="n">get_system_url</span><span class="p">()</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">APITerms</span><span class="o">.</span><span class="n">DATASTREAMS</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__ds_id</span><span class="si">}</span><span class="s1">&#39;</span></div>
+
+<div class="viewcode-block" id="Datastream.get_ds_insert_url"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Datastream.get_ds_insert_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_ds_insert_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the parent system&#39;s URL for datastreams</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">parent_system</span><span class="o">.</span><span class="n">get_system_url</span><span class="p">()</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">parent_system</span><span class="o">.</span><span class="n">get_sys_id</span><span class="p">()</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">APITerms</span><span class="o">.</span><span class="n">DATASTREAMS</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">&#39;</span></div>
+
+<div class="viewcode-block" id="Datastream.get_observation_url"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Datastream.get_observation_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_observation_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the URL for observations of this datastream</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">parent_system</span><span class="o">.</span><span class="n">get_full_node_url</span><span class="p">()</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">APITerms</span><span class="o">.</span><span class="n">API</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">APITerms</span><span class="o">.</span><span class="n">DATASTREAMS</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">/&#39;</span> \
+               <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ds_id</span><span class="p">()</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">APITerms</span><span class="o">.</span><span class="n">OBSERVATIONS</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">&#39;</span></div>
+
+<div class="viewcode-block" id="Datastream.add_root_component"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Datastream.add_root_component">[docs]</a>    <span class="k">def</span> <span class="nf">add_root_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component</span><span class="p">:</span> <span class="n">DataRecordComponent</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a root component to the datastream. Use this method only if the datastream does not already have a root, or</span>
+<span class="sd">        a change needs to be made to the root component. If the datastreams already has observations, this method will</span>
+<span class="sd">        remove them as they are no longer valid.</span>
+
+<span class="sd">        :param component:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_component</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__observations</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root_component</span> <span class="o">=</span> <span class="n">component</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_field_map</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Datastream.get_ds_id"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Datastream.get_ds_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_ds_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the ID of the datastream</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ds_id</span></div>
+
+<div class="viewcode-block" id="Datastream.add_field"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Datastream.add_field">[docs]</a>    <span class="k">def</span> <span class="nf">add_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a field to the root component of the datastream.</span>
+
+<span class="sd">        :param field:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root_component</span><span class="o">.</span><span class="n">add_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+        <span class="c1"># TODO: it is not performant to rebuild the field map every time a field is added,</span>
+        <span class="c1">#  change this in a future version</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_field_map</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Datastream.add_value_by_uuid"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Datastream.add_value_by_uuid">[docs]</a>    <span class="k">def</span> <span class="nf">add_value_by_uuid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uuid</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a value to the datastream by UUID. This method doesn&#39;t work in all cases and will be removed in a future</span>
+<span class="sd">        version.</span>
+
+<span class="sd">        .. deprecated:: 0.0.1-alpha.3</span>
+<span class="sd">            Will be removed in 0.0.1.</span>
+<span class="sd">            Prefer using the set_values method instead.</span>
+
+<span class="sd">        :param uuid:</span>
+<span class="sd">        :param value:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__field_map</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_field_map</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__field_map</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span></div>
+
+<div class="viewcode-block" id="Datastream.get_field_map"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Datastream.get_field_map">[docs]</a>    <span class="k">def</span> <span class="nf">get_field_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the field map of the datastream. The field map is a dictionary of UUIDs to fields.</span>
+<span class="sd">        It can be used to set values.</span>
+
+<span class="sd">        .. deprecated:: 0.0.1-alpha.3</span>
+<span class="sd">            Will be removed in 0.0.1</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_field_map</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__field_map</span></div>
+
+<div class="viewcode-block" id="Datastream.set_field_map"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Datastream.set_field_map">[docs]</a>    <span class="k">def</span> <span class="nf">set_field_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the field map of the datastream. This is generated from the root component.</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">field_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_component</span><span class="o">.</span><span class="n">flat_id_to_field_map</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__field_map</span> <span class="o">=</span> <span class="n">field_map</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Datastream.create_observation_from_current"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Datastream.create_observation_from_current">[docs]</a>    <span class="k">def</span> <span class="nf">create_observation_from_current</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new observation from the current values of the datastream and adds it to the list of observations.</span>
+<span class="sd">        This prepares the datastream to send observations to the node.</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_obs</span> <span class="o">=</span> <span class="n">Observation</span><span class="p">(</span><span class="n">parent_datastream</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__observations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_obs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Datastream.set_values"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Datastream.set_values">[docs]</a>    <span class="k">def</span> <span class="nf">set_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the values of the datastream from a dictionary. The format required is dependent on the composition of the</span>
+<span class="sd">        components. Top level is most often a dictionary representing a DataRecordComponent.</span>
+
+<span class="sd">        :param values:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root_component</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Datastream.send_earliest_observation"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Datastream.send_earliest_observation">[docs]</a>    <span class="k">def</span> <span class="nf">send_earliest_observation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sends the first observation in the list of observations. These should be in chronological order, though setting</span>
+<span class="sd">        manual times for can break this. To prevent issues it is recommended that observations be sent as they are created</span>
+<span class="sd">        or created in chronological order.</span>
+
+<span class="sd">        :return: True if the observation was sent successfully, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_observation_url</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__observations</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__observations</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__observations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">json_obs</span> <span class="o">=</span> <span class="n">obs</span><span class="o">.</span><span class="n">get_observation_dict</span><span class="p">()</span>
+            <span class="c1"># TODO: we&#39;ll need to handle this differently when dealing with a binary datastream</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">json_obs</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">})</span>
+            <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">201</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__observations</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Datastream.send_observation_batch"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Datastream.send_observation_batch">[docs]</a>    <span class="k">def</span> <span class="nf">send_observation_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Attempts to send a batch of observations to the OSH Node. Actual number of observations will be the least of</span>
+<span class="sd">        the batch size and the number of observations in the list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_observation_url</span><span class="p">()</span>
+        <span class="n">batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__observations</span><span class="p">[:</span><span class="n">batch_size</span><span class="p">]</span>
+        <span class="c1"># TODO: as in send_earliest_observation, we&#39;ll need to handle this differently when dealing with a</span>
+        <span class="c1">#  binary datastream</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">batch</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">})</span>
+        <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">201</span><span class="p">:</span>
+            <span class="c1"># Remove the observations that were sent</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__observations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__observations</span><span class="p">[</span><span class="n">batch_size</span><span class="p">:]</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Datastream.insert_obs_values_and_send"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Datastream.insert_obs_values_and_send">[docs]</a>    <span class="k">def</span> <span class="nf">insert_obs_values_and_send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates observations from the provided values and sends them to the OSH Node in one go.</span>
+<span class="sd">        This is the preferred method for sending observations but set_values and create_observation_from_current can be</span>
+<span class="sd">        called separately if required.</span>
+
+<span class="sd">        :param values: dictionary uuid-value pairs where the uuid is for a field in the datastream</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_values</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_observation_from_current</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_earliest_observation</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Datastream.get_obs_list"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Datastream.get_obs_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_obs_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the list of queued observations.</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__observations</span></div>
+
+<div class="viewcode-block" id="Datastream.publish_earliest_observation"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Datastream.publish_earliest_observation">[docs]</a>    <span class="k">def</span> <span class="nf">publish_earliest_observation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hostname</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">tls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                     <span class="n">transport</span><span class="o">=</span><span class="s1">&#39;websockets&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Publishes the earliest observation to the MQTT broker but doesn&#39;t require any long-term client object.</span>
+
+<span class="sd">        :param port: the port to connect to the broker on</span>
+<span class="sd">        :param tls: a dict containing TLS configuration parameters for the client:</span>
+<span class="sd">                    dict = {&#39;ca_certs&#39;:&quot;&lt;ca_certs&gt;&quot;, &#39;certfile&#39;:&quot;&lt;certfile&gt;&quot;, &#39;keyfile&#39;:&quot;&lt;keyfile&gt;&quot;,</span>
+<span class="sd">                    &#39;tls_version&#39;:&quot;&lt;tls_version&gt;&quot;, &#39;ciphers&#39;:&quot;&lt;ciphers&quot;&gt;}</span>
+<span class="sd">                    ca_certs is required, all other parameters are optional and will default to None if not provided,</span>
+<span class="sd">                    which results in the client using the default behaviour - see the paho.mqtt.client documentation.</span>
+<span class="sd">                    Defaults to None, which indicates that TLS should not be used.</span>
+<span class="sd">        :param username: optional, use when auth is required</span>
+<span class="sd">        :param password: optional, use when auth is required</span>
+<span class="sd">        :param transport: the transport to use, defaults to websockets, other option is tcp</span>
+<span class="sd">        :param hostname: the hostname of the broker</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__observations</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__observations</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__observations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">json_obs</span> <span class="o">=</span> <span class="n">obs</span><span class="o">.</span><span class="n">get_observation_dict</span><span class="p">()</span>
+            <span class="n">hn</span> <span class="o">=</span> <span class="n">hostname</span> <span class="k">if</span> <span class="n">transport</span> <span class="o">==</span> <span class="s1">&#39;tcp&#39;</span> <span class="k">else</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">hostname</span><span class="si">}</span><span class="s1">/mqtt&#39;</span>
+            <span class="k">if</span> <span class="n">username</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">publish</span><span class="o">.</span><span class="n">single</span><span class="p">(</span><span class="n">topic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__topic</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">json_obs</span><span class="p">),</span>
+                                     <span class="n">hostname</span><span class="o">=</span><span class="n">hn</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">,</span> <span class="n">tls</span><span class="o">=</span><span class="n">tls</span><span class="p">,</span>
+                                     <span class="n">transport</span><span class="o">=</span><span class="n">transport</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">publish</span><span class="o">.</span><span class="n">single</span><span class="p">(</span><span class="n">topic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__topic</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">json_obs</span><span class="p">),</span>
+                               <span class="n">hostname</span><span class="o">=</span><span class="n">hn</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">,</span> <span class="n">tls</span><span class="o">=</span><span class="n">tls</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span> <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span><span class="p">},</span>
+                               <span class="n">transport</span><span class="o">=</span><span class="n">transport</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Datastream.publish_earliest_observation_client"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Datastream.publish_earliest_observation_client">[docs]</a>    <span class="k">def</span> <span class="nf">publish_earliest_observation_client</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Publishes the earliest observation to the MQTT broker using a provided MQTT client.</span>
+
+<span class="sd">        :param client: the client to use to publish the observation</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__observations</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__observations</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__observations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">json_obs</span> <span class="o">=</span> <span class="n">obs</span><span class="o">.</span><span class="n">get_observation_dict</span><span class="p">()</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;/api/datastreams/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__ds_id</span><span class="si">}</span><span class="s1">/observations&#39;</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">json_obs</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Datastream.set_topic"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Datastream.set_topic">[docs]</a>    <span class="k">def</span> <span class="nf">set_topic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the topic for the datastream. If no topic is provided, the default topic is used.</span>
+
+<span class="sd">        :param topic: MQTT topic the datastream will publish observations to</span>
+<span class="sd">        :return: the topic set by the method</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">topic</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__topic</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;/api/datastreams/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__ds_id</span><span class="si">}</span><span class="s1">/observations&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__topic</span> <span class="o">=</span> <span class="n">topic</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__topic</span></div></div>
+
+
+<div class="viewcode-block" id="Observation"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Observation">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Observation</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    An observation is a single data point for a datastream. They are intended to be created by the parent datastream,</span>
+<span class="sd">    but can be created manually. Doing so may result in unexpected behavior.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        parent_datastream: The datastream that this observation belongs to</span>
+<span class="sd">        id: The UUID of the observation</span>
+<span class="sd">        timestamp: The timestamp of the observation</span>
+<span class="sd">        __name_value_map: A dictionary of the field names and their respective values</span>
+<span class="sd">        __observation_dict: A dictionary representation of the observation for conversion to JSON</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent_datastream</span><span class="p">:</span> <span class="n">Datastream</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new observation for the given datastream. If no timestamp is provided, the current time will be used.</span>
+
+<span class="sd">        :param parent_datastream:</span>
+<span class="sd">        :param timestamp:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_datastream</span> <span class="o">=</span> <span class="n">parent_datastream</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__name_value_map</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__observation_dict</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_name_value_map</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">=</span> <span class="n">timestamp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_observation_dict_with_time</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Observation.create_name_value_map"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Observation.create_name_value_map">[docs]</a>    <span class="k">def</span> <span class="nf">create_name_value_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_datastream</span><span class="o">.</span><span class="n">set_field_map</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__name_value_map</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([])</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_datastream</span><span class="o">.</span><span class="n">get_field_map</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__name_value_map</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name_value_map</span></div>
+
+<div class="viewcode-block" id="Observation.create_observation_dict"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Observation.create_observation_dict">[docs]</a>    <span class="k">def</span> <span class="nf">create_observation_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__observation_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([</span>
+            <span class="p">(</span><span class="s1">&#39;phenomenonTime&#39;</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()),</span>
+            <span class="p">(</span><span class="s1">&#39;result&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_datastream</span><span class="o">.</span><span class="n">root_component</span><span class="o">.</span><span class="n">get_value</span><span class="p">())</span>
+        <span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__observation_dict</span></div>
+
+<div class="viewcode-block" id="Observation.create_observation_dict_with_time"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Observation.create_observation_dict_with_time">[docs]</a>    <span class="k">def</span> <span class="nf">create_observation_dict_with_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obs_time</span><span class="p">:</span> <span class="n">datetime</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__observation_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([</span>
+            <span class="p">(</span><span class="s1">&#39;phenomenonTime&#39;</span><span class="p">,</span> <span class="n">obs_time</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()),</span>
+            <span class="p">(</span><span class="s1">&#39;result&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_name_value_map</span><span class="p">())</span>
+        <span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__observation_dict</span></div>
+
+<div class="viewcode-block" id="Observation.get_observation_dict"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Observation.get_observation_dict">[docs]</a>    <span class="k">def</span> <span class="nf">get_observation_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__observation_dict</span></div>
+
+<div class="viewcode-block" id="Observation.get_observation_json"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.Observation.get_observation_json">[docs]</a>    <span class="k">def</span> <span class="nf">get_observation_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># for key, record in self.__observation_dict[&#39;result&#39;].items():</span>
+        <span class="c1">#     if isinstance(record, datetime):</span>
+        <span class="c1">#         self.__observation_dict[&#39;result&#39;][record] = record.isoformat()</span>
+
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__observation_dict</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="ParentSystemNotFound"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.ParentSystemNotFound">[docs]</a><span class="k">class</span> <span class="nc">ParentSystemNotFound</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Cannot insert datastream without a parent system&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="InvalidDatastream"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.InvalidDatastream">[docs]</a><span class="k">class</span> <span class="nc">InvalidDatastream</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;The Datastream cannot be built. Please check that all required fields are set&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DatastreamNotInserted"><a class="viewcode-back" href="../../index.html#pyswapi.datastreams_and_observations.DatastreamNotInserted">[docs]</a><span class="k">class</span> <span class="nc">DatastreamNotInserted</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;The Datastream has not been inserted into the OSH Node. &#39;</span>
+                               <span class="sa">f</span><span class="s1">&#39;Please insert the datastream before attempting to insert observations&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ian Patterson.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
