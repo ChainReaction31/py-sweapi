@@ -6,7 +6,7 @@ https://chainreaction31.github.io/py-sweapi/
 ## What does this package do?
 Serves as a bridge between datasources created in Python and an OSH Node with the SWAPI enabled
 
-This package depends on the osh_data_core package as well 
+This package depends on the [osh_data_core](https://github.com/ChainReaction31/py_osh_data_core) package as well 
 
 ## Using the package
 
