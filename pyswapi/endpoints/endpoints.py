@@ -51,12 +51,12 @@ class SystemQueryParams(Enum):
         return list(map(lambda c: c.value, cls))
 
 
-def handle_request(url, params=None, json=None, method='get', response_handler=None):
+def handle_request(url, params=None, content_json=None, method='get', response_handler=None):
     """
     Handles a request to the API
     :param url: The URL to make the request to
     :param params: The parameters to send with the request
-    :param json: The JSON to send with the request
+    :param content_json: The JSON to send with the request
     :param method: The method to use for the request
     :param response_handler:
     :return: The response from the API
@@ -67,9 +67,9 @@ def handle_request(url, params=None, json=None, method='get', response_handler=N
     if method == 'get':
         r = requests.get(url, params=params)
     elif method == 'post':
-        r = requests.post(url, params=params, json=json, headers={'Content-Type': 'application/json'})
+        r = requests.post(url, params=params, json=content_json, headers={'Content-Type': 'application/json'})
     elif method == 'put':
-        r = requests.put(url, params=params, json=json)
+        r = requests.put(url, params=params, json=content_json)
     elif method == 'delete':
         r = requests.delete(url, params=params)
     else:

@@ -11,6 +11,10 @@ class APITerms(Enum):
     DATASTREAMS = 'datastreams'
     OBSERVATIONS = 'observations'
     TASKING = 'controls'
+    SAMPLING_FEATURES = 'samplingFeatures'
+    PROCEDURES = 'procedures'
+    DEPLOYMENTS = 'deployments'
+    PROPERTIES = 'properties'
 
 
 class SystemTypes(Enum):
